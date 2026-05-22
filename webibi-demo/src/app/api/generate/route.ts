@@ -2,23 +2,22 @@ import { NextResponse } from "next/server";
 import fs from 'fs';
 import path from 'path';
 
+const NICHES = ['restaurant', 'salon', 'gym', 'clinic', 'events'];
+
 async function fetchGooglePlacesData(businessName: string, city: string) {
   const apiKey = process.env.GOOGLE_PLACES_API_KEY;
   
-  // If no API key is present, fallback to a highly realistic mock that creates the same "jaw-drop" effect
   if (!apiKey || apiKey === 'dummy') {
-    console.log("No Google Places API Key found, using realistic mock data for grip effect.");
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 800));
+    console.log("No Google Places API Key found, using realistic mock data.");
+    await new Promise(resolve => setTimeout(resolve, 500));
     return {
       rating: "4.8",
-      reviewCount: Math.floor(Math.random() * 400) + 120, // Random believable number
+      reviewCount: (Math.floor(Math.random() * 300) + 80).toString(),
       topReview: `Absolutely love this place. Best in ${city} hands down. The staff is incredible and the quality is unmatched.`
     };
   }
 
   try {
-    // 1. Text Search to get the Place ID
     const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(businessName + ' in ' + city)}&key=${apiKey}`;
     const searchRes = await fetch(searchUrl);
     const searchData = await searchRes.json();
@@ -28,17 +27,15 @@ async function fetchGooglePlacesData(businessName: string, city: string) {
     }
 
     const placeId = searchData.results[0].place_id;
-    const rating = searchData.results[0].rating || "4.9";
-    const reviewCount = searchData.results[0].user_ratings_total || "150";
+    const rating = searchData.results[0].rating || "4.8";
+    const reviewCount = searchData.results[0].user_ratings_total || "120";
 
-    // 2. Place Details to get top reviews
     const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews&key=${apiKey}`;
     const detailsRes = await fetch(detailsUrl);
     const detailsData = await detailsRes.json();
 
     let topReview = `Highly recommended in ${city}.`;
     if (detailsData.result?.reviews && detailsData.result.reviews.length > 0) {
-      // Get the highest rated/most relevant text review
       const review = detailsData.result.reviews.find((r: any) => r.text && r.text.length > 20);
       if (review) {
         topReview = review.text;
@@ -54,7 +51,7 @@ async function fetchGooglePlacesData(businessName: string, city: string) {
     console.error("Google Places API error:", error);
     return {
       rating: "4.8",
-      reviewCount: "250",
+      reviewCount: "150",
       topReview: `The absolute best experience we've had in ${city}. Highly recommended!`
     };
   }
@@ -65,78 +62,145 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { name, industry, city, tagline, phone, extractedColors, primaryColor, logoDataUrl } = body;
 
-    // Secretly pull Google Places Data to blow their mind
+    const indKey = (industry || '').toLowerCase().trim();
+    const activeIndustry = NICHES.includes(indKey) ? indKey : 'clinic'; // clinic is the fallback/default
+
+    // 1. Fetch places reviews
     const placesData = await fetchGooglePlacesData(name, city);
 
-    // We will simulate the Claude response for now since the API key might not be available
-    const claudeJson = {
-      heroHeadline: `Redefining Excellence in ${city}`,
-      heroSubline: `Experience unmatched quality and dedication crafted specifically for you.`,
-      aboutText: `We are deeply rooted in ${city}, bringing years of passion and expertise to our community. Our commitment to your satisfaction drives everything we do.`,
-      services: [
-        { title: "Premium Experience", desc: "Tailored to exceed your expectations at every step." },
-        { title: "Expert Team", desc: "Our professionals bring years of local experience." },
-        { title: "Dedicated Support", desc: "We are here for you whenever you need us." }
-      ],
-      testimonial: {
-        quote: placesData.topReview, // Inject real google review!
-        name: "Verified Google Reviewer",
-        role: `Customer in ${city}`
-      },
-      ctaText: "Get Started",
-      footerTagline: "Excellence delivered daily.",
-      improvedTagline: tagline || `The best choice in ${city}`,
-      colorOverrides: {
-        primary: primaryColor || '#7c5cfc',
-        accent: '#ffffff',
-        bg: industry === 'salon' || industry === 'events' ? '#050505' : '#0B0F19',
-        ctaBg: primaryColor || '#7c5cfc',
-        ctaText: '#ffffff'
-      }
+    // 2. Setup colors (CSS variables will reference these)
+    const colorPrimary = primaryColor || (extractedColors && extractedColors[0]) || "#7c5cfc";
+    const colorSecondary = (extractedColors && extractedColors[1]) || colorPrimary;
+    const colorTertiary = (extractedColors && extractedColors[2]) || colorSecondary;
+
+    // 3. Fallback Copywriter data
+    const fallbackCopy = {
+      tagline: tagline || `The best choice in ${city}`,
+      hero_headline: `Redefining Excellence in ${city}`,
+      hero_sub: `Experience unmatched quality and dedication crafted specifically for you.`,
+      about_text: `We are deeply rooted in ${city}, bringing years of passion and expertise to our community. Our commitment to your satisfaction drives everything we do.`,
+      cta: `Call Now`
     };
 
-    if (industry === 'restaurant') claudeJson.colorOverrides.bg = '#0a0908';
-    if (industry === 'gym') claudeJson.colorOverrides.bg = '#09090b';
+    let copy = fallbackCopy;
 
-    const templatesDir = path.join(process.cwd(), 'templates');
-    let templateName = industry.toLowerCase();
-    
-    if (!fs.existsSync(path.join(templatesDir, `${templateName}.html`))) {
-      templateName = 'default';
+    // 4. Query Gemini Copywriter API
+    const geminiKey = process.env.GEMINI_API_KEY;
+    if (geminiKey && geminiKey !== 'dummy') {
+      const prompt = `You are a local business copywriter. Reply ONLY with a JSON object, no markdown, no explanation.
+
+Business: ${name}
+Industry: ${industry || 'local business'}  
+City: ${city}
+Google rating: ${placesData.rating}/5 (${placesData.reviewCount} reviews)
+
+Return exactly this structure:
+{
+  "tagline": "5-7 word punchy tagline",
+  "hero_headline": "8-12 word hero headline",
+  "hero_sub": "one sentence benefit statement, max 18 words",
+  "about_text": "two sentences about the business, warm and local, max 35 words",
+  "cta": "3-word call to action button text"
+}`;
+
+      try {
+        const geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.7, maxOutputTokens: 1000 }
+          })
+        });
+
+        if (geminiRes.ok) {
+          const data = await geminiRes.json();
+          const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          let jsonText = text.trim();
+          if (jsonText.startsWith('```')) {
+            jsonText = jsonText.replace(/^```[a-zA-Z0-9]*\n/, '').replace(/\n```$/, '').trim();
+          }
+          const aiJson = JSON.parse(jsonText);
+          copy = {
+            tagline: aiJson.tagline || fallbackCopy.tagline,
+            hero_headline: aiJson.hero_headline || fallbackCopy.hero_headline,
+            hero_sub: aiJson.hero_sub || fallbackCopy.hero_sub,
+            about_text: aiJson.about_text || fallbackCopy.about_text,
+            cta: aiJson.cta || fallbackCopy.cta
+          };
+        } else {
+          console.warn('Gemini copywriting request failed:', geminiRes.status);
+        }
+      } catch (err) {
+        console.error('Error executing Gemini copywriting service:', err);
+      }
     }
-    
-    const templatePath = path.join(templatesDir, `${templateName}.html`);
+
+    // 5. Select Mapped Niche Template
+    const templatesDir = path.join(process.cwd(), 'templates');
+    const templatePath = path.join(templatesDir, `shell-${activeIndustry}.html`);
     let templateHtml = fs.readFileSync(templatePath, 'utf8');
 
+    // 6. Setup Local Static Images
+    const imgSet = Math.floor(Math.random() * 5) + 1;
+    const imgHero = `/assets/${activeIndustry}/hero-${imgSet}.jpg`;
+    const imgSection = `/assets/${activeIndustry}/section-${imgSet}.jpg`;
+    const imgGallery1 = `/assets/${activeIndustry}/gallery1-${imgSet}.jpg`;
+    const imgGallery2 = `/assets/${activeIndustry}/gallery2-${imgSet}.jpg`;
+    const imgGallery3 = `/assets/${activeIndustry}/gallery3-${imgSet}.jpg`;
+
+    // 7. Pick Layout Variant and details
+    const variants = ['variant-a', 'variant-b', 'variant-c', 'variant-d', 'variant-e'];
+    const layoutVariant = variants[Math.floor(Math.random() * variants.length)];
+
+    const businessInitials = (name || '').trim().slice(0, 2).toUpperCase() || 'WB';
+
+    const badgeMap: Record<string, string> = {
+      restaurant: '🍽 Restaurant',
+      salon: '💆 Salon & Beauty',
+      gym: '💪 Gym & Fitness',
+      clinic: '🩺 Medical Clinic',
+      events: '🎉 Event Venue',
+    };
+    const industryBadge = badgeMap[activeIndustry] || '💼 Business';
+    const agencyPhone = '919876543210';
+
+    let logoUrl = logoDataUrl || '';
+    if (logoUrl) {
+      // Escape double quotes to prevent breaking HTML attributes
+      logoUrl = logoUrl.replaceAll('"', "'");
+    }
+
+    // 8. Inject Variables & Tokens
     const htmlOutput = templateHtml
       .replaceAll('{{BUSINESS_NAME}}', name)
-      .replaceAll('{{HERO_HEADLINE}}', claudeJson.heroHeadline)
-      .replaceAll('{{HERO_SUBLINE}}', claudeJson.heroSubline)
-      .replaceAll('{{TAGLINE}}', claudeJson.improvedTagline)
-      .replaceAll('{{ABOUT_TEXT}}', claudeJson.aboutText)
-      .replaceAll('{{SERVICE_1_TITLE}}', claudeJson.services[0].title)
-      .replaceAll('{{SERVICE_1_DESC}}', claudeJson.services[0].desc)
-      .replaceAll('{{SERVICE_2_TITLE}}', claudeJson.services[1].title)
-      .replaceAll('{{SERVICE_2_DESC}}', claudeJson.services[1].desc)
-      .replaceAll('{{SERVICE_3_TITLE}}', claudeJson.services[2].title)
-      .replaceAll('{{SERVICE_3_DESC}}', claudeJson.services[2].desc)
-      .replaceAll('{{TESTIMONIAL_QUOTE}}', claudeJson.testimonial.quote)
-      .replaceAll('{{TESTIMONIAL_NAME}}', claudeJson.testimonial.name)
-      .replaceAll('{{TESTIMONIAL_ROLE}}', claudeJson.testimonial.role)
-      .replaceAll('{{CTA_TEXT}}', claudeJson.ctaText)
-      .replaceAll('{{FOOTER_TAGLINE}}', claudeJson.footerTagline)
-      .replaceAll('{{PHONE}}', phone)
+      .replaceAll('{{HERO_HEADLINE}}', copy.hero_headline)
+      .replaceAll('{{HERO_SUBLINE}}', copy.hero_sub)
+      .replaceAll('{{TAGLINE}}', copy.tagline)
+      .replaceAll('{{ABOUT_TEXT}}', copy.about_text)
+      .replaceAll('{{CTA_TEXT}}', copy.cta)
+      .replaceAll('{{FOOTER_TAGLINE}}', copy.tagline)
+      .replaceAll('{{PHONE}}', phone || '')
       .replaceAll('{{CITY}}', city)
-      .replaceAll('{{LOGO_URL}}', logoDataUrl)
-      .replaceAll('{{COLOR_PRIMARY}}', claudeJson.colorOverrides.primary)
-      .replaceAll('{{COLOR_ACCENT}}', claudeJson.colorOverrides.accent)
-      .replaceAll('{{COLOR_BG}}', claudeJson.colorOverrides.bg)
-      .replaceAll('{{COLOR_CTA_BG}}', claudeJson.colorOverrides.ctaBg)
-      .replaceAll('{{COLOR_CTA_TEXT}}', claudeJson.colorOverrides.ctaText)
-      // Inject Google specific mind-blowing data
+      .replaceAll('{{LOGO_URL}}', logoUrl)
+      .replaceAll('{{COLOR_PRIMARY}}', colorPrimary)
+      .replaceAll('{{COLOR_SECONDARY}}', colorSecondary)
+      .replaceAll('{{COLOR_TERTIARY}}', colorTertiary)
+      .replaceAll('{{IMG_HERO}}', imgHero)
+      .replaceAll('{{IMG_SECTION}}', imgSection)
+      .replaceAll('{{IMG_GALLERY1}}', imgGallery1)
+      .replaceAll('{{IMG_GALLERY2}}', imgGallery2)
+      .replaceAll('{{IMG_GALLERY3}}', imgGallery3)
       .replaceAll('{{GOOGLE_RATING}}', placesData.rating)
       .replaceAll('{{REVIEW_COUNT}}', placesData.reviewCount)
-      .replaceAll('{{TOP_REVIEW}}', placesData.topReview);
+      .replaceAll('{{TOP_REVIEW}}', placesData.topReview)
+      .replaceAll('{{HERO_LAYOUT_CLASS}}', layoutVariant)
+      .replaceAll('{{LAYOUT_VARIANT}}', layoutVariant)
+      .replaceAll('{{IMG_SET}}', imgSet.toString())
+      .replaceAll('{{BUSINESS_INITIALS}}', businessInitials)
+      .replaceAll('{{INDUSTRY_BADGE}}', industryBadge)
+      .replaceAll('{{AGENCY_PHONE}}', agencyPhone)
+      .replaceAll('{{INDUSTRY}}', activeIndustry);
 
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 

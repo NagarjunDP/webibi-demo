@@ -1,0 +1,55 @@
+{
+  "generated": "2026-05-22T11:27:45.005Z",
+  "usage": "import manifest from '/public/assets/manifest.json'",
+  "helper": "getImage(industry, role) → '/assets/restaurant/hero.jpg'",
+  "images": {
+    "restaurant": {
+      "hero": "/assets/restaurant/hero.jpg",
+      "section": "/assets/restaurant/section.jpg",
+      "gallery1": "/assets/restaurant/gallery1.jpg",
+      "gallery2": "/assets/restaurant/gallery2.jpg",
+      "gallery3": "/assets/restaurant/gallery3.jpg",
+      "bg": "/assets/restaurant/bg.jpg"
+    },
+    "salon": {
+      "hero": "/assets/salon/hero.jpg",
+      "section": "/assets/salon/section.jpg",
+      "gallery1": "/assets/salon/gallery1.jpg",
+      "gallery2": "/assets/salon/gallery2.jpg",
+      "gallery3": "/assets/salon/gallery3.jpg",
+      "bg": "/assets/salon/bg.jpg"
+    },
+    "gym": {
+      "hero": "/assets/gym/hero.jpg",
+      "section": "/assets/gym/section.jpg",
+      "gallery1": "/assets/gym/gallery1.jpg",
+      "gallery2": "/assets/gym/gallery2.jpg",
+      "gallery3": "/assets/gym/gallery3.jpg",
+      "bg": "/assets/gym/bg.jpg"
+    },
+    "clinic": {
+      "hero": "/assets/clinic/hero.jpg",
+      "section": "/assets/clinic/section.jpg",
+      "gallery1": "/assets/clinic/gallery1.jpg",
+      "gallery2": "/assets/clinic/gallery2.jpg",
+      "gallery3": "/assets/clinic/gallery3.jpg",
+      "bg": "/assets/clinic/bg.jpg"
+    },
+    "events": {
+      "hero": "/assets/events/hero.jpg",
+      "section": "/assets/events/section.jpg",
+      "gallery1": "/assets/events/gallery1.jpg",
+      "gallery2": "/assets/events/gallery2.jpg",
+      "gallery3": "/assets/events/gallery3.jpg",
+      "bg": "/assets/events/bg.jpg"
+    },
+    "default": {
+      "hero": "/assets/default/hero.jpg",
+      "section": "/assets/default/section.jpg",
+      "gallery1": "/assets/default/gallery1.jpg",
+      "gallery2": "/assets/default/gallery2.jpg",
+      "gallery3": "/assets/default/gallery3.jpg",
+      "bg": "/assets/default/bg.jpg"
+    }
+  }
+}

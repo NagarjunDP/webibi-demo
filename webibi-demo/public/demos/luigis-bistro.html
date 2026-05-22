@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luigis Bistro | Seattle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --brand: #ff6347;
+      --brand-dark: #ff6347;
+      --brand-light: #ff6347;
+      --dark: #0f0e0c;
+      --light: #fdfcf7;
+      --font-serif: 'Playfair Display', serif;
+      --font-sans: 'Inter', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--light);
+      color: var(--dark);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--brand);
+      border-radius: 3px;
+    }
+
+    /* SECTION 1 — STICKY NAV */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: rgba(253, 252, 247, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+    .nav-logo-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .nav-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .nav-name {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--dark);
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 44px;
+      padding: 0 20px;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      border-radius: 100px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    .nav-btn:hover {
+      background: var(--brand-dark);
+      transform: translateY(-1px);
+    }
+
+    /* SECTION 2 — CINEMATIC HERO */
+    .hero {
+      position: relative;
+      height: 100dvh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 20px;
+      background-color: #000;
+    }
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+    
+    /* Hero treatments (randomly switched by class in route.ts) */
+    .hero.treatment-1 .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 1;
+    }
+    .hero.treatment-1 .hero-content {
+      text-align: center;
+      align-items: center;
+      max-width: 800px;
+    }
+
+    .hero.treatment-2 .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+      z-index: 1;
+    }
+    .hero.treatment-2 .hero-content {
+      align-self: flex-end;
+      text-align: left;
+      margin-bottom: 80px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .hero.treatment-3 .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0) 100%);
+      z-index: 1;
+    }
+    .hero.treatment-3 .hero-content {
+      align-self: center;
+      justify-self: flex-start;
+      text-align: left;
+      width: 100%;
+      max-width: 600px;
+      margin-left: 20px;
+    }
+
+    .hero.treatment-4 .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.15);
+      z-index: 1;
+    }
+    .hero.treatment-4 .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-self: flex-end;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 16px;
+      color: var(--dark);
+      width: calc(100% - 40px);
+      max-width: 480px;
+      margin-bottom: 80px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+    .hero.treatment-4 .hero-label {
+      color: var(--brand);
+    }
+    .hero.treatment-4 h1 {
+      color: var(--dark);
+    }
+    .hero.treatment-4 p {
+      color: #555;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .hero-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--brand-light);
+    }
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-weight: 900;
+      font-size: clamp(2.2rem, 8vw, 4.5rem);
+      line-height: 1.15;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      font-weight: 300;
+      max-width: 600px;
+      opacity: 0.9;
+    }
+    
+    /* Google Rating Badge floating */
+    .rating-badge {
+      position: absolute;
+      bottom: 0;
+      left: 20px;
+      transform: translateY(50%);
+      z-index: 10;
+      background: #fff;
+      color: var(--dark);
+      padding: 12px 24px;
+      border-radius: 100px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    .rating-badge span.stars-color {
+      color: #fbbf24;
+    }
+
+    /* SECTION 3 — STATS STRIP */
+    .stats-strip {
+      background: var(--dark);
+      color: #fff;
+      padding: 80px 20px 50px 20px; /* Extra padding top for rating badge overlap */
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      text-align: center;
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .stat-number {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      color: var(--brand);
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* SECTION 4 — ABOUT SPLIT */
+    .about-section {
+      padding: 80px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .about-image-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .about-img {
+      width: 100%;
+      max-width: 450px;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 16px;
+      transform: rotate(-2deg);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    }
+    .about-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: center;
+    }
+    .about-title {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      font-style: italic;
+      font-weight: 700;
+    }
+    .about-text {
+      color: #555;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+    .about-link {
+      display: inline-flex;
+      align-items: center;
+      color: var(--brand);
+      text-decoration: none;
+      font-weight: 600;
+      gap: 6px;
+      transition: gap 0.2s ease;
+    }
+    .about-link:hover {
+      gap: 10px;
+    }
+
+    /* SECTION 5 — MENU PREVIEW */
+    .menu-section {
+      padding: 80px 20px;
+      background: #f8f6f0;
+    }
+    .menu-title {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .menu-scroll-container {
+      overflow-x: auto;
+      padding: 10px 0 20px 0;
+      display: flex;
+      gap: 24px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .menu-scroll-container::-webkit-scrollbar {
+      display: none;
+    }
+    .menu-card {
+      flex: 0 0 260px;
+      scroll-snap-align: start;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+    }
+    .menu-card-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+    .menu-card-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .menu-card-title {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+    .menu-card-desc {
+      color: #666;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      height: 4.5em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+    .menu-card-price {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      color: var(--brand);
+      font-size: 1.1rem;
+      margin-top: 8px;
+    }
+
+    /* SECTION 6 — TESTIMONIAL */
+    .testimonial-section {
+      background: var(--dark);
+      color: #fff;
+      padding: 80px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .quote-icon {
+      font-family: var(--font-serif);
+      font-size: 8rem;
+      color: var(--brand);
+      line-height: 1;
+      height: 60px;
+      margin-top: -30px;
+    }
+    .testimonial-text {
+      font-family: var(--font-sans);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.25rem;
+      line-height: 1.7;
+      max-width: 700px;
+      opacity: 0.9;
+    }
+    .stars-row {
+      color: #fbbf24;
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+    .testimonial-author {
+      font-size: 0.85rem;
+      opacity: 0.6;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 6px;
+    }
+
+    /* SECTION 7 — CTA BANNER */
+    .cta-section {
+      background: var(--brand);
+      color: #fff;
+      padding: 80px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
+    .cta-section h2 {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 2.2rem;
+      max-width: 600px;
+    }
+    .cta-btn-group {
+      width: 100%;
+      max-width: 350px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+      width: 100%;
+      border-radius: 100px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.25s ease;
+    }
+    .btn-cta-primary {
+      background: #fff;
+      color: var(--dark);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .btn-cta-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    }
+    .btn-cta-secondary {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255,255,255,0.4);
+    }
+    .btn-cta-secondary:hover {
+      border-color: #fff;
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* SECTION 8 — FOOTER */
+    .footer {
+      background: #090807;
+      color: #fff;
+      padding: 60px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .footer-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .footer-address {
+      font-size: 0.9rem;
+      opacity: 0.6;
+      max-width: 300px;
+      line-height: 1.5;
+    }
+    .social-row {
+      display: flex;
+      gap: 16px;
+    }
+    .social-icon {
+      color: rgba(255,255,255,0.4);
+      font-size: 1.2rem;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .social-icon:hover {
+      color: var(--brand);
+    }
+    .copyright {
+      font-size: 0.8rem;
+      opacity: 0.4;
+      margin-top: 10px;
+    }
+
+    /* Desktop adjustments */
+    @media (min-width: 768px) {
+      .navbar {
+        padding: 0 40px;
+      }
+      .about-section {
+        flex-direction: row;
+        align-items: center;
+        gap: 60px;
+      }
+      .about-image-container, .about-content {
+        flex: 1;
+      }
+      .about-image-container {
+        justify-content: flex-end;
+      }
+      .menu-scroll-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        overflow-x: visible;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .menu-card {
+        flex: unset;
+      }
+      .stats-strip {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 60px 40px;
+      }
+      .cta-btn-group {
+        flex-direction: row;
+        max-width: 500px;
+        gap: 20px;
+      }
+      .rating-badge {
+        left: 40px;
+      }
+      .hero.treatment-2 .hero-content {
+        margin-left: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SECTION 1 — STICKY NAV -->
+  <nav class="navbar">
+    <a href="#" class="nav-logo-group">
+      <img src="" alt="Luigis Bistro" class="nav-logo" onerror="this.src='/assets/default/logo.jpg'; this.onerror=null;">
+      <span class="nav-name">Luigis Bistro</span>
+    </a>
+    <a href="#booking" class="nav-btn">Reserve a Table</a>
+  </nav>
+
+  <!-- SECTION 2 — CINEMATIC HERO -->
+  <section class="hero treatment-1" id="hero">
+    <img src="/assets/restaurant/hero.jpg" alt="Hero" class="hero-img" onerror="this.src='/assets/restaurant/hero.jpg'; this.onerror=null;">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-label">EST. IN Seattle</span>
+      <h1>Redefining Excellence in Seattle</h1>
+      <p>Experience unmatched quality and dedication crafted specifically for you.</p>
+    </div>
+    
+    <!-- Google rating badge -->
+    <div class="rating-badge">
+      <span class="stars-color">★</span>
+      <span>4.8/5 · 211 Reviews</span>
+    </div>
+  </section>
+
+  <!-- SECTION 3 — STATS STRIP -->
+  <section class="stats-strip">
+    <div class="stat-item">
+      <div class="stat-number">4.8/5</div>
+      <div class="stat-label">Google Rating</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">211+</div>
+      <div class="stat-label">Happy Guests</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">Finest</div>
+      <div class="stat-label">in Seattle</div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 — ABOUT SPLIT -->
+  <section class="about-section">
+    <div class="about-image-container">
+      <img src="/assets/restaurant/section.jpg" alt="About" class="about-img" onerror="this.src='/assets/restaurant/section.jpg'; this.onerror=null;">
+    </div>
+    <div class="about-content">
+      <h2 class="about-title">About Us</h2>
+      <p class="about-text">We are deeply rooted in Seattle, bringing years of passion and expertise to our community. Our commitment to your satisfaction drives everything we do.</p>
+      <a href="#story" class="about-link">Our Story →</a>
+    </div>
+  </section>
+
+  <!-- SECTION 5 — MENU PREVIEW -->
+  <section class="menu-section">
+    <h2 class="menu-title">What We're Known For</h2>
+    <div class="menu-scroll-container">
+      <!-- Card 1 -->
+      <div class="menu-card">
+        <img src="/assets/restaurant/gallery1.jpg" alt="Signature Dish" class="menu-card-img" onerror="this.src='/assets/restaurant/gallery1.jpg'; this.onerror=null;">
+        <div class="menu-card-body">
+          <h3 class="menu-card-title">Chef's Special Selection</h3>
+          <p class="menu-card-desc">Indulge in our locally sourced, seasonal vegetables paired with premium house seasonings and grilled to perfection.</p>
+          <div class="menu-card-price">$24.00</div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="menu-card">
+        <img src="/assets/restaurant/gallery2.jpg" alt="Signature Main" class="menu-card-img" onerror="this.src='/assets/restaurant/gallery2.jpg'; this.onerror=null;">
+        <div class="menu-card-body">
+          <h3 class="menu-card-title">Artisan Roasted Platter</h3>
+          <p class="menu-card-desc">A premium cuts platter served alongside rich purée and reduction, featuring signature spices and fresh herbs.</p>
+          <div class="menu-card-price">$38.00</div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="menu-card">
+        <img src="/assets/restaurant/gallery3.jpg" alt="Premium Dessert" class="menu-card-img" onerror="this.src='/assets/restaurant/gallery3.jpg'; this.onerror=null;">
+        <div class="menu-card-body">
+          <h3 class="menu-card-title">Gourmet Decadence</h3>
+          <p class="menu-card-desc">End your experience with our handcrafted signature dessert, featuring rich textures and fresh berry compote.</p>
+          <div class="menu-card-price">$14.00</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 — TESTIMONIAL -->
+  <section class="testimonial-section">
+    <div class="quote-icon">“</div>
+    <p class="testimonial-text">Absolutely love this place. Best in Seattle hands down. The staff is incredible and the quality is unmatched.</p>
+    <div class="stars-row">★★★★★</div>
+    <div class="testimonial-author">Google Reviewer</div>
+  </section>
+
+  <!-- SECTION 7 — CTA BANNER -->
+  <section class="cta-section" id="booking">
+    <h2>Ready to experience Luigis Bistro?</h2>
+    <div class="cta-btn-group">
+      <a href="tel:206-555-0199" class="btn-cta btn-cta-primary">Call 206-555-0199</a>
+      <a href="https://maps.google.com/?q=Luigis Bistro+Seattle" target="_blank" class="btn-cta btn-cta-secondary">Get Directions</a>
+    </div>
+  </section>
+
+  <!-- SECTION 8 — FOOTER -->
+  <footer class="footer">
+    <img src="" alt="Luigis Bistro" class="footer-logo" onerror="this.src='/assets/default/logo.jpg'; this.onerror=null;">
+    <div class="footer-address">
+      Luigis Bistro<br>
+      Located in the heart of Seattle<br>
+      Phone: 206-555-0199
+    </div>
+    <div class="social-row">
+      <a href="#" class="social-icon">Instagram</a>
+      <a href="#" class="social-icon">Facebook</a>
+      <a href="#" class="social-icon">Yelp</a>
+    </div>
+    <div class="copyright">
+      © Luigis Bistro. Demo by Webibi.
+    </div>
+  </footer>
+
+</body>
+</html>

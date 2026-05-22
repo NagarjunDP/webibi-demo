@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{BUSINESS_NAME}} | {{CITY}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --brand: {{COLOR_PRIMARY}};
+      --brand-dark: {{COLOR_TERTIARY}};
+      --brand-light: {{COLOR_SECONDARY}};
+      --dark: #0a0a0a;
+      --light: #161616;
+      --warm: #222222;
+      --font-heading: 'Barlow Condensed', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--dark);
+      color: #ffffff;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #111;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--brand);
+      border-radius: 0px;
+    }
+
+    /* 1. DEMO ANNOUNCEMENT STRIP */
+    .demo-strip {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 44px;
+      background: #0f0f0f;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+    .demo-strip-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .pulsing-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #22c55e;
+      animation: pulse-green 2s ease-in-out infinite;
+    }
+    @keyframes pulse-green {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+    .demo-strip-right {
+      color: var(--brand);
+      font-weight: 600;
+      font-size: 11px;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+      cursor: pointer;
+    }
+    .demo-strip-right:hover {
+      opacity: 0.8;
+    }
+    @media (max-width: 480px) {
+      .demo-strip {
+        justify-content: center;
+        gap: 12px;
+        padding: 0 10px;
+      }
+    }
+
+    /* 2. FIXED NAV */
+    .navbar {
+      position: fixed;
+      top: 44px;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: rgba(10, 10, 10, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 9990;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+    .nav-logo-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .logo-wrapper {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-logo {
+      height: 44px;
+      width: 44px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      object-fit: cover;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.14));
+    }
+    .logo-fallback {
+      width: 44px;
+      height: 44px;
+      background: var(--brand);
+      color: #ffffff;
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.14);
+    }
+    .nav-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 44px;
+      padding: 0 24px;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 0px;
+      transition: all 0.2s ease;
+    }
+    .nav-btn:hover {
+      background: var(--brand-dark);
+    }
+
+    /* 3. HERO & LAYOUT SYSTEM */
+    .hero {
+      position: relative;
+      height: 100dvh;
+      width: 100%;
+      display: flex;
+      z-index: 1;
+      overflow: hidden;
+      box-sizing: border-box;
+      background-color: #000;
+    }
+    .hero-img-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding: clamp(24px, 5vw, 60px);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Hero Logo Treatment */
+    .hero-logo-card-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      width: fit-content;
+    }
+    .hero-logo-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      filter: drop-shadow(0 0 20px {{COLOR_PRIMARY}}40);
+    }
+    .hero-logo-img-container {
+      position: relative;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-logo {
+      height: 80px;
+      border-radius: 10px;
+      object-fit: contain;
+    }
+    .hero-logo-fallback {
+      width: 80px;
+      height: 80px;
+      background: var(--brand);
+      color: #ffffff;
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 700;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+    }
+    .hero-industry-badge {
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--brand);
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .hero-logo-tagline {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--brand);
+      text-align: center;
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: clamp(2.5rem, 9vw, 5.5rem);
+      line-height: 0.95;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .hero-headline {
+      font-family: var(--font-heading);
+      font-size: clamp(1.4rem, 4vw, 2.4rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      color: var(--brand);
+      letter-spacing: 0.5px;
+    }
+    .hero-subline {
+      font-size: 1.05rem;
+      font-weight: 300;
+      max-width: 600px;
+      line-height: 1.6;
+      opacity: 0.85;
+      margin-bottom: 16px;
+    }
+
+    .hero-rating-badge {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 8px 16px;
+      border-radius: 100px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: #fff;
+      width: fit-content;
+      margin-top: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    .hero-rating-badge .stars {
+      color: #fbbf24;
+    }
+
+    /* Layout Variant A — Dark cinematic */
+    .hero.variant-a {
+      justify-content: center;
+      align-items: flex-end;
+    }
+    .hero.variant-a .hero-overlay {
+      background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.85) 100%);
+    }
+    .hero.variant-a .hero-content {
+      text-align: center;
+      align-items: center;
+      padding-bottom: 8%;
+      color: #fff;
+    }
+    .hero.variant-a .hero-logo-card-wrapper {
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Layout Variant B — Left fade */
+    .hero.variant-b {
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .hero.variant-b .hero-overlay {
+      background: linear-gradient(to right, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0) 100%);
+    }
+    .hero.variant-b .hero-content {
+      text-align: left;
+      align-items: flex-start;
+      max-width: 650px;
+      color: #fff;
+    }
+    .hero.variant-b .hero-logo-card-wrapper {
+      align-items: flex-start;
+    }
+
+    /* Layout Variant C — Brand color wash */
+    .hero.variant-c {
+      justify-content: center;
+      align-items: center;
+    }
+    .hero.variant-c .hero-overlay {
+      background: linear-gradient(135deg, var(--brand) 0%, rgba(0,0,0,0.7) 100%);
+      opacity: 0.65;
+    }
+    .hero.variant-c .hero-content {
+      text-align: center;
+      align-items: center;
+      color: #fff;
+    }
+    .hero.variant-c .hero-logo-card-wrapper {
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Layout Variant D — Minimal top overlay */
+    .hero.variant-d {
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .hero.variant-d .hero-overlay {
+      background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.0) 60%);
+    }
+    .hero.variant-d .hero-content {
+      text-align: center;
+      align-items: center;
+      padding-top: clamp(100px, 15vh, 180px);
+      color: #fff;
+    }
+    .hero.variant-d .hero-logo-card-wrapper {
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Layout Variant E — Split (no overlay) */
+    .hero.variant-e {
+      display: flex;
+      flex-direction: row;
+      background: var(--light);
+      height: auto;
+      min-height: 100dvh;
+    }
+    .hero.variant-e .hero-img-container {
+      position: relative;
+      width: 50%;
+      height: 100dvh;
+      order: 2;
+    }
+    .hero.variant-e .hero-overlay {
+      display: none;
+    }
+    .hero.variant-e .hero-content {
+      position: relative;
+      width: 50%;
+      padding: 60px;
+      order: 1;
+      justify-content: center;
+      align-items: flex-start;
+      text-align: left;
+      color: #ffffff;
+      background: #111111;
+    }
+    .hero.variant-e .hero-logo-card-wrapper {
+      align-items: flex-start;
+    }
+    .hero.variant-e .hero-logo-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      filter: drop-shadow(0 0 20px {{COLOR_PRIMARY}}20);
+    }
+    .hero.variant-e .hero-title {
+      color: #ffffff;
+    }
+    .hero.variant-e .hero-headline {
+      color: var(--brand);
+    }
+    .hero.variant-e .hero-subline {
+      color: #ccc;
+    }
+    .hero.variant-e .hero-rating-badge {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+
+    @media (max-width: 767px) {
+      .hero.variant-e {
+        flex-direction: column;
+      }
+      .hero.variant-e .hero-img-container {
+        width: 100%;
+        height: 45vh;
+        order: 1;
+      }
+      .hero.variant-e .hero-content {
+        width: 100%;
+        order: 2;
+        padding: 40px 20px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .hero-logo-img-container { height: 100px; }
+      .hero-logo { height: 100px; }
+      .hero-logo-fallback { width: 100px; height: 100px; font-size: 2.8rem; }
+    }
+
+    /* Typing animation letter keyframes */
+    @keyframes typeLetter {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 4. STATS STRIP */
+    .stats-strip {
+      background: #080808;
+      color: #fff;
+      padding: 60px 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-number {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      color: var(--brand);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.7;
+    }
+
+    /* 5. ABOUT SECTION WITH WATERMARK */
+    .about-section {
+      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
+      position: relative;
+      overflow: hidden;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .watermark-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(4);
+      opacity: 0.08;
+      width: 120px;
+      height: 120px;
+      pointer-events: none;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .watermark-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .about-image-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+    }
+    .about-img {
+      width: 100%;
+      max-width: 450px;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 0px;
+      border: 2px solid var(--brand);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+    }
+    .about-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: center;
+      z-index: 1;
+    }
+    .about-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+    .about-text {
+      color: #ccc;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+    .about-link {
+      display: inline-flex;
+      align-items: center;
+      color: var(--brand);
+      text-decoration: none;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      gap: 6px;
+      transition: gap 0.2s ease;
+    }
+    .about-link:hover {
+      gap: 10px;
+    }
+    @media (min-width: 768px) {
+      .about-section {
+        flex-direction: row;
+        align-items: center;
+        gap: 60px;
+      }
+      .about-image-container, .about-content {
+        flex: 1;
+      }
+    }
+
+    /* 6. SERVICES / CLASSES PREVIEW (horizontal scroll on mobile) */
+    .schedule-section {
+      background: #111111;
+      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
+    }
+    .schedule-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2.2rem, 6vw, 3.5rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+    .schedule-scroll {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 20px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; /* Hide scrollbar for Chrome/Firefox */
+    }
+    .schedule-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .class-card {
+      flex: 0 0 280px;
+      scroll-snap-align: start;
+      background: #1a1a1a;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transition: all 0.3s ease;
+    }
+    .class-card:hover {
+      border-color: var(--brand);
+      transform: translateY(-4px);
+    }
+    .class-day {
+      background: var(--brand);
+      color: #000;
+      font-weight: 900;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      text-transform: uppercase;
+      align-self: flex-start;
+    }
+    .class-name {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+    .class-details {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .class-time {
+      font-size: 0.85rem;
+      opacity: 0.7;
+    }
+    .class-trainer {
+      font-size: 0.85rem;
+      opacity: 0.5;
+    }
+    .class-link {
+      color: var(--brand);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    @media (min-width: 768px) {
+      .schedule-scroll {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        overflow-x: visible;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .class-card {
+        flex: unset;
+      }
+    }
+
+    /* TRANSFORMATION GRAPHICS SECTION */
+    .transform-section {
+      display: flex;
+      flex-direction: column;
+    }
+    .transform-graphics {
+      background: #0f0f0f;
+      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      text-align: center;
+    }
+    .t-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .t-stat-num {
+      font-family: var(--font-heading);
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--brand);
+      line-height: 1;
+    }
+    .t-stat-lbl {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      opacity: 0.8;
+    }
+    .transform-img-wrap {
+      width: 100%;
+      height: 45vh;
+      overflow: hidden;
+    }
+    .transform-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    @media (min-width: 768px) {
+      .transform-section {
+        flex-direction: row;
+      }
+      .transform-graphics, .transform-img-wrap {
+        flex: 1;
+        height: 60vh;
+      }
+      .transform-graphics {
+        justify-content: center;
+        text-align: left;
+        padding-left: 10%;
+      }
+      .t-stat-item {
+        align-items: flex-start;
+      }
+    }
+
+    /* 7. TESTIMONIAL (DARK) */
+    .testimonial-section {
+      background: #050505;
+      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      position: relative;
+    }
+    .testimonial-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      border-left: 4px solid var(--brand);
+      padding-left: clamp(20px, 5vw, 40px);
+    }
+    .quote-icon {
+      font-family: var(--font-heading);
+      font-size: 7rem;
+      color: var(--brand);
+      line-height: 1;
+      height: 40px;
+      margin-top: -20px;
+      opacity: 0.8;
+    }
+    .testimonial-text {
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      line-height: 1.6;
+      font-style: italic;
+      color: #fff;
+    }
+    .stars-row {
+      color: #fbbf24;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+    }
+    .testimonial-author {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.5;
+    }
+
+    /* 8. CTA SECTION */
+    .cta-section {
+      background: var(--brand);
+      color: #000000;
+      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
+    .cta-title {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: clamp(2.2rem, 8vw, 4rem);
+      line-height: 0.95;
+      text-transform: uppercase;
+    }
+    .cta-btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 480px;
+    }
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+      width: 100%;
+      font-weight: 800;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: all 0.2s ease;
+    }
+    .btn-cta-black {
+      background: #000000;
+      color: #ffffff;
+    }
+    .btn-cta-black:hover {
+      background: #1e1e1e;
+      transform: translateY(-2px);
+    }
+    .btn-cta-outline {
+      border: 2px solid #000000;
+      color: #000000;
+      background: transparent;
+    }
+    .btn-cta-outline:hover {
+      background: rgba(0,0,0,0.05);
+      transform: translateY(-2px);
+    }
+    @media (min-width: 480px) {
+      .cta-btn-group {
+        flex-direction: row;
+      }
+    }
+
+    /* FOOTER */
+    .footer {
+      background: #050505;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 60px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    .footer-logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer-logo {
+      height: 52px;
+      max-width: 150px;
+      object-fit: contain;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 6px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .footer-logo-fallback {
+      width: 52px;
+      height: 52px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-radius: 10px;
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .powered-by {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+    }
+    .footer-address {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #aaa;
+    }
+    .copyright {
+      font-size: 0.75rem;
+      opacity: 0.4;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. DEMO ANNOUNCEMENT STRIP -->
+  <div class="demo-strip">
+    <div class="demo-strip-left">
+      <span class="pulsing-dot"></span>
+      <span>LIVE PREVIEW · {{BUSINESS_NAME}}</span>
+    </div>
+    <a href="https://wa.me/{{AGENCY_PHONE}}?text=Hi!%20I%20saw%20the%20demo%20for%20{{BUSINESS_NAME}}%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="demo-strip-right">
+      🚀 Get This Website Live →
+    </a>
+  </div>
+
+  <!-- 2. FIXED NAV -->
+  <nav class="navbar">
+    <a href="#" class="nav-logo-group">
+      <div class="logo-wrapper">
+        <img id="nav-logo-img" src="{{LOGO_URL}}" alt="{{BUSINESS_NAME}}" class="nav-logo" onerror="handleLogoError(this)">
+        <div id="nav-logo-fallback" class="logo-fallback" style="display: none;">{{BUSINESS_INITIALS}}</div>
+      </div>
+      <span class="nav-name">{{BUSINESS_NAME}}</span>
+    </a>
+    <a href="#contact" class="nav-btn">{{CTA_TEXT}}</a>
+  </nav>
+
+  <!-- 3. HERO AREA -->
+  <section class="hero {{LAYOUT_VARIANT}}" id="hero">
+    <div class="hero-img-container">
+      <img src="{{IMG_HERO}}" alt="Gym Hero" class="hero-img" onerror="this.src='/assets/gym/hero-1.jpg'; this.onerror=null;">
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <!-- Logo billboard card -->
+      <div class="hero-logo-card-wrapper">
+        <div class="hero-logo-card">
+          <div class="hero-logo-img-container">
+            <img id="hero-logo-img" src="{{LOGO_URL}}" alt="{{BUSINESS_NAME}}" class="hero-logo" onerror="handleHeroLogoError(this)">
+            <div id="hero-logo-fallback" class="hero-logo-fallback" style="display: none;">{{BUSINESS_INITIALS}}</div>
+          </div>
+          <div class="hero-industry-badge">{{INDUSTRY_BADGE}}</div>
+        </div>
+        <span class="hero-logo-tagline">{{TAGLINE}}</span>
+      </div>
+
+      <h1 class="hero-title"><span class="business-name-animate">{{BUSINESS_NAME}}</span></h1>
+      <h2 class="hero-headline">{{HERO_HEADLINE}}</h2>
+      <p class="hero-subline">{{HERO_SUBLINE}}</p>
+
+      <!-- Google Rating badge inside Hero -->
+      <div class="hero-rating-badge">
+        <span class="stars">★★★★★</span>
+        <span class="rating-text"><strong>{{GOOGLE_RATING}}/5</strong> · {{REVIEW_COUNT}} Reviews</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. STATS STRIP -->
+  <section class="stats-strip">
+    <div class="stat-item">
+      <div class="stat-number">{{GOOGLE_RATING}}★</div>
+      <div class="stat-label">Google Rating</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">{{REVIEW_COUNT}}+</div>
+      <div class="stat-label">Members</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">6AM-11PM</div>
+      <div class="stat-label">Open Hours</div>
+    </div>
+  </section>
+
+  <!-- 5. ABOUT SECTION WITH WATERMARK -->
+  <section class="about-section" id="about">
+    <div class="watermark-container">
+      <img id="watermark-logo-img" src="{{LOGO_URL}}" alt="" class="watermark-logo" onerror="this.style.display='none';">
+    </div>
+    <div class="about-image-container">
+      <img src="{{IMG_SECTION}}" alt="About Us" class="about-img" onerror="this.src='/assets/gym/section-1.jpg'; this.onerror=null;">
+    </div>
+    <div class="about-content">
+      <h2 class="about-title">Our Mission</h2>
+      <p class="about-text">{{ABOUT_TEXT}}</p>
+      <a href="#schedule" class="about-link">View Class Schedule →</a>
+    </div>
+  </section>
+
+  <!-- 6. SERVICES / SCHEDULE GRID (horizontal scroll on mobile) -->
+  <section class="schedule-section" id="schedule">
+    <h2 class="schedule-title">This Week's Classes</h2>
+    <div class="schedule-scroll">
+      <!-- Card 1 -->
+      <div class="class-card">
+        <span class="class-day">Mon / Wed</span>
+        <span class="class-name">HIIT Power</span>
+        <div class="class-details">
+          <span class="class-time">07:00 AM - 08:00 AM</span>
+          <span class="class-trainer">Trainer: Alex M.</span>
+        </div>
+        <a href="tel:{{PHONE}}" class="class-link">Book Spot →</a>
+      </div>
+      <!-- Card 2 -->
+      <div class="class-card">
+        <span class="class-day">Tue / Thu</span>
+        <span class="class-name">Boxing Core</span>
+        <div class="class-details">
+          <span class="class-time">06:30 PM - 07:30 PM</span>
+          <span class="class-trainer">Trainer: Sarah J.</span>
+        </div>
+        <a href="tel:{{PHONE}}" class="class-link">Book Spot →</a>
+      </div>
+      <!-- Card 3 -->
+      <div class="class-card">
+        <span class="class-day">Saturday</span>
+        <span class="class-name">Strength Lab</span>
+        <div class="class-details">
+          <span class="class-time">09:00 AM - 10:30 AM</span>
+          <span class="class-trainer">Trainer: Marcus D.</span>
+        </div>
+        <a href="tel:{{PHONE}}" class="class-link">Book Spot →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRANSFORMATION SECTION -->
+  <section class="transform-section">
+    <div class="transform-graphics">
+      <div class="t-stat-item">
+        <span class="t-stat-num">500+</span>
+        <span class="t-stat-lbl">Active Members</span>
+      </div>
+      <div class="t-stat-item">
+        <span class="t-stat-num">15+</span>
+        <span class="t-stat-lbl">Expert Trainers</span>
+      </div>
+      <div class="t-stat-item">
+        <span class="t-stat-num">3</span>
+        <span class="t-stat-lbl">Locations in {{CITY}}</span>
+      </div>
+    </div>
+    <div class="transform-img-wrap">
+      <img src="{{IMG_SECTION}}" alt="Transformation" class="transform-img" onerror="this.src='/assets/gym/section-1.jpg'; this.onerror=null;">
+    </div>
+  </section>
+
+  <!-- 7. TESTIMONIAL SECTION -->
+  <section class="testimonial-section">
+    <div class="testimonial-container">
+      <div class="quote-icon">“</div>
+      <p class="testimonial-text">{{TOP_REVIEW}}</p>
+      <div class="stars-row">★★★★★</div>
+      <span class="testimonial-author">Google Reviewer</span>
+    </div>
+  </section>
+
+  <!-- 8. CTA SECTION & FOOTER -->
+  <section class="cta-section" id="contact">
+    <h2 class="cta-title">YOUR FIRST CLASS IS FREE</h2>
+    <div class="cta-btn-group">
+      <a href="tel:{{PHONE}}" class="btn-cta btn-cta-black">Join Gym Now</a>
+      <a href="https://wa.me/{{AGENCY_PHONE}}?text=Hi!%20I%20saw%20the%20demo%20for%20{{BUSINESS_NAME}}%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-outline">WhatsApp Live</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-logo-container">
+      <img id="footer-logo-img" src="{{LOGO_URL}}" alt="{{BUSINESS_NAME}}" class="footer-logo" onerror="handleFooterLogoError(this)">
+      <div id="footer-logo-fallback" class="footer-logo-fallback" style="display: none;">{{BUSINESS_INITIALS}}</div>
+      <span class="powered-by">Powered by Webibi</span>
+    </div>
+    <div class="footer-address">
+      {{BUSINESS_NAME}} · {{CITY}}<br>
+      Located in the heart of {{CITY}}<br>
+      Join Now: {{PHONE}}
+    </div>
+    <p class="copyright">© 2026 {{BUSINESS_NAME}}. Built with passion.</p>
+  </footer>
+
+  <script>
+    // Fallback logo helper functions
+    function handleLogoError(img) {
+      img.style.display = 'none';
+      const fallback = img.nextElementSibling;
+      if (fallback) fallback.style.display = 'flex';
+    }
+    function handleHeroLogoError(img) {
+      img.style.display = 'none';
+      const fallback = img.nextElementSibling;
+      if (fallback) fallback.style.display = 'flex';
+    }
+    function handleFooterLogoError(img) {
+      img.style.display = 'none';
+      const fallback = img.nextElementSibling;
+      if (fallback) fallback.style.display = 'flex';
+    }
+
+    // Auto-detect missing logos on DOMContentLoaded
+    document.addEventListener("DOMContentLoaded", () => {
+      const navImg = document.getElementById("nav-logo-img");
+      if (navImg && (!navImg.getAttribute("src") || navImg.getAttribute("src").trim() === "")) {
+        handleLogoError(navImg);
+      }
+      const heroImg = document.getElementById("hero-logo-img");
+      if (heroImg && (!heroImg.getAttribute("src") || heroImg.getAttribute("src").trim() === "")) {
+        handleHeroLogoError(heroImg);
+      }
+      const footerImg = document.getElementById("footer-logo-img");
+      if (footerImg && (!footerImg.getAttribute("src") || footerImg.getAttribute("src").trim() === "")) {
+        handleFooterLogoError(footerImg);
+      }
+
+      // Typing animation for business name
+      const typeEl = document.querySelector(".business-name-animate");
+      if (typeEl) {
+        const nameText = typeEl.textContent;
+        typeEl.innerHTML = "";
+        typeEl.style.display = "inline-block";
+        for (let i = 0; i < nameText.length; i++) {
+          const s = document.createElement("span");
+          s.textContent = nameText[i];
+          s.style.opacity = "0";
+          s.style.display = "inline-block";
+          s.style.animation = "typeLetter 0.05s forwards";
+          s.style.animationDelay = `${(i * 0.8) / nameText.length}s`;
+          typeEl.appendChild(s);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
