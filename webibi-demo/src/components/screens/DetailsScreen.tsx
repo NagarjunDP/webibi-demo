@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ChevronLeft, UploadCloud, CheckCircle2 } from "lucide-react";
-const ColorThief = require("colorthief");
+import { getPaletteSync } from "colorthief";
 
 interface Props {
   state: FlowState;
@@ -22,20 +22,16 @@ const INDUSTRIES: Record<string, { name: string; emoji: string }> = {
   law: { name: "Law Firm", emoji: "⚖️" },
   events: { name: "Events", emoji: "🎉" },
   realestate: { name: "Real Estate", emoji: "🏢" },
-  retail: { name: "Retail Shop", emoji: "🛍️" },
   education: { name: "Education", emoji: "📚" },
   hotel: { name: "Hotel & Stay", emoji: "🏨" },
 };
 
-function rgbToHex(r: number, g: number, b: number) {
-  return "#" + [r, g, b].map((x) => x.toString(16).padStart(2, "0")).join("");
-}
+
 
 export default function DetailsScreen({ state, updateState, updateBusinessData }: Props) {
   const { industry, name, city, tagline, phone, primaryColor, logoDataUrl, extractedColors } = state.businessData;
   const indInfo = INDUSTRIES[industry] || { name: "Business", emoji: "🏢" };
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isExtracting, setIsExtracting] = useState(false);
 
   const handleBack = () => updateState({ step: "category" });
 
@@ -43,7 +39,7 @@ export default function DetailsScreen({ state, updateState, updateBusinessData }
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setIsExtracting(true);
+
     const reader = new FileReader();
     reader.onload = (event) => {
       const dataUrl = event.target?.result as string;
@@ -51,9 +47,8 @@ export default function DetailsScreen({ state, updateState, updateBusinessData }
       const img = new Image();
       img.onload = () => {
         try {
-          const colorThief = new ColorThief();
-          const palette = colorThief.getPalette(img, 5);
-          const hexPalette = palette.map((p: number[]) => rgbToHex(p[0], p[1], p[2]));
+          const palette = getPaletteSync(img, { colorCount: 5 });
+          const hexPalette = palette ? palette.map((p: any) => p.hex()) : [];
           
           updateBusinessData({
             logoDataUrl: dataUrl,
@@ -63,8 +58,6 @@ export default function DetailsScreen({ state, updateState, updateBusinessData }
         } catch (err) {
           console.error("Failed to extract colors", err);
           updateBusinessData({ logoDataUrl: dataUrl });
-        } finally {
-          setIsExtracting(false);
         }
       };
       img.src = dataUrl;

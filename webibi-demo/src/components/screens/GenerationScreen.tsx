@@ -18,19 +18,22 @@ const STEPS = [
   "Publishing your live demo URL",
 ];
 
-// Call API for generation
 const generateWebsite = async (businessData: any) => {
   try {
     const res = await fetch("/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify(businessData),
     });
     const data = await res.json();
+    if (!res.ok) {
+      return { error: data.error || "Failed to generate website" };
+    }
     return data;
-  } catch (err) {
-    console.error(err);
-    return null;
+  } catch (err: any) {
+    console.error("Generate API error:", err);
+    return { error: err.message || "Unknown error occurred" };
   }
 };
 
@@ -55,6 +58,13 @@ export default function GenerationScreen({ state, updateState }: Props) {
       // Step 3: API generation
       const result = await generateWebsite(state.businessData); 
       if (!isMounted) return;
+
+      if (!result || result.error) {
+        alert("Generation Error: " + (result?.error || "Failed to contact server. Please verify you are logged in."));
+        updateState({ step: "details" });
+        return;
+      }
+
       setCurrentStep(3);
 
       // Step 4: 1.5s

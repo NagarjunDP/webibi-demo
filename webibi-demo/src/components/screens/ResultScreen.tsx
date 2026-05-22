@@ -24,20 +24,7 @@ export default function ResultScreen({ state, updateState }: Props) {
   const displayUrl = `demo.webibi.tech/${demoSlug}`;
   const actualUrl = `http://${demoHost}/${demoSlug}`;
   
-  // Mock live analytics
-  const [analytics, setAnalytics] = useState({
-    opens: 0,
-    time: "0s",
-    status: "🆕 Sent"
-  });
 
-  // Simulate analytics updating over time
-  useEffect(() => {
-    const timer1 = setTimeout(() => setAnalytics(a => ({ ...a, opens: 1, status: "👀 Viewed" })), 5000);
-    const timer2 = setTimeout(() => setAnalytics(a => ({ ...a, time: "45s" })), 8000);
-    const timer3 = setTimeout(() => setAnalytics(a => ({ ...a, opens: 3, status: "🔥 Hot Lead" })), 15000);
-    return () => { clearTimeout(timer1); clearTimeout(timer2); clearTimeout(timer3); };
-  }, []);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(actualUrl);
@@ -89,30 +76,10 @@ export default function ResultScreen({ state, updateState }: Props) {
         {/* Preview content (Simulated) */}
         <div className="w-full aspect-[9/16] max-h-[400px] relative bg-background">
           <iframe 
-            src={`/demos/${demoSlug}.html`} 
+            src={`/api/demos/${demoSlug}/html`} 
             className="w-full h-full border-0 pointer-events-none"
             title="Demo Preview"
           />
-        </div>
-      </div>
-
-      {/* Analytics Strip */}
-      <div className="grid grid-cols-3 gap-2 mb-8 animate-in slide-in-from-bottom-4 duration-500 delay-300">
-        <div className="bg-surface-elevated border border-white/5 rounded-xl p-3 flex flex-col items-center justify-center text-center">
-          <Eye size={16} className="text-muted-foreground mb-1" />
-          <span className="text-sm font-semibold">{analytics.opens}</span>
-          <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Opens</span>
-        </div>
-        <div className="bg-surface-elevated border border-white/5 rounded-xl p-3 flex flex-col items-center justify-center text-center">
-          <Clock size={16} className="text-muted-foreground mb-1" />
-          <span className="text-sm font-semibold">{analytics.time}</span>
-          <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Avg Time</span>
-        </div>
-        <div className="bg-surface-elevated border border-primary/20 rounded-xl p-3 flex flex-col items-center justify-center text-center bg-primary/5">
-          <span className="text-lg mb-0.5">{analytics.status.split(' ')[0]}</span>
-          <span className="text-[10px] font-bold text-primary uppercase tracking-wider truncate w-full">
-            {analytics.status.substring(2)}
-          </span>
         </div>
       </div>
 

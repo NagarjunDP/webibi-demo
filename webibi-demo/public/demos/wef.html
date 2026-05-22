@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>wef | wwe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --brand: #0b0300;
+      --brand-dark: #09090d;
+      --brand-light: #eb8307;
+      --dark: #121212;
+      --light: #faf8f5;
+      --font-heading: 'Cormorant Garamond', serif;
+      --font-body: 'Jost', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--light);
+      color: var(--dark);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 1. DEMO ANNOUNCEMENT STRIP */
+    .demo-strip {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 44px;
+      background: #0f0f0f;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+    .demo-strip-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .pulsing-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #22c55e;
+      animation: pulse-green 2s ease-in-out infinite;
+    }
+    @keyframes pulse-green {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+    .demo-strip-right {
+      color: var(--brand);
+      font-weight: 600;
+      font-size: 11px;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+      cursor: pointer;
+    }
+    .demo-strip-right:hover {
+      opacity: 0.8;
+    }
+    @media (max-width: 480px) {
+      .demo-strip {
+        justify-content: center;
+        gap: 12px;
+        padding: 0 10px;
+      }
+    }
+
+    /* 2. FIXED NAV */
+    .navbar {
+      position: fixed;
+      top: 44px;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: rgba(15, 15, 15, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 9990;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+    .nav-logo-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .logo-wrapper {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-logo {
+      height: 44px;
+      width: 44px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      object-fit: cover;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.14));
+    }
+    .logo-fallback {
+      width: 44px;
+      height: 44px;
+      background: var(--brand);
+      color: #ffffff;
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.14);
+    }
+    .nav-name {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 42px;
+      padding: 0 22px;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-decoration: none;
+      border-radius: 100px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    .nav-btn:hover {
+      background: var(--brand-dark);
+      transform: translateY(-1px);
+    }
+
+    /* 3. HERO & LAYOUT SYSTEM */
+    .hero {
+      position: relative;
+      height: 100dvh;
+      width: 100%;
+      display: flex;
+      z-index: 1;
+      overflow: hidden;
+      box-sizing: border-box;
+      background-color: #000;
+    }
+    .hero-img-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding: clamp(24px, 5vw, 60px);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Hero Logo Treatment */
+    .hero-logo-card-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      width: fit-content;
+    }
+    .hero-logo-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      filter: drop-shadow(0 0 20px #0b030040);
+    }
+    .hero-logo-img-container {
+      position: relative;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-logo {
+      height: 80px;
+      border-radius: 10px;
+      object-fit: contain;
+    }
+    .hero-logo-fallback {
+      width: 80px;
+      height: 80px;
+      background: var(--brand);
+      color: #ffffff;
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 700;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+    }
+    .hero-industry-badge {
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--brand);
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .hero-logo-tagline {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--brand);
+      text-align: center;
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: clamp(2.2rem, 8vw, 4.5rem);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .hero-headline {
+      font-family: var(--font-heading);
+      font-size: clamp(1.3rem, 4vw, 2.2rem);
+      font-weight: 600;
+      font-style: italic;
+      margin-bottom: 16px;
+      opacity: 0.95;
+    }
+    .hero-subline {
+      font-size: 1.05rem;
+      font-weight: 300;
+      max-width: 600px;
+      line-height: 1.6;
+      opacity: 0.85;
+      margin-bottom: 16px;
+    }
+
+    .hero-rating-badge {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 8px 16px;
+      border-radius: 100px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: #fff;
+      width: fit-content;
+      margin-top: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    .hero-rating-badge .stars {
+      color: #fbbf24;
+    }
+
+    /* Layout Variant A — Dark cinematic */
+    .hero.variant-a {
+      justify-content: center;
+      align-items: flex-end;
+    }
+    .hero.variant-a .hero-overlay {
+      background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%);
+    }
+    .hero.variant-a .hero-content {
+      text-align: center;
+      align-items: center;
+      padding-bottom: 8%;
+      color: #fff;
+    }
+    .hero.variant-a .hero-logo-card-wrapper {
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Layout Variant B — Left fade */
+    .hero.variant-b {
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .hero.variant-b .hero-overlay {
+      background: linear-gradient(to right, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 100%);
+    }
+    .hero.variant-b .hero-content {
+      text-align: left;
+      align-items: flex-start;
+      max-width: 600px;
+      color: #fff;
+    }
+    .hero.variant-b .hero-logo-card-wrapper {
+      align-items: flex-start;
+    }
+
+    /* Layout Variant C — Brand color wash */
+    .hero.variant-c {
+      justify-content: center;
+      align-items: center;
+    }
+    .hero.variant-c .hero-overlay {
+      background: linear-gradient(135deg, var(--brand) 0%, rgba(0,0,0,0.6) 100%);
+      opacity: 0.6;
+    }
+    .hero.variant-c .hero-content {
+      text-align: center;
+      align-items: center;
+      color: #fff;
+    }
+    .hero.variant-c .hero-logo-card-wrapper {
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Layout Variant D — Minimal top overlay */
+    .hero.variant-d {
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .hero.variant-d .hero-overlay {
+      background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.0) 60%);
+    }
+    .hero.variant-d .hero-content {
+      text-align: center;
+      align-items: center;
+      padding-top: clamp(100px, 15vh, 180px);
+      color: #fff;
+    }
+    .hero.variant-d .hero-logo-card-wrapper {
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Layout Variant E — Split (no overlay) */
+    .hero.variant-e {
+      display: flex;
+      flex-direction: row;
+      background: var(--light);
+      height: auto;
+      min-height: 100dvh;
+    }
+    .hero.variant-e .hero-img-container {
+      position: relative;
+      width: 50%;
+      height: 100dvh;
+      order: 2;
+    }
+    .hero.variant-e .hero-overlay {
+      display: none;
+    }
+    .hero.variant-e .hero-content {
+      position: relative;
+      width: 50%;
+      padding: 60px;
+      order: 1;
+      justify-content: center;
+      align-items: flex-start;
+      text-align: left;
+      color: var(--dark);
+      background: var(--light);
+    }
+    .hero.variant-e .hero-logo-card-wrapper {
+      align-items: flex-start;
+    }
+    .hero.variant-e .hero-logo-card {
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+      filter: drop-shadow(0 0 20px #0b030020);
+    }
+    .hero.variant-e .hero-title {
+      color: var(--dark);
+    }
+    .hero.variant-e .hero-headline {
+      color: var(--brand-dark);
+    }
+    .hero.variant-e .hero-subline {
+      color: #444;
+    }
+    .hero.variant-e .hero-rating-badge {
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: var(--dark);
+    }
+
+    @media (max-width: 767px) {
+      .hero.variant-e {
+        flex-direction: column;
+      }
+      .hero.variant-e .hero-img-container {
+        width: 100%;
+        height: 45vh;
+        order: 1;
+      }
+      .hero.variant-e .hero-content {
+        width: 100%;
+        order: 2;
+        padding: 40px 20px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .hero-logo-img-container { height: 100px; }
+      .hero-logo { height: 100px; }
+      .hero-logo-fallback { width: 100px; height: 100px; font-size: 2.8rem; }
+    }
+
+    /* Typing animation letter keyframes */
+    @keyframes typeLetter {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 4. STATS STRIP */
+    .stats-strip {
+      background: var(--dark);
+      color: #fff;
+      padding: 60px 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      text-align: center;
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-number {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      color: var(--brand);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.7;
+    }
+
+    /* 5. ABOUT SECTION WITH WATERMARK */
+    .about-section {
+      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
+      position: relative;
+      overflow: hidden;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .watermark-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(4);
+      opacity: 0.08;
+      width: 120px;
+      height: 120px;
+      pointer-events: none;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .watermark-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .about-image-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+    }
+    .about-img {
+      width: 100%;
+      max-width: 450px;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 16px;
+      transform: rotate(-2deg);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    }
+    .about-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: center;
+      z-index: 1;
+    }
+    .about-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-style: italic;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .about-text {
+      color: #444;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+    .about-link {
+      display: inline-flex;
+      align-items: center;
+      color: var(--brand);
+      text-decoration: none;
+      font-weight: 600;
+      gap: 6px;
+      transition: gap 0.2s ease;
+    }
+    .about-link:hover {
+      gap: 10px;
+    }
+    @media (min-width: 768px) {
+      .about-section {
+        flex-direction: row;
+        align-items: center;
+        gap: 60px;
+      }
+      .about-image-container, .about-content {
+        flex: 1;
+      }
+      .about-image-container {
+        justify-content: flex-end;
+      }
+    }
+
+    /* 6. SERVICES / MENU SECTION */
+    .menu-section {
+      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
+      background: #faf7f4;
+    }
+    .menu-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .menu-scroll-container {
+      overflow-x: auto;
+      padding: 10px 4px 24px 4px;
+      display: flex;
+      gap: 24px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .menu-scroll-container::-webkit-scrollbar {
+      display: none;
+    }
+    .menu-card {
+      flex: 0 0 280px;
+      scroll-snap-align: start;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+    }
+    .menu-card-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border-left: 3px solid var(--brand);
+    }
+    .menu-card-title {
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+    .menu-card-desc {
+      color: #666;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      height: 4.5em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+    .menu-card-price {
+      font-weight: 700;
+      color: var(--brand);
+      font-size: 1.1rem;
+    }
+    @media (min-width: 768px) {
+      .menu-scroll-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        overflow-x: visible;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0;
+      }
+      .menu-card {
+        flex: unset;
+      }
+    }
+
+    /* 7. TESTIMONIAL SECTION */
+    .testimonial-section {
+      background: #121212;
+      color: #fff;
+      padding: 80px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .testimonial-container {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .quote-icon {
+      font-size: 6rem;
+      color: var(--brand);
+      opacity: 0.3;
+      line-height: 1;
+      margin-bottom: -20px;
+      font-family: var(--font-heading);
+    }
+    .testimonial-text {
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      line-height: 1.6;
+      font-style: italic;
+      opacity: 0.9;
+    }
+    .stars-row {
+      color: #fbbf24;
+      font-size: 1.2rem;
+    }
+    .testimonial-author {
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    /* 8. CTA SECTION & FOOTER */
+    .cta-section {
+      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
+      text-align: center;
+      background: var(--brand);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    .cta-title {
+      font-family: var(--font-heading);
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 800;
+      max-width: 700px;
+      line-height: 1.2;
+    }
+    .cta-btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 380px;
+    }
+    .btn-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+      width: 100%;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .btn-cta-call {
+      background: #ffffff;
+      color: var(--dark);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .btn-cta-whatsapp {
+      background: #25d366;
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .btn-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    @media (min-width: 768px) {
+      .cta-btn-group {
+        flex-direction: row;
+        max-width: 500px;
+      }
+    }
+
+    .footer {
+      background: #0d0d0d;
+      color: rgba(255, 255, 255, 0.4);
+      padding: 60px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .footer-logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer-logo {
+      height: 52px;
+      max-width: 150px;
+      object-fit: contain;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 6px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .footer-logo-fallback {
+      width: 52px;
+      height: 52px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-radius: 10px;
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .powered-by {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+    }
+    .footer-address {
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .copyright {
+      font-size: 0.75rem;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. DEMO ANNOUNCEMENT STRIP -->
+  <div class="demo-strip">
+    <div class="demo-strip-left">
+      <span class="pulsing-dot"></span>
+      <span>LIVE PREVIEW · wef</span>
+    </div>
+    <a href="https://wa.me/919876543210?text=Hi!%20I%20saw%20the%20demo%20for%20wef%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="demo-strip-right">
+      🚀 Get This Website Live →
+    </a>
+  </div>
+
+  <!-- 2. FIXED NAV -->
+  <nav class="navbar">
+    <a href="#" class="nav-logo-group">
+      <div class="logo-wrapper">
+        <img id="nav-logo-img" src="/logos/wef.png" alt="wef" class="nav-logo" onerror="handleLogoError(this)">
+        <div id="nav-logo-fallback" class="logo-fallback" style="display: none;">WE</div>
+      </div>
+      <span class="nav-name">wef</span>
+    </a>
+    <a href="#contact" class="nav-btn">Call Now</a>
+  </nav>
+
+  <!-- 3. HERO AREA -->
+  <section class="hero variant-e" id="hero">
+    <div class="hero-img-container">
+      <img src="/assets/salon/hero-5.jpg" alt="Salon Hero" class="hero-img" onerror="this.src='/assets/salon/hero-1.jpg'; this.onerror=null;">
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <!-- Logo billboard card -->
+      <div class="hero-logo-card-wrapper">
+        <div class="hero-logo-card">
+          <div class="hero-logo-img-container">
+            <img id="hero-logo-img" src="/logos/wef.png" alt="wef" class="hero-logo" onerror="handleHeroLogoError(this)">
+            <div id="hero-logo-fallback" class="hero-logo-fallback" style="display: none;">WE</div>
+          </div>
+          <div class="hero-industry-badge">💆 Salon & Beauty</div>
+        </div>
+        <span class="hero-logo-tagline">ewedwe</span>
+      </div>
+
+      <h1 class="hero-title"><span class="business-name-animate">wef</span></h1>
+      <h2 class="hero-headline">Redefining Excellence in wwe</h2>
+      <p class="hero-subline">Experience unmatched quality and dedication crafted specifically for you.</p>
+
+      <!-- Google Rating badge inside Hero -->
+      <div class="hero-rating-badge">
+        <span class="stars">★★★★★</span>
+        <span class="rating-text"><strong>4.8/5</strong> · 238 Reviews</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. STATS STRIP -->
+  <section class="stats-strip">
+    <div class="stat-item">
+      <div class="stat-number">4.8/5</div>
+      <div class="stat-label">Google Rating</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">238+</div>
+      <div class="stat-label">Happy Clients</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">Premium</div>
+      <div class="stat-label">in wwe</div>
+    </div>
+  </section>
+
+  <!-- 5. ABOUT SECTION WITH WATERMARK -->
+  <section class="about-section" id="about">
+    <div class="watermark-container">
+      <img id="watermark-logo-img" src="/logos/wef.png" alt="" class="watermark-logo" onerror="this.style.display='none';">
+    </div>
+    <div class="about-image-container">
+      <img src="/assets/salon/section-5.jpg" alt="About Salon" class="about-img" onerror="this.src='/assets/salon/section-1.jpg'; this.onerror=null;">
+    </div>
+    <div class="about-content">
+      <h2 class="about-title">About Us</h2>
+      <p class="about-text">We are deeply rooted in wwe, bringing years of passion and expertise to our community. Our commitment to your satisfaction drives everything we do.</p>
+      <a href="#services" class="about-link">View Our Services →</a>
+    </div>
+  </section>
+
+  <!-- 6. SERVICES / MENU GRID (horizontal scroll on mobile) -->
+  <section class="menu-section" id="services">
+    <h2 class="menu-title">Our Services</h2>
+    <div class="menu-scroll-container">
+      <!-- Card 1 -->
+      <div class="menu-card">
+        <div class="menu-card-body">
+          <h3 class="menu-card-title">Signature Haircut</h3>
+          <p class="menu-card-desc">Personalized cut, wash, and luxury blow dry customized for your hair type and style preferences.</p>
+          <div class="menu-card-price">From $75</div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="menu-card">
+        <div class="menu-card-body">
+          <h3 class="menu-card-title">Full Balayage & Color</h3>
+          <p class="menu-card-desc">Custom hand-painted highlights designed to grow out seamlessly while giving a sun-kissed dimensional glow.</p>
+          <div class="menu-card-price">From $180</div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="menu-card">
+        <div class="menu-card-body">
+          <h3 class="menu-card-title">Keratin Smoothing</h3>
+          <p class="menu-card-desc">Restore shine, eliminate frizz, and drastically cut down daily styling times for smooth, healthy hair.</p>
+          <div class="menu-card-price">From $250</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. TESTIMONIAL SECTION -->
+  <section class="testimonial-section">
+    <div class="testimonial-container">
+      <div class="quote-icon">“</div>
+      <p class="testimonial-text">Absolutely love this place. Best in wwe hands down. The staff is incredible and the quality is unmatched.</p>
+      <div class="stars-row">★★★★★</div>
+      <span class="testimonial-author">Verified Salon Client</span>
+    </div>
+  </section>
+
+  <!-- 8. CTA SECTION & FOOTER -->
+  <section class="cta-section" id="contact">
+    <h2 class="cta-title">Ready to elevate your beauty with wef?</h2>
+    <div class="cta-btn-group">
+      <a href="tel:wedwede" class="btn-cta btn-cta-call">Call Us: wedwede</a>
+      <a href="https://wa.me/919876543210?text=Hi!%20I%20saw%20the%20logo%20glow%20and%20the%20salon%20demo%20for%20wef%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-whatsapp">WhatsApp Live</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-logo-container">
+      <img id="footer-logo-img" src="/logos/wef.png" alt="wef" class="footer-logo" onerror="handleFooterLogoError(this)">
+      <div id="footer-logo-fallback" class="footer-logo-fallback" style="display: none;">WE</div>
+      <span class="powered-by">Powered by Webibi</span>
+    </div>
+    <div class="footer-address">
+      wef · wwe<br>
+      Located in wwe<br>
+      Appointments: wedwede
+    </div>
+    <p class="copyright">© 2026 wef. Indulge in excellence.</p>
+  </footer>
+
+  <script>
+    // Fallback logo helper functions
+    function handleLogoError(img) {
+      img.style.display = 'none';
+      const fallback = img.nextElementSibling;
+      if (fallback) fallback.style.display = 'flex';
+    }
+    function handleHeroLogoError(img) {
+      img.style.display = 'none';
+      const fallback = img.nextElementSibling;
+      if (fallback) fallback.style.display = 'flex';
+    }
+    function handleFooterLogoError(img) {
+      img.style.display = 'none';
+      const fallback = img.nextElementSibling;
+      if (fallback) fallback.style.display = 'flex';
+    }
+
+    // Auto-detect missing logos on DOMContentLoaded
+    document.addEventListener("DOMContentLoaded", () => {
+      const navImg = document.getElementById("nav-logo-img");
+      if (navImg && (!navImg.getAttribute("src") || navImg.getAttribute("src").trim() === "")) {
+        handleLogoError(navImg);
+      }
+      const heroImg = document.getElementById("hero-logo-img");
+      if (heroImg && (!heroImg.getAttribute("src") || heroImg.getAttribute("src").trim() === "")) {
+        handleHeroLogoError(heroImg);
+      }
+      const footerImg = document.getElementById("footer-logo-img");
+      if (footerImg && (!footerImg.getAttribute("src") || footerImg.getAttribute("src").trim() === "")) {
+        handleFooterLogoError(footerImg);
+      }
+
+      // Typing animation for business name
+      const typeEl = document.querySelector(".business-name-animate");
+      if (typeEl) {
+        const nameText = typeEl.textContent;
+        typeEl.innerHTML = "";
+        typeEl.style.display = "inline-block";
+        for (let i = 0; i < nameText.length; i++) {
+          const s = document.createElement("span");
+          s.textContent = nameText[i];
+          s.style.opacity = "0";
+          s.style.display = "inline-block";
+          s.style.animation = "typeLetter 0.05s forwards";
+          s.style.animationDelay = `${(i * 0.8) / nameText.length}s`;
+          typeEl.appendChild(s);
+        }
+      }
+    });
+  </script>
+
+  <!-- Tracking and Expiration System -->
+  <script>
+    (async function() {
+      const slug = "wef";
+      const mainAppUrl = "http://localhost:3001";
+      try {
+        // 1. Check expiration status
+        const statusRes = await fetch(mainAppUrl + "/api/demos/" + slug + "/status");
+        const statusData = await statusRes.json();
+        
+        if (statusData.expired) {
+          document.body.innerHTML = `
+            <div style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background-color: #0b0b0f; color: #ffffff; text-align: center; padding: 24px;">
+              <div style="width: 64px; height: 64px; border-radius: 20px; background: linear-gradient(135deg, #ff416c, #ff4b2b); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 8px 24px rgba(255, 75, 43, 0.2);">
+                <span style="font-size: 32px; font-weight: bold;">⚠️</span>
+              </div>
+              <h1 style="font-size: 28px; font-weight: 800; margin: 0 0 12px 0; tracking: -0.025em;">This demo has expired</h1>
+              <p style="color: #8f929d; font-size: 16px; margin: 0; max-width: 320px; line-height: 1.5;">Demo pages are active for 7 days only. Contact your representative to reactivate.</p>
+            </div>
+          `;
+          return;
+        }
+
+        // 2. Track open event
+        const detectDevice = () => {
+          const ua = navigator.userAgent;
+          if (/Mobi|Android|iPhone/i.test(ua)) return 'Mobile';
+          if (/Tablet|iPad/i.test(ua)) return 'Tablet';
+          return 'Desktop';
+        };
+
+        await fetch(mainAppUrl + "/api/demos/" + slug + "/opens", {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            device: detectDevice()
+          })
+        });
+      } catch (e) {
+        console.error("Tracking error:", e);
+      }
+    })();
+  </script>
+</body>
+</html>

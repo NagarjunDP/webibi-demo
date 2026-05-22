@@ -19,7 +19,6 @@ const INDUSTRIES = [
   { id: "law", name: "Law Firm", emoji: "⚖️", desc: "Legal Services" },
   { id: "events", name: "Events", emoji: "🎉", desc: "Weddings & Parties" },
   { id: "realestate", name: "Real Estate", emoji: "🏢", desc: "Brokers & Agents" },
-  { id: "retail", name: "Retail Shop", emoji: "🛍️", desc: "Stores & Boutiques" },
   { id: "education", name: "Education", emoji: "📚", desc: "Tutors & Schools" },
   { id: "hotel", name: "Hotel & Stay", emoji: "🏨", desc: "Resorts & Stays" },
 ];

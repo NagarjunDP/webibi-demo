@@ -1,79 +1,109 @@
 import { NextResponse } from "next/server";
 import fs from 'fs';
 import path from 'path';
+import { getSessionFromRequest } from "@/lib/authSession";
+import { getFirebaseAdmin } from "@/lib/firebaseAdmin";
 
 const NICHES = ['restaurant', 'salon', 'gym', 'clinic', 'events'];
 
-async function fetchGooglePlacesData(businessName: string, city: string) {
-  const apiKey = process.env.GOOGLE_PLACES_API_KEY;
-  
-  if (!apiKey || apiKey === 'dummy') {
-    console.log("No Google Places API Key found, using realistic mock data.");
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return {
-      rating: "4.8",
-      reviewCount: (Math.floor(Math.random() * 300) + 80).toString(),
-      topReview: `Absolutely love this place. Best in ${city} hands down. The staff is incredible and the quality is unmatched.`
-    };
-  }
-
+export async function POST(req: Request) {
   try {
-    const searchUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(businessName + ' in ' + city)}&key=${apiKey}`;
-    const searchRes = await fetch(searchUrl);
-    const searchData = await searchRes.json();
-
-    if (!searchData.results || searchData.results.length === 0) {
-      throw new Error("Place not found");
+    // 1. Authenticate Request
+    const session = getSessionFromRequest(req);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const placeId = searchData.results[0].place_id;
-    const rating = searchData.results[0].rating || "4.8";
-    const reviewCount = searchData.results[0].user_ratings_total || "120";
+    const body = await req.json();
+    const { name, industry, city, tagline, phone, primaryColor, logoDataUrl, extractedColors } = body;
 
-    const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews&key=${apiKey}`;
-    const detailsRes = await fetch(detailsUrl);
-    const detailsData = await detailsRes.json();
+    if (!name || !city) {
+      return NextResponse.json({ error: "Business name and city are required" }, { status: 400 });
+    }
 
-    let topReview = `Highly recommended in ${city}.`;
-    if (detailsData.result?.reviews && detailsData.result.reviews.length > 0) {
-      const review = detailsData.result.reviews.find((r: any) => r.text && r.text.length > 20);
-      if (review) {
-        topReview = review.text;
+    const indKey = (industry || '').toLowerCase().trim();
+    const activeIndustry = NICHES.includes(indKey) ? indKey : 'clinic';
+
+    const { db, bucket, firebaseInitialized, mockDb } = getFirebaseAdmin();
+
+    // 2. Generate Unique Slug (Conflict Prevention)
+    const baseSlug = name.toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, ""); // trim hyphens
+    
+    let slug = baseSlug || "demo-business";
+    let counter = 1;
+    let exists = true;
+
+    while (exists) {
+      let docExists = false;
+      if (firebaseInitialized && db) {
+        const docRef = db.collection('demos').doc(slug);
+        const docSnap = await docRef.get();
+        docExists = docSnap.exists;
+      } else {
+        docExists = mockDb.demos.has(slug);
+      }
+
+      if (docExists) {
+        counter++;
+        slug = `${baseSlug}-${counter}`;
+      } else {
+        exists = false;
       }
     }
 
-    return {
-      rating: rating.toString(),
-      reviewCount: reviewCount.toString(),
-      topReview
-    };
-  } catch (error) {
-    console.error("Google Places API error:", error);
-    return {
-      rating: "4.8",
-      reviewCount: "150",
-      topReview: `The absolute best experience we've had in ${city}. Highly recommended!`
-    };
-  }
-}
+    // 3. Logo Upload Handling (Firebase Storage with Local Fallback)
+    let logoUrl = '';
+    if (logoDataUrl && logoDataUrl.startsWith('data:')) {
+      const matches = logoDataUrl.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+      if (matches && matches.length === 3) {
+        const contentType = matches[1];
+        const buffer = Buffer.from(matches[2], 'base64');
+        const extension = contentType.split('/')[1] || 'png';
+        const storagePath = `logos/${slug}.${extension}`;
 
-export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-    const { name, industry, city, tagline, phone, extractedColors, primaryColor, logoDataUrl } = body;
+        if (firebaseInitialized && bucket) {
+          try {
+            const file = bucket.file(storagePath);
+            await file.save(buffer, {
+              metadata: { contentType },
+              public: true
+            });
+            // Public Google Cloud Storage URL
+            logoUrl = `https://storage.googleapis.com/${bucket.name}/${storagePath}`;
+          } catch (storageErr: any) {
+            console.error("Firebase Storage write error, using local fallback:", storageErr.message);
+          }
+        }
 
-    const indKey = (industry || '').toLowerCase().trim();
-    const activeIndustry = NICHES.includes(indKey) ? indKey : 'clinic'; // clinic is the fallback/default
+        if (!logoUrl) {
+          try {
+            const publicLogosDir = path.join(process.cwd(), 'public', 'logos');
+            if (!fs.existsSync(publicLogosDir)) {
+              fs.mkdirSync(publicLogosDir, { recursive: true });
+            }
+            fs.writeFileSync(path.join(publicLogosDir, `${slug}.${extension}`), buffer);
+            logoUrl = `/logos/${slug}.${extension}`;
+          } catch (fsErr: any) {
+            console.error("Local logos write error:", fsErr.message);
+            logoUrl = logoDataUrl; // Fallback to raw base64 if local write also fails
+          }
+        }
+      }
+    }
 
-    // 1. Fetch places reviews
-    const placesData = await fetchGooglePlacesData(name, city);
-
-    // 2. Setup colors (CSS variables will reference these)
+    // 4. Setup Colors
     const colorPrimary = primaryColor || (extractedColors && extractedColors[0]) || "#7c5cfc";
     const colorSecondary = (extractedColors && extractedColors[1]) || colorPrimary;
     const colorTertiary = (extractedColors && extractedColors[2]) || colorSecondary;
 
-    // 3. Fallback Copywriter data
+    // 5. Mock Google Places ratings (as requested: remove Places API completely)
+    const rating = "4.8";
+    const reviewCount = (Math.floor(Math.random() * 220) + 80).toString();
+    const topReview = `Absolutely love this place. Best in ${city} hands down. The staff is incredible and the quality is unmatched.`;
+
+    // 6. Fallback copywriting
     const fallbackCopy = {
       tagline: tagline || `The best choice in ${city}`,
       hero_headline: `Redefining Excellence in ${city}`,
@@ -84,17 +114,17 @@ export async function POST(req: Request) {
 
     let copy = fallbackCopy;
 
-    // 4. Query Gemini Copywriter API
+    // 7. Gemini AI Copywriting
     const geminiKey = process.env.GEMINI_API_KEY;
     if (geminiKey && geminiKey !== 'dummy') {
-      const prompt = `You are a local business copywriter. Reply ONLY with a JSON object, no markdown, no explanation.
-
-Business: ${name}
-Industry: ${industry || 'local business'}  
+      const prompt = `You are a professional local business copywriter. Reply ONLY with a clean JSON object, no markdown block syntax, no explanation, no headers.
+      
+Business Name: ${name}
+Industry/Niche: ${industry || 'local business'}
 City: ${city}
-Google rating: ${placesData.rating}/5 (${placesData.reviewCount} reviews)
+Google Rating: ${rating}/5 (${reviewCount} reviews)
 
-Return exactly this structure:
+Return exactly this JSON structure:
 {
   "tagline": "5-7 word punchy tagline",
   "hero_headline": "8-12 word hero headline",
@@ -115,12 +145,12 @@ Return exactly this structure:
 
         if (geminiRes.ok) {
           const data = await geminiRes.json();
-          const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-          let jsonText = text.trim();
-          if (jsonText.startsWith('```')) {
-            jsonText = jsonText.replace(/^```[a-zA-Z0-9]*\n/, '').replace(/\n```$/, '').trim();
+          let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          text = text.trim();
+          if (text.startsWith('```')) {
+            text = text.replace(/^```[a-zA-Z0-9]*\n/, '').replace(/\n```$/, '').trim();
           }
-          const aiJson = JSON.parse(jsonText);
+          const aiJson = JSON.parse(text);
           copy = {
             tagline: aiJson.tagline || fallbackCopy.tagline,
             hero_headline: aiJson.hero_headline || fallbackCopy.hero_headline,
@@ -129,19 +159,19 @@ Return exactly this structure:
             cta: aiJson.cta || fallbackCopy.cta
           };
         } else {
-          console.warn('Gemini copywriting request failed:', geminiRes.status);
+          console.warn("Gemini API returned error:", geminiRes.status);
         }
-      } catch (err) {
-        console.error('Error executing Gemini copywriting service:', err);
+      } catch (err: any) {
+        console.error("Gemini copywriting request failed:", err.message);
       }
     }
 
-    // 5. Select Mapped Niche Template
+    // 8. Select Niche HTML Template
     const templatesDir = path.join(process.cwd(), 'templates');
     const templatePath = path.join(templatesDir, `shell-${activeIndustry}.html`);
     let templateHtml = fs.readFileSync(templatePath, 'utf8');
 
-    // 6. Setup Local Static Images
+    // 9. Static Images Mappings
     const imgSet = Math.floor(Math.random() * 5) + 1;
     const imgHero = `/assets/${activeIndustry}/hero-${imgSet}.jpg`;
     const imgSection = `/assets/${activeIndustry}/section-${imgSet}.jpg`;
@@ -149,11 +179,9 @@ Return exactly this structure:
     const imgGallery2 = `/assets/${activeIndustry}/gallery2-${imgSet}.jpg`;
     const imgGallery3 = `/assets/${activeIndustry}/gallery3-${imgSet}.jpg`;
 
-    // 7. Pick Layout Variant and details
     const variants = ['variant-a', 'variant-b', 'variant-c', 'variant-d', 'variant-e'];
     const layoutVariant = variants[Math.floor(Math.random() * variants.length)];
-
-    const businessInitials = (name || '').trim().slice(0, 2).toUpperCase() || 'WB';
+    const businessInitials = name.trim().slice(0, 2).toUpperCase() || 'WB';
 
     const badgeMap: Record<string, string> = {
       restaurant: '🍽 Restaurant',
@@ -165,14 +193,13 @@ Return exactly this structure:
     const industryBadge = badgeMap[activeIndustry] || '💼 Business';
     const agencyPhone = '919876543210';
 
-    let logoUrl = logoDataUrl || '';
-    if (logoUrl) {
-      // Escape double quotes to prevent breaking HTML attributes
-      logoUrl = logoUrl.replaceAll('"', "'");
+    let logoEscaped = logoUrl || '';
+    if (logoEscaped) {
+      logoEscaped = logoEscaped.replaceAll('"', "'");
     }
 
-    // 8. Inject Variables & Tokens
-    const htmlOutput = templateHtml
+    // 10. Inject Variables & Tokens
+    let htmlOutput = templateHtml
       .replaceAll('{{BUSINESS_NAME}}', name)
       .replaceAll('{{HERO_HEADLINE}}', copy.hero_headline)
       .replaceAll('{{HERO_SUBLINE}}', copy.hero_sub)
@@ -182,7 +209,7 @@ Return exactly this structure:
       .replaceAll('{{FOOTER_TAGLINE}}', copy.tagline)
       .replaceAll('{{PHONE}}', phone || '')
       .replaceAll('{{CITY}}', city)
-      .replaceAll('{{LOGO_URL}}', logoUrl)
+      .replaceAll('{{LOGO_URL}}', logoEscaped)
       .replaceAll('{{COLOR_PRIMARY}}', colorPrimary)
       .replaceAll('{{COLOR_SECONDARY}}', colorSecondary)
       .replaceAll('{{COLOR_TERTIARY}}', colorTertiary)
@@ -191,9 +218,9 @@ Return exactly this structure:
       .replaceAll('{{IMG_GALLERY1}}', imgGallery1)
       .replaceAll('{{IMG_GALLERY2}}', imgGallery2)
       .replaceAll('{{IMG_GALLERY3}}', imgGallery3)
-      .replaceAll('{{GOOGLE_RATING}}', placesData.rating)
-      .replaceAll('{{REVIEW_COUNT}}', placesData.reviewCount)
-      .replaceAll('{{TOP_REVIEW}}', placesData.topReview)
+      .replaceAll('{{GOOGLE_RATING}}', rating)
+      .replaceAll('{{REVIEW_COUNT}}', reviewCount)
+      .replaceAll('{{TOP_REVIEW}}', topReview)
       .replaceAll('{{HERO_LAYOUT_CLASS}}', layoutVariant)
       .replaceAll('{{LAYOUT_VARIANT}}', layoutVariant)
       .replaceAll('{{IMG_SET}}', imgSet.toString())
@@ -202,8 +229,61 @@ Return exactly this structure:
       .replaceAll('{{AGENCY_PHONE}}', agencyPhone)
       .replaceAll('{{INDUSTRY}}', activeIndustry);
 
-    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    // 11. Inject Expiration & Tracking Script into HTML Page
+    const host = req.headers.get("host") || "localhost:3000";
+    const protocol = host.includes("localhost") ? "http" : "https";
+    const mainAppUrl = `${protocol}://${host}`;
 
+    const trackingScript = `
+  <!-- Tracking and Expiration System -->
+  <script>
+    (async function() {
+      const slug = "${slug}";
+      const mainAppUrl = "${mainAppUrl}";
+      try {
+        // 1. Check expiration status
+        const statusRes = await fetch(mainAppUrl + "/api/demos/" + slug + "/status");
+        const statusData = await statusRes.json();
+        
+        if (statusData.expired) {
+          document.body.innerHTML = \`
+            <div style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background-color: #0b0b0f; color: #ffffff; text-align: center; padding: 24px;">
+              <div style="width: 64px; height: 64px; border-radius: 20px; background: linear-gradient(135deg, #ff416c, #ff4b2b); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 8px 24px rgba(255, 75, 43, 0.2);">
+                <span style="font-size: 32px; font-weight: bold;">⚠️</span>
+              </div>
+              <h1 style="font-size: 28px; font-weight: 800; margin: 0 0 12px 0; tracking: -0.025em;">This demo has expired</h1>
+              <p style="color: #8f929d; font-size: 16px; margin: 0; max-width: 320px; line-height: 1.5;">Demo pages are active for 7 days only. Contact your representative to reactivate.</p>
+            </div>
+          \`;
+          return;
+        }
+
+        // 2. Track open event
+        const detectDevice = () => {
+          const ua = navigator.userAgent;
+          if (/Mobi|Android|iPhone/i.test(ua)) return 'Mobile';
+          if (/Tablet|iPad/i.test(ua)) return 'Tablet';
+          return 'Desktop';
+        };
+
+        await fetch(mainAppUrl + "/api/demos/" + slug + "/opens", {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            device: detectDevice()
+          })
+        });
+      } catch (e) {
+        console.error("Tracking error:", e);
+      }
+    })();
+  </script>
+`;
+
+    // Inject just before </body>
+    htmlOutput = htmlOutput.replace('</body>', `${trackingScript}</body>`);
+
+    // 12. Write static file locally (for direct local serving)
     try {
       const demosDir = path.join(process.cwd(), 'public', 'demos');
       if (!fs.existsSync(demosDir)) {
@@ -211,12 +291,40 @@ Return exactly this structure:
       }
       fs.writeFileSync(path.join(demosDir, `${slug}.html`), htmlOutput);
     } catch (fsError) {
-      console.error("Failed to write html file locally", fsError);
+      console.error("Local file system write failed:", fsError);
     }
 
-    return NextResponse.json({ success: true, html: htmlOutput, slug });
-  } catch (error) {
-    console.error("Error generating website:", error);
-    return NextResponse.json({ success: false, error: "Failed to generate website" }, { status: 500 });
+    // 13. Save record to Database
+    const generatedAt = new Date();
+    const expiresAt = new Date(generatedAt.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days later
+    const defaultLiveUrl = `${protocol}://${host}/${slug}`;
+
+    const demoDoc = {
+      slug,
+      businessName: name,
+      industry: activeIndustry,
+      city,
+      phone: phone || '',
+      agentPhone: session.phoneNumber,
+      primaryColor: colorPrimary,
+      logoUrl,
+      html: htmlOutput,
+      liveUrl: defaultLiveUrl, // initial value, updated upon Vercel deployment if deployed
+      generatedAt,
+      expiresAt,
+      sentViaWhatsApp: false,
+      sentAt: null
+    };
+
+    if (firebaseInitialized && db) {
+      await db.collection('demos').doc(slug).set(demoDoc);
+    } else {
+      mockDb.demos.set(slug, demoDoc);
+    }
+
+    return NextResponse.json({ success: true, html: htmlOutput, slug, liveUrl: defaultLiveUrl });
+  } catch (error: any) {
+    console.error("Error in generate API:", error);
+    return NextResponse.json({ error: error.message || "Failed to generate website" }, { status: 500 });
   }
 }

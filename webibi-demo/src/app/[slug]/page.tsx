@@ -20,7 +20,7 @@ export default function GeneratedSitePage({ params }: PageProps) {
   return (
     <div className="w-screen h-screen overflow-hidden m-0 p-0 fixed inset-0">
       <iframe 
-        src={`/demos/${slug}.html`} 
+        src={`/api/demos/${slug}/html`} 
         className="w-full h-full border-0"
         title={`${slug} Demo Website`}
       />
