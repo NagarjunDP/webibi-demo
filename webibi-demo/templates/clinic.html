@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{BUSINESS_NAME}} | {{CITY}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand: {{COLOR_PRIMARY}}; --bg: {{COLOR_BG}}; --text: #f8fafc; }
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        h1, h2, h3 { margin: 0; }
+        .nav { padding: 1.5rem 5%; background: rgba(11,15,25,0.7); backdrop-filter: blur(20px); display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); box-sizing: border-box; }
+        .logo { height: 50px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
+        
+        .hero { min-height: 100vh; padding: 0 5%; display: flex; align-items: center; justify-content: space-between; position: relative; overflow: hidden; }
+        .hero-bg-img { position: absolute; inset: 0; background: url('https://source.unsplash.com/1600x900/?clinic,doctor,modern') center/cover; opacity: 0.3; z-index: 0; mix-blend-mode: overlay; }
+        .hero-glow { position: absolute; top: -20%; right: -10%; width: 60vw; height: 60vw; background: var(--brand); filter: blur(150px); opacity: 0.4; border-radius: 50%; z-index: 0; animation: pulse 8s ease-in-out infinite alternate; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.3; } 100% { transform: scale(1.1); opacity: 0.5; } }
+        
+        .hero-content { z-index: 2; max-width: 650px; margin-top: 5rem; }
+        .hero h1 { font-size: clamp(3.5rem, 6vw, 6rem); font-weight: 700; letter-spacing: -2px; line-height: 1.1; margin-bottom: 1.5rem; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .hero h1 span { background: linear-gradient(135deg, #fff 0%, var(--brand) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.3rem; color: #cbd5e1; line-height: 1.7; margin-bottom: 2.5rem; max-width: 550px; font-weight: 300; }
+        
+        .btn-group { display: flex; gap: 1rem; }
+        .btn { display: inline-flex; align-items: center; padding: 1.2rem 2.5rem; border-radius: 12px; font-weight: 600; text-decoration: none; transition: all 0.3s; font-size: 1.1rem; }
+        .btn-primary { background: {{COLOR_CTA_BG}}; color: {{COLOR_CTA_TEXT}}; box-shadow: 0 10px 30px rgba(0,0,0,0.3), 0 0 20px {{COLOR_CTA_BG}}; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0,0,0,0.4), 0 0 40px {{COLOR_CTA_BG}}; filter: brightness(1.2); }
+        .btn-secondary { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+        
+        .glass-card { position: relative; z-index: 2; background: rgba(255,255,255,0.03); backdrop-filter: blur(24px); padding: 3rem; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2); max-width: 400px; width: 100%; display: none; }
+        @media(min-width: 1024px) { .glass-card { display: block; } }
+        .glass-card::before { content: ''; position: absolute; inset: 0; border-radius: 30px; padding: 2px; background: linear-gradient(135deg, rgba(255,255,255,0.4), transparent); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+        .glass-card h3 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .glass-card p { color: #94a3b8; font-size: 1rem; margin-bottom: 2rem; line-height: 1.5; }
+        
+        .features { padding: 10rem 5%; background: var(--bg); position: relative; z-index: 5; }
+        .section-tag { display: inline-block; padding: 0.5rem 1.2rem; background: rgba(255,255,255,0.05); color: var(--brand); border-radius: 100px; font-weight: 600; font-size: 0.85rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 2px; border: 1px solid rgba(255,255,255,0.1); }
+        .features h2 { font-size: 4rem; font-weight: 700; margin: 0 0 5rem 0; letter-spacing: -1px; text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .f-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; }
+        .f-card { padding: 3rem; background: rgba(255,255,255,0.02); border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.4s; position: relative; overflow: hidden; }
+        .f-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top right, var(--brand), transparent 70%); opacity: 0; transition: opacity 0.4s; z-index: 0; }
+        .f-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.2); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .f-card:hover::before { opacity: 0.1; }
+        .f-card-content { position: relative; z-index: 1; }
+        .f-icon { width: 64px; height: 64px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--brand); text-shadow: 0 0 15px var(--brand); }
+        
+        .testimonial { padding: 8rem 5%; background: rgba(255,255,255,0.02); text-align: center; }
+        .testimonial blockquote { font-size: 2rem; max-width: 800px; margin: 0 auto; color: #fff; font-style: italic; }
+        .testimonial .author { margin-top: 2rem; font-weight: 600; color: var(--brand); }
+        .testimonial .role { color: #64748b; font-size: 0.9rem; }
+
+        footer { padding: 4rem 5%; background: #05070A; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+        footer p { color: #64748b; font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <img src="{{LOGO_URL}}" alt="{{BUSINESS_NAME}}" class="logo">
+        <a href="tel:{{PHONE}}" class="btn btn-primary" style="padding: 0.8rem 2rem; font-size: 0.9rem; box-shadow: none;">{{CTA_TEXT}}</a>
+    </nav>
+    <section class="hero">
+        <div class="hero-bg-img"></div>
+        <div class="hero-glow"></div>
+        <div class="hero-content">
+            <h1>{{HERO_HEADLINE}}</h1>
+            <p>{{HERO_SUBLINE}}</p>
+            <div class="google-rating" style="margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 50px; width: fit-content; border: 1px solid rgba(255,255,255,0.1);">
+                <span style="color: #FFD700; font-size: 1.1rem;">⭐ {{GOOGLE_RATING}}</span>
+                <span style="color: #cbd5e1; font-size: 0.85rem;">Rated top in {{CITY}} by {{REVIEW_COUNT}} real customers</span>
+            </div>
+            <div class="btn-group">
+                <a href="tel:{{PHONE}}" class="btn btn-primary">{{CTA_TEXT}}</a>
+                <a href="#services" class="btn btn-secondary">Our Services</a>
+            </div>
+        </div>
+        
+        <div class="glass-card">
+            <h3>About Us in {{CITY}}</h3>
+            <p>{{ABOUT_TEXT}}</p>
+        </div>
+    </section>
+    
+    <section id="services" class="features">
+        <span class="section-tag">{{TAGLINE}}</span>
+        <h2>Elevating Standards</h2>
+        <div class="f-grid">
+            <div class="f-card">
+                <div class="f-card-content">
+                    <div class="f-icon">✦</div>
+                    <h3>{{SERVICE_1_TITLE}}</h3>
+                    <p>{{SERVICE_1_DESC}}</p>
+                </div>
+            </div>
+            <div class="f-card">
+                <div class="f-card-content">
+                    <div class="f-icon">◈</div>
+                    <h3>{{SERVICE_2_TITLE}}</h3>
+                    <p>{{SERVICE_2_DESC}}</p>
+                </div>
+            </div>
+            <div class="f-card">
+                <div class="f-card-content">
+                    <div class="f-icon">◎</div>
+                    <h3>{{SERVICE_3_TITLE}}</h3>
+                    <p>{{SERVICE_3_DESC}}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonial">
+        <blockquote>"{{TESTIMONIAL_QUOTE}}"</blockquote>
+        <div class="author">{{TESTIMONIAL_NAME}}</div>
+        <div class="role">{{TESTIMONIAL_ROLE}}</div>
+    </section>
+    
+    <footer>
+        <img src="{{LOGO_URL}}" alt="{{BUSINESS_NAME}}" style="height: 30px; filter: grayscale(1); opacity: 0.5;">
+        <p>{{FOOTER_TAGLINE}} | Designed by Webibi Demo Generator</p>
+    </footer>
+</body>
+</html>

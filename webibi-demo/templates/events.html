@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{BUSINESS_NAME}} | Extraordinary Events</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand: {{COLOR_PRIMARY}}; --bg: {{COLOR_BG}}; --text: #ffffff; }
+        body { margin: 0; font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        h1, h2, h3 { font-family: 'Syne', sans-serif; margin: 0; }
+        .nav { padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; z-index: 100; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .logo { height: 40px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
+        
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; position: relative; overflow: hidden; }
+        .hero-shapes { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        .shape-1 { position: absolute; top: -10%; right: -5%; width: 50vw; height: 50vw; border-radius: 50%; background: var(--brand); filter: blur(120px); opacity: 0.4; animation: float 10s ease-in-out infinite; }
+        .shape-2 { position: absolute; bottom: -20%; left: -10%; width: 60vw; height: 60vw; border-radius: 50%; background: var(--brand); filter: blur(150px); opacity: 0.3; animation: float 15s ease-in-out infinite reverse; }
+        @keyframes float { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-50px) scale(1.1); } }
+        
+        .hero-content { z-index: 1; max-width: 650px; }
+        .hero h1 { font-size: clamp(4rem, 8vw, 7rem); line-height: 1; letter-spacing: -2px; margin-bottom: 1.5rem; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .hero h1 span { color: var(--brand); text-shadow: 0 0 40px var(--brand); }
+        .hero p { font-size: 1.3rem; color: #ccc; margin-bottom: 2.5rem; line-height: 1.6; }
+        .btn { display: inline-flex; align-items: center; padding: 1.2rem 2.5rem; background: {{COLOR_CTA_BG}}; color: {{COLOR_CTA_TEXT}}; text-decoration: none; border-radius: 100px; font-weight: 700; font-size: 1.1rem; transition: all 0.3s; box-shadow: 0 0 20px {{COLOR_CTA_BG}}; }
+        .btn:hover { background: #fff; color: #000; box-shadow: 0 0 40px #fff; transform: translateY(-3px); }
+        
+        .hero-image { z-index: 1; width: 45%; height: 70vh; border-radius: 30px; background: url('https://source.unsplash.com/1600x900/?events,party,concert') center/cover; box-shadow: 0 30px 60px rgba(0,0,0,0.5); display: none; border: 1px solid rgba(255,255,255,0.1); }
+        @media(min-width: 992px) { .hero-image { display: block; } }
+        
+        .about { padding: 6rem 5%; text-align: center; position: relative; z-index: 2; max-width: 900px; margin: 0 auto; }
+        .about p { font-size: 1.5rem; color: #eee; line-height: 1.7; }
+        .about h3 { color: var(--brand); font-size: 2rem; margin-top: 2rem; }
+
+        .features { padding: 8rem 5%; position: relative; z-index: 2; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; }
+        .feature-card { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); padding: 3rem; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); transition: transform 0.3s, border-color 0.3s; }
+        .feature-card:hover { transform: translateY(-10px); border-color: var(--brand); background: rgba(255,255,255,0.05); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+        .f-icon { width: 70px; height: 70px; border-radius: 20px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--brand); text-shadow: 0 0 10px var(--brand); }
+        .feature-card h3 { font-size: 2rem; margin-bottom: 1rem; color: #fff; }
+        .feature-card p { color: #aaa; line-height: 1.7; }
+        
+        .testimonial { padding: 6rem 5%; background: rgba(255,255,255,0.02); text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
+        .testimonial blockquote { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 700; color: #fff; max-width: 900px; margin: 0 auto 2rem; line-height: 1.3; }
+        .testimonial .author { font-size: 1.2rem; font-weight: 700; color: var(--brand); }
+        .testimonial .role { color: #888; font-size: 0.9rem; margin-top: 5px; }
+
+        .marquee { background: var(--brand); padding: 2.5rem 0; overflow: hidden; white-space: nowrap; box-shadow: 0 0 50px var(--brand); position: relative; z-index: 10; }
+        .marquee span { font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800; color: #000; text-transform: uppercase; margin-right: 2rem; display: inline-block; animation: scroll 20s linear infinite; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        
+        footer { padding: 5rem 5%; text-align: center; position: relative; z-index: 2; border-top: 1px solid rgba(255,255,255,0.05); }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <img src="{{LOGO_URL}}" alt="{{BUSINESS_NAME}}" class="logo">
+        <a href="tel:{{PHONE}}" class="btn" style="padding: 0.8rem 1.5rem; font-size: 0.9rem; box-shadow: none;">{{CTA_TEXT}}</a>
+    </nav>
+    <section class="hero">
+        <div class="hero-shapes">
+            <div class="shape-1"></div>
+            <div class="shape-2"></div>
+        </div>
+        <div class="hero-content">
+            <h1>{{HERO_HEADLINE}}</h1>
+            <p>{{HERO_SUBLINE}}</p>
+            <div class="google-rating" style="margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 50px; width: fit-content; border: 1px solid rgba(255,255,255,0.1);">
+                <span style="color: #FFD700; font-size: 1.1rem;">⭐ {{GOOGLE_RATING}}</span>
+                <span style="color: #cbd5e1; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Rated top in {{CITY}} by {{REVIEW_COUNT}} real customers</span>
+            </div>
+            <a href="tel:{{PHONE}}" class="btn">{{CTA_TEXT}}</a>
+        </div>
+        <div class="hero-image"></div>
+    </section>
+
+    <section class="about">
+        <p>{{ABOUT_TEXT}}</p>
+        <h3>{{TAGLINE}}</h3>
+    </section>
+
+    <section class="features">
+        <div style="text-align: center; margin-bottom: 5rem;">
+            <h2 style="font-size: 4rem; text-shadow: 0 0 20px rgba(255,255,255,0.1);">Our Expertise</h2>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="f-icon">01</div>
+                <h3>{{SERVICE_1_TITLE}}</h3>
+                <p>{{SERVICE_1_DESC}}</p>
+            </div>
+            <div class="feature-card">
+                <div class="f-icon">02</div>
+                <h3>{{SERVICE_2_TITLE}}</h3>
+                <p>{{SERVICE_2_DESC}}</p>
+            </div>
+            <div class="feature-card">
+                <div class="f-icon">03</div>
+                <h3>{{SERVICE_3_TITLE}}</h3>
+                <p>{{SERVICE_3_DESC}}</p>
+            </div>
+        </div>
+    </section>
+    
+    <div class="marquee">
+        <span>WEDDINGS • CORPORATE • GALAS • PRIVATE PARTIES • PRODUCT LAUNCHES • </span>
+        <span>WEDDINGS • CORPORATE • GALAS • PRIVATE PARTIES • PRODUCT LAUNCHES • </span>
+    </div>
+
+    <section class="testimonial">
+        <blockquote>"{{TESTIMONIAL_QUOTE}}"</blockquote>
+        <div class="author">{{TESTIMONIAL_NAME}}</div>
+        <div class="role">{{TESTIMONIAL_ROLE}}</div>
+    </section>
+
+    <footer>
+        <img src="{{LOGO_URL}}" alt="{{BUSINESS_NAME}}" style="height: 50px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); margin-bottom: 2rem;">
+        <h2 style="font-size: 2.5rem;">Ready to create magic?</h2>
+        <p style="color: #888; margin-top: 1rem; font-size: 1.2rem;">{{FOOTER_TAGLINE}}</p>
+        <p style="color: #444; font-size: 0.7rem; margin-top: 2rem;">Designed by Webibi Demo Generator</p>
+    </footer>
+</body>
+</html>

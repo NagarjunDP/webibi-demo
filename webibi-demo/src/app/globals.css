@@ -1,0 +1,86 @@
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #0a0a0f;
+    --foreground: #f0f0f8;
+    --surface: #13131a;
+    --surface-elevated: #1c1c27;
+    --primary: #7c5cfc;
+    --primary-foreground: #f0f0f8;
+    --success: #3dffa0;
+    --muted: rgba(240, 240, 248, 0.45);
+    --muted-foreground: rgba(240, 240, 248, 0.6);
+    --card: #13131a;
+    --card-foreground: #f0f0f8;
+    --popover: #1c1c27;
+    --popover-foreground: #f0f0f8;
+    --secondary: #1c1c27;
+    --secondary-foreground: #f0f0f8;
+    --accent: #1c1c27;
+    --accent-foreground: #f0f0f8;
+    --destructive: #ef4444;
+    --destructive-foreground: #f0f0f8;
+    --border: rgba(240, 240, 248, 0.15);
+    --input: rgba(240, 240, 248, 0.15);
+    --ring: #7c5cfc;
+    --radius: 0.75rem;
+  }
+  
+  .dark {
+    --background: #0a0a0f;
+    --foreground: #f0f0f8;
+    --surface: #13131a;
+    --surface-elevated: #1c1c27;
+    --primary: #7c5cfc;
+    --primary-foreground: #f0f0f8;
+    --success: #3dffa0;
+    --muted: rgba(240, 240, 248, 0.45);
+    --muted-foreground: rgba(240, 240, 248, 0.6);
+    --card: #13131a;
+    --card-foreground: #f0f0f8;
+    --popover: #1c1c27;
+    --popover-foreground: #f0f0f8;
+    --secondary: #1c1c27;
+    --secondary-foreground: #f0f0f8;
+    --accent: #1c1c27;
+    --accent-foreground: #f0f0f8;
+    --destructive: #ef4444;
+    --destructive-foreground: #f0f0f8;
+    --border: rgba(240, 240, 248, 0.15);
+    --input: rgba(240, 240, 248, 0.15);
+    --ring: #7c5cfc;
+  }
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .glass {
+    @apply bg-surface/80 backdrop-blur-md border border-white/5;
+  }
+  
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-accent-gradient;
+  }
+}
+
+/* Button scaling active state */
+button:active {
+  transform: scale(0.97);
+}

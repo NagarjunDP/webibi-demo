@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{BUSINESS_NAME}} | Luxury Spa & Salon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand: {{COLOR_PRIMARY}}; --bg: {{COLOR_BG}}; --text: #F8F5F2; }
+        body { margin: 0; font-family: 'Lato', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        h1, h2, h3 { font-family: 'Cinzel', serif; font-weight: 400; text-align: center; margin: 0; }
+        .nav { padding: 2rem 5%; display: flex; justify-content: center; position: absolute; width: 100%; z-index: 10; }
+        .logo { height: 70px; filter: drop-shadow(0 0 20px rgba(255,255,255,0.2)); }
+        
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 5%; position: relative; background: linear-gradient(rgba(17,16,15,0.6), rgba(17,16,15,0.9)), url('https://source.unsplash.com/1600x900/?salon,hair,luxury') center/cover; position: relative; }
+        .hero h1 { font-size: clamp(3.5rem, 8vw, 6rem); color: #fff; margin-bottom: 1rem; letter-spacing: 4px; text-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .hero p { font-size: 1.2rem; color: #ccc; max-width: 600px; line-height: 1.8; margin-bottom: 3rem; font-weight: 300; }
+        
+        .btn { display: inline-block; padding: 1.2rem 3rem; background: transparent; border: 1px solid var(--brand); color: var(--brand); text-decoration: none; text-transform: uppercase; letter-spacing: 3px; font-size: 0.9rem; transition: all 0.4s; backdrop-filter: blur(10px); }
+        .btn:hover { background: var(--brand); color: #fff; box-shadow: 0 0 30px var(--brand); }
+        
+        .about { padding: 8rem 5% 4rem 5%; text-align: center; max-width: 800px; margin: 0 auto; }
+        .about p { font-size: 1.3rem; line-height: 1.8; color: #ccc; font-weight: 300; }
+        .about h3 { color: var(--brand); font-style: italic; margin-top: 2rem; font-size: 1.5rem; }
+
+        .services { padding: 4rem 5% 8rem 5%; max-width: 1200px; margin: 0 auto; }
+        .services h2 { font-size: 3.5rem; margin-bottom: 5rem; color: #fff; }
+        .services h2 span { color: var(--brand); font-style: italic; }
+        .s-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 4rem; }
+        .s-card { text-align: center; transition: transform 0.4s; }
+        .s-card:hover { transform: translateY(-10px); }
+        .img-wrapper { position: relative; width: 100%; aspect-ratio: 4/5; overflow: hidden; margin-bottom: 2rem; border-radius: 100px 100px 0 0; }
+        .img-wrapper::after { content: ''; position: absolute; inset: 0; background: var(--brand); opacity: 0; transition: opacity 0.4s; mix-blend-mode: color; }
+        .s-card:hover .img-wrapper::after { opacity: 0.5; }
+        .s-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s; }
+        .s-card:hover .s-img { transform: scale(1.1); }
+        .s-card h3 { font-size: 2rem; margin-bottom: 1rem; color: #fff; }
+        .s-card p { color: #aaa; line-height: 1.7; font-weight: 300; }
+        
+        .testimonial { padding: 6rem 5%; background: rgba(255,255,255,0.02); text-align: center; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .testimonial blockquote { font-family: 'Cinzel', serif; font-size: 2rem; color: #fff; max-width: 800px; margin: 0 auto 2rem; }
+        .testimonial .author { font-size: 1.1rem; color: var(--brand); letter-spacing: 2px; }
+
+        .book-banner { background: url('https://source.unsplash.com/1600x900/?spa,relax') center/cover fixed; color: #fff; text-align: center; position: relative; padding: 8rem 5%; }
+        .book-banner::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.7); }
+        .banner-content { position: relative; z-index: 1; }
+        .book-banner h2 { font-size: 4rem; margin-bottom: 1rem; }
+        
+        footer { padding: 4rem 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <img src="{{LOGO_URL}}" alt="{{BUSINESS_NAME}}" class="logo">
+    </nav>
+    <section class="hero">
+        <h1>{{HERO_HEADLINE}}</h1>
+        <p>{{HERO_SUBLINE}}</p>
+        <div class="google-rating" style="margin: 2rem auto; display: flex; align-items: center; justify-content: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 50px; width: fit-content; border: 1px solid rgba(255,255,255,0.1);">
+            <span style="color: #FFD700; font-size: 1.1rem;">⭐ {{GOOGLE_RATING}}</span>
+            <span style="color: #cbd5e1; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">Rated top in {{CITY}} by {{REVIEW_COUNT}} real customers</span>
+        </div>
+        <a href="tel:{{PHONE}}" class="btn">{{CTA_TEXT}}</a>
+    </section>
+    
+    <section class="about">
+        <p>{{ABOUT_TEXT}}</p>
+        <h3>{{TAGLINE}}</h3>
+    </section>
+
+    <section class="services">
+        <h2>Our <span>Rituals</span></h2>
+        <div class="s-grid">
+            <div class="s-card">
+                <div class="img-wrapper">
+                    <img src="https://source.unsplash.com/600x800/?haircut,salon" alt="Hair" class="s-img">
+                </div>
+                <h3>{{SERVICE_1_TITLE}}</h3>
+                <p>{{SERVICE_1_DESC}}</p>
+            </div>
+            <div class="s-card">
+                <div class="img-wrapper">
+                    <img src="https://source.unsplash.com/600x800/?skincare,facial" alt="Skin" class="s-img">
+                </div>
+                <h3>{{SERVICE_2_TITLE}}</h3>
+                <p>{{SERVICE_2_DESC}}</p>
+            </div>
+            <div class="s-card">
+                <div class="img-wrapper">
+                    <img src="https://source.unsplash.com/600x800/?massage,spa" alt="Massage" class="s-img">
+                </div>
+                <h3>{{SERVICE_3_TITLE}}</h3>
+                <p>{{SERVICE_3_DESC}}</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="testimonial">
+        <blockquote>"{{TESTIMONIAL_QUOTE}}"</blockquote>
+        <div class="author">{{TESTIMONIAL_NAME}}</div>
+        <div style="font-size: 0.9rem; color: #888; margin-top: 5px;">{{TESTIMONIAL_ROLE}}</div>
+    </section>
+
+    <div class="book-banner">
+        <div class="banner-content">
+            <h2>Experience True Luxury</h2>
+            <p style="margin-bottom: 3rem; color: #ccc; font-size: 1.2rem; font-weight: 300;">Visit us in {{CITY}}</p>
+            <a href="tel:{{PHONE}}" class="btn" style="background: var(--brand); color: #fff; border-color: var(--brand);">Call {{PHONE}}</a>
+        </div>
+    </div>
+    <footer>
+        <img src="{{LOGO_URL}}" alt="{{BUSINESS_NAME}}" style="height: 40px; filter: grayscale(1); opacity: 0.5; margin-bottom: 1rem;">
+        <p style="color: #666;">{{FOOTER_TAGLINE}}</p>
+        <p style="color: #444; font-size: 0.7rem; margin-top: 2rem;">Designed by Webibi Demo Generator</p>
+    </footer>
+</body>
+</html>
