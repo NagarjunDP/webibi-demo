@@ -20,16 +20,35 @@ const STEPS = [
 
 const generateWebsite = async (businessData: any) => {
   try {
+    const payload = JSON.stringify(businessData);
+    const payloadSizeMb = payload.length / (1024 * 1024);
+    console.log(`Payload size: ${payloadSizeMb.toFixed(2)} MB`);
+    
+    if (payloadSizeMb > 2) {
+      return { error: `Image too large (${payloadSizeMb.toFixed(2)} MB). Please use a smaller logo image under 1MB.` };
+    }
+
     const res = await fetch("/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify(businessData),
+      body: payload,
     });
-    const data = await res.json();
+    
     if (!res.ok) {
-      return { error: data.error || "Failed to generate website" };
+      // Check if response is HTML (e.g. 413 Payload Too Large from Next.js)
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("text/html")) {
+        const text = await res.text();
+        console.error("HTML Error Response:", text);
+        return { error: `Server error ${res.status}: ${res.statusText}. Payload might be too large.` };
+      }
+      
+      const data = await res.json().catch(() => null);
+      return { error: data?.error || `Server error ${res.status}: ${res.statusText}` };
     }
+    
+    const data = await res.json();
     return data;
   } catch (err: any) {
     console.error("Generate API error:", err);

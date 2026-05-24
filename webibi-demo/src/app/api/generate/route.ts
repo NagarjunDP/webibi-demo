@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import fs from 'fs';
 import path from 'path';
 import { getSessionFromRequest } from "@/lib/authSession";
 import { getFirebaseAdmin } from "@/lib/firebaseAdmin";
 
-const NICHES = ['restaurant', 'salon', 'gym', 'clinic', 'events'];
+const NICHES = ['restaurant', 'salon', 'gym', 'clinic', 'events', 'law', 'realestate', 'education', 'hotel'];
 
 export async function POST(req: Request) {
   try {
@@ -12,6 +13,34 @@ export async function POST(req: Request) {
     const session = getSessionFromRequest(req);
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { db, bucket, firebaseInitialized, mockDb } = getFirebaseAdmin();
+
+    // 1a. Limit Enforcement
+    if (firebaseInitialized && db) {
+      const userDoc = await db.collection('users').doc(session.phoneNumber).get();
+      const isUnlimited = userDoc.exists && userDoc.data()?.unlimitedGeneration === true;
+      console.log(`[GENERATE DEBUG] user: ${session.phoneNumber}, docExists: ${userDoc.exists}, data:`, userDoc.exists ? userDoc.data() : null, `isUnlimited: ${isUnlimited}`);
+
+      const demosSnap = await db.collection('demos')
+        .where('agentPhone', '==', session.phoneNumber)
+        .get();
+        
+      if (!isUnlimited && demosSnap.size >= 3) {
+        return NextResponse.json({
+          error: 'LIMIT_REACHED',
+          message: 'You have reached the maximum of 3 free demo generations. Contact webibi.tech to upgrade.'
+        }, { status: 403 });
+      }
+    } else {
+      const demosList = Array.from(mockDb.demos.values()).filter((d: any) => d.agentPhone === session.phoneNumber);
+      if (demosList.length >= 3) {
+        return NextResponse.json({
+          error: 'LIMIT_REACHED',
+          message: 'You have reached the maximum of 3 free demo generations. Contact webibi.tech to upgrade.'
+        }, { status: 403 });
+      }
     }
 
     const body = await req.json();
@@ -23,8 +52,6 @@ export async function POST(req: Request) {
 
     const indKey = (industry || '').toLowerCase().trim();
     const activeIndustry = NICHES.includes(indKey) ? indKey : 'clinic';
-
-    const { db, bucket, firebaseInitialized, mockDb } = getFirebaseAdmin();
 
     // 2. Generate Unique Slug (Conflict Prevention)
     const baseSlug = name.toLowerCase()
@@ -109,7 +136,12 @@ export async function POST(req: Request) {
       hero_headline: `Redefining Excellence in ${city}`,
       hero_sub: `Experience unmatched quality and dedication crafted specifically for you.`,
       about_text: `We are deeply rooted in ${city}, bringing years of passion and expertise to our community. Our commitment to your satisfaction drives everything we do.`,
-      cta: `Call Now`
+      cta: `Call Now`,
+      reviews: [
+        { name: "Rahul Sharma", review: "Absolutely wonderful experience. Highly recommended!" },
+        { name: "Priya Patel", review: "Great service and very professional staff." },
+        { name: "Amit Kumar", review: "Best in the city, will definitely visit again." }
+      ]
     };
 
     let copy = fallbackCopy;
@@ -130,7 +162,12 @@ Return exactly this JSON structure:
   "hero_headline": "8-12 word hero headline",
   "hero_sub": "one sentence benefit statement, max 18 words",
   "about_text": "two sentences about the business, warm and local, max 35 words",
-  "cta": "3-word call to action button text"
+  "cta": "3-word call to action button text",
+  "reviews": [
+    { "name": "Indian Name 1", "review": "1-2 sentence realistic review" },
+    { "name": "Indian Name 2", "review": "1-2 sentence realistic review" },
+    { "name": "Indian Name 3", "review": "1-2 sentence realistic review" }
+  ]
 }`;
 
       try {
@@ -156,7 +193,8 @@ Return exactly this JSON structure:
             hero_headline: aiJson.hero_headline || fallbackCopy.hero_headline,
             hero_sub: aiJson.hero_sub || fallbackCopy.hero_sub,
             about_text: aiJson.about_text || fallbackCopy.about_text,
-            cta: aiJson.cta || fallbackCopy.cta
+            cta: aiJson.cta || fallbackCopy.cta,
+            reviews: (aiJson.reviews && aiJson.reviews.length === 3) ? aiJson.reviews : fallbackCopy.reviews
           };
         } else {
           console.warn("Gemini API returned error:", geminiRes.status);
@@ -191,16 +229,36 @@ Return exactly this JSON structure:
       events: '🎉 Event Venue',
     };
     const industryBadge = badgeMap[activeIndustry] || '💼 Business';
-    const agencyPhone = '919876543210';
+    const agencyPhone = process.env.AGENCY_PHONE || '+919876543210';
+    const agencyWhatsapp = process.env.AGENCY_WHATSAPP_NUMBER || '919876543210';
 
     let logoEscaped = logoUrl || '';
     if (logoEscaped) {
       logoEscaped = logoEscaped.replaceAll('"', "'");
     }
 
+    const generatedAt = new Date();
+    const expiresAt = new Date(generatedAt.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days later
+    const expiryTimestamp = expiresAt.getTime().toString();
+    const businessNameEncoded = encodeURIComponent(name);
+
     // 10. Inject Variables & Tokens
     let htmlOutput = templateHtml
       .replaceAll('{{BUSINESS_NAME}}', name)
+      .replaceAll('{{BUSINESS_NAME_ENCODED}}', businessNameEncoded)
+      .replaceAll('{{SLUG}}', slug)
+      .replaceAll('{{EXPIRY_TIMESTAMP}}', expiryTimestamp)
+      .replaceAll('{{AGENCY_PHONE}}', agencyPhone)
+      .replaceAll('{{AGENCY_WHATSAPP_NUMBER}}', agencyWhatsapp)
+      .replaceAll('{{REVIEW_1_NAME}}', copy.reviews[0].name)
+      .replaceAll('{{REVIEW_1_INITIAL}}', copy.reviews[0].name.charAt(0))
+      .replaceAll('{{REVIEW_1_TEXT}}', copy.reviews[0].review)
+      .replaceAll('{{REVIEW_2_NAME}}', copy.reviews[1].name)
+      .replaceAll('{{REVIEW_2_INITIAL}}', copy.reviews[1].name.charAt(0))
+      .replaceAll('{{REVIEW_2_TEXT}}', copy.reviews[1].review)
+      .replaceAll('{{REVIEW_3_NAME}}', copy.reviews[2].name)
+      .replaceAll('{{REVIEW_3_INITIAL}}', copy.reviews[2].name.charAt(0))
+      .replaceAll('{{REVIEW_3_TEXT}}', copy.reviews[2].review)
       .replaceAll('{{HERO_HEADLINE}}', copy.hero_headline)
       .replaceAll('{{HERO_SUBLINE}}', copy.hero_sub)
       .replaceAll('{{TAGLINE}}', copy.tagline)
@@ -226,7 +284,6 @@ Return exactly this JSON structure:
       .replaceAll('{{IMG_SET}}', imgSet.toString())
       .replaceAll('{{BUSINESS_INITIALS}}', businessInitials)
       .replaceAll('{{INDUSTRY_BADGE}}', industryBadge)
-      .replaceAll('{{AGENCY_PHONE}}', agencyPhone)
       .replaceAll('{{INDUSTRY}}', activeIndustry);
 
     // 11. Inject Expiration & Tracking Script into HTML Page
@@ -295,8 +352,6 @@ Return exactly this JSON structure:
     }
 
     // 13. Save record to Database
-    const generatedAt = new Date();
-    const expiresAt = new Date(generatedAt.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days later
     const defaultLiveUrl = `${protocol}://${host}/${slug}`;
 
     const demoDoc = {

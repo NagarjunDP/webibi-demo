@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<meta property="og:title" content="{{BUSINESS_NAME}} — Free Demo Website" />
+<meta property="og:description" content="{{TAGLINE}} — See your free demo website. Valid for 7 days only." />
+<meta property="og:image" content="https://demo.webibi.tech/api/og/{{SLUG}}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://demo.webibi.tech/demos/{{SLUG}}" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://demo.webibi.tech/api/og/{{SLUG}}" />
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{BUSINESS_NAME}} | {{CITY}}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     
@@ -14,18 +25,31 @@
       --brand: {{COLOR_PRIMARY}};
       --brand-dark: {{COLOR_TERTIARY}};
       --brand-light: {{COLOR_SECONDARY}};
-      --dark: #0f0e0c;
-      --light: #fdfcf7;
-      --font-heading: 'Playfair Display', serif;
-      --font-body: 'Inter', sans-serif;
+      --dark: #0f172a;
+      --light: #f8fafc;
+      --warm: #f1f5f9;
+      --font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
     body {
-      font-family: var(--font-body);
-      background-color: var(--light);
+      font-family: var(--font-family);
+      background-color: #ffffff;
       color: var(--dark);
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--brand);
+      border-radius: 4px;
     }
 
     /* 1. DEMO ANNOUNCEMENT STRIP */
@@ -90,10 +114,10 @@
       left: 0;
       right: 0;
       height: 70px;
-      background: rgba(15, 14, 12, 0.7);
+      background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
       z-index: 9990;
       display: flex;
       align-items: center;
@@ -118,16 +142,16 @@
       height: 44px;
       width: 44px;
       border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(0,0,0,0.08);
       object-fit: cover;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.14));
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.12));
     }
     .logo-fallback {
       width: 44px;
       height: 44px;
       background: var(--brand);
       color: #ffffff;
-      font-family: var(--font-heading);
+      font-family: var(--font-family);
       font-size: 1.15rem;
       font-weight: 700;
       border-radius: 10px;
@@ -135,29 +159,28 @@
       align-items: center;
       justify-content: center;
       text-transform: uppercase;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.14);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
     }
     .nav-name {
-      font-family: var(--font-heading);
       font-weight: 700;
       font-size: 1.15rem;
-      color: #fff;
-      letter-spacing: -0.5px;
+      color: var(--dark);
+      letter-spacing: -0.3px;
     }
     .nav-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      height: 42px;
-      padding: 0 22px;
+      height: 40px;
+      padding: 0 20px;
       background: var(--brand);
       color: #fff;
       font-weight: 600;
       font-size: 0.85rem;
       text-decoration: none;
-      border-radius: 100px;
+      border-radius: 8px;
       transition: all 0.2s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
     .nav-btn:hover {
       background: var(--brand-dark);
@@ -215,16 +238,16 @@
     }
     .hero-logo-card {
       position: relative;
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 16px;
-      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 14px;
+      padding: 14px 22px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
       filter: drop-shadow(0 0 20px {{COLOR_PRIMARY}}40);
     }
     .hero-logo-img-container {
@@ -244,7 +267,7 @@
       height: 80px;
       background: var(--brand);
       color: #ffffff;
-      font-family: var(--font-heading);
+      font-family: var(--font-family);
       font-size: 2.2rem;
       font-weight: 700;
       border-radius: 10px;
@@ -268,7 +291,7 @@
       border-radius: 100px;
       white-space: nowrap;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
     .hero-logo-tagline {
       font-size: 11px;
@@ -280,19 +303,17 @@
     }
 
     .hero-title {
-      font-family: var(--font-heading);
-      font-weight: 900;
+      font-weight: 800;
       font-size: clamp(2.2rem, 8vw, 4.5rem);
       line-height: 1.1;
       margin-bottom: 8px;
     }
     .hero-headline {
-      font-family: var(--font-heading);
       font-size: clamp(1.3rem, 4vw, 2.2rem);
       font-weight: 600;
-      font-style: italic;
       margin-bottom: 16px;
       opacity: 0.95;
+      color: var(--brand);
     }
     .hero-subline {
       font-size: 1.05rem;
@@ -304,10 +325,10 @@
     }
 
     .hero-rating-badge {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       padding: 8px 16px;
       border-radius: 100px;
       display: inline-flex;
@@ -329,7 +350,7 @@
       align-items: flex-end;
     }
     .hero.variant-a .hero-overlay {
-      background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
     }
     .hero.variant-a .hero-content {
       text-align: center;
@@ -349,7 +370,7 @@
       align-items: center;
     }
     .hero.variant-b .hero-overlay {
-      background: linear-gradient(to right, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 100%);
+      background: linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.1) 100%);
     }
     .hero.variant-b .hero-content {
       text-align: left;
@@ -367,7 +388,7 @@
       align-items: center;
     }
     .hero.variant-c .hero-overlay {
-      background: linear-gradient(135deg, var(--brand) 0%, rgba(0,0,0,0.6) 100%);
+      background: linear-gradient(135deg, var(--brand) 0%, rgba(0,0,0,0.7) 100%);
       opacity: 0.6;
     }
     .hero.variant-c .hero-content {
@@ -387,7 +408,7 @@
       align-items: flex-start;
     }
     .hero.variant-d .hero-overlay {
-      background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.0) 60%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.0) 60%);
     }
     .hero.variant-d .hero-content {
       text-align: center;
@@ -445,11 +466,11 @@
       color: var(--brand-dark);
     }
     .hero.variant-e .hero-subline {
-      color: #444;
+      color: #475569;
     }
     .hero.variant-e .hero-rating-badge {
-      background: rgba(0, 0, 0, 0.05);
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 0, 0, 0.08);
       color: var(--dark);
     }
 
@@ -498,7 +519,6 @@
       gap: 6px;
     }
     .stat-number {
-      font-family: var(--font-heading);
       font-weight: 700;
       font-size: clamp(1.8rem, 5vw, 3rem);
       color: var(--brand);
@@ -554,7 +574,6 @@
       aspect-ratio: 4/3;
       object-fit: cover;
       border-radius: 16px;
-      transform: rotate(-2deg);
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
     }
     .about-content {
@@ -565,14 +584,12 @@
       z-index: 1;
     }
     .about-title {
-      font-family: var(--font-heading);
       font-size: clamp(2rem, 5vw, 2.8rem);
-      font-style: italic;
       font-weight: 700;
       line-height: 1.2;
     }
     .about-text {
-      color: #444;
+      color: #475569;
       line-height: 1.7;
       font-size: 1rem;
     }
@@ -597,208 +614,287 @@
       .about-image-container, .about-content {
         flex: 1;
       }
-      .about-image-container {
-        justify-content: flex-end;
-      }
     }
 
-    /* 6. SERVICES / MENU SECTION */
-    .menu-section {
+    /* 6. SERVICES / SPECIALITIES (horizontal scroll on mobile) */
+    .services-section {
+      background: var(--light);
       padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
-      background: #f8f6f0;
     }
-    .menu-title {
-      font-family: var(--font-heading);
-      font-size: clamp(2rem, 5vw, 2.8rem);
+    .services-header {
+      max-width: 700px;
+      margin: 0 auto 40px auto;
       text-align: center;
-      margin-bottom: 40px;
     }
-    .menu-scroll-container {
-      overflow-x: auto;
-      padding: 10px 4px 24px 4px;
+    .services-title {
+      font-size: clamp(2.2rem, 6vw, 3.2rem);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .services-subtitle {
+      font-size: 1.05rem;
+      color: #64748b;
+    }
+    .services-scroll {
       display: flex;
-      gap: 24px;
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 20px;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
-    .menu-scroll-container::-webkit-scrollbar {
+    .services-scroll::-webkit-scrollbar {
       display: none;
     }
-    .menu-card {
+    .service-card {
       flex: 0 0 280px;
       scroll-snap-align: start;
-      background: #fff;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.06);
       border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+      padding: 28px;
       display: flex;
       flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+      transition: all 0.3s ease;
     }
-    .menu-card-img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      border-color: var(--brand);
     }
-    .menu-card-body {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .menu-card-title {
-      font-family: var(--font-heading);
+    .service-name {
+      font-size: 1.25rem;
       font-weight: 700;
-      font-size: 1.15rem;
+      color: var(--dark);
     }
-    .menu-card-desc {
-      color: #555;
-      font-size: 0.85rem;
-      line-height: 1.5;
-      height: 4.5em;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-    }
-    .menu-card-price {
-      font-family: var(--font-heading);
-      font-weight: 700;
-      color: var(--brand);
-      font-size: 1.1rem;
-      margin-top: 8px;
+    .service-desc {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.6;
     }
     @media (min-width: 768px) {
-      .menu-scroll-container {
+      .services-scroll {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
+        gap: 24px;
         overflow-x: visible;
-        max-width: 1000px;
+        max-width: 1040px;
         margin: 0 auto;
-        padding: 0;
       }
-      .menu-card {
+      .service-card {
         flex: unset;
       }
     }
 
-    /* 7. TESTIMONIAL SECTION */
-    .testimonial-section {
-      background: #121212;
-      color: #fff;
-      padding: 80px 20px;
-      text-align: center;
-      position: relative;
+    /* DOCTOR PROFILE SECTION */
+    .doctor-section {
+      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+    }
+    .doctor-card {
+      width: 100%;
+      max-width: 800px;
+      background: var(--light);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 24px;
+      padding: clamp(24px, 5vw, 48px);
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .doctor-image-wrap {
+      width: 100%;
+      height: 35vh;
+      border-radius: 18px;
       overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    }
+    .doctor-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .doctor-info-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      justify-content: center;
+    }
+    .doctor-name {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1.1;
+    }
+    .doctor-speciality {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--brand);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .doctor-badge {
+      display: inline-flex;
+      align-self: flex-start;
+      background: var(--brand-light);
+      color: var(--brand-dark);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 100px;
+    }
+    .doctor-rating {
+      font-size: 0.9rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    @media (min-width: 768px) {
+      .doctor-card {
+        flex-direction: row;
+      }
+      .doctor-image-wrap {
+        width: 250px;
+        height: 300px;
+        flex-shrink: 0;
+      }
+    }
+
+    /* 7. TESTIMONIAL */
+    .testimonial-section {
+      background: var(--dark);
+      color: #ffffff;
+      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
+      position: relative;
     }
     .testimonial-container {
       max-width: 800px;
       margin: 0 auto;
-      position: relative;
-      z-index: 2;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 16px;
+      gap: 20px;
+      border-left: 4px solid var(--brand);
+      padding-left: clamp(20px, 5vw, 40px);
     }
     .quote-icon {
-      font-size: 6rem;
+      font-family: var(--font-family);
+      font-size: 7rem;
       color: var(--brand);
-      opacity: 0.3;
       line-height: 1;
-      margin-bottom: -20px;
-      font-family: var(--font-heading);
+      height: 40px;
+      margin-top: -20px;
+      opacity: 0.8;
     }
     .testimonial-text {
       font-size: clamp(1.1rem, 3vw, 1.4rem);
       line-height: 1.6;
       font-style: italic;
-      opacity: 0.9;
     }
     .stars-row {
       color: #fbbf24;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+    }
+    .testimonial-author-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
     }
     .testimonial-author {
-      font-size: 0.8rem;
-      letter-spacing: 0.15em;
+      font-size: 0.85rem;
       text-transform: uppercase;
-      opacity: 0.6;
+      letter-spacing: 1px;
+      opacity: 0.7;
     }
 
-    /* 8. CTA SECTION & FOOTER */
+    /* 8. CTA SECTION */
     .cta-section {
+      background: var(--brand);
+      color: #ffffff;
       padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
       text-align: center;
-      background: var(--brand);
-      color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 24px;
+      gap: 30px;
     }
     .cta-title {
-      font-family: var(--font-heading);
-      font-size: clamp(1.8rem, 5vw, 2.8rem);
       font-weight: 800;
-      max-width: 700px;
-      line-height: 1.2;
+      font-size: clamp(2rem, 8vw, 3.8rem);
+      line-height: 1.1;
+      color: #ffffff;
     }
     .cta-btn-group {
       display: flex;
       flex-direction: column;
       gap: 16px;
       width: 100%;
-      max-width: 380px;
+      max-width: 480px;
     }
     .btn-cta {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       height: 52px;
+      width: 100%;
       border-radius: 12px;
       font-weight: 700;
       font-size: 0.95rem;
       text-decoration: none;
       transition: all 0.2s ease;
-      box-sizing: border-box;
-      width: 100%;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
     }
-    .btn-cta-call {
+    .btn-cta-white {
       background: #ffffff;
       color: var(--dark);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
-    .btn-cta-whatsapp {
-      background: #25d366;
-      color: #ffffff;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    .btn-cta:hover {
+    .btn-cta-white:hover {
+      background: #f1f5f9;
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
-    @media (min-width: 768px) {
+    .btn-cta-outline {
+      border: 2px solid #ffffff;
+      color: #ffffff;
+      background: transparent;
+    }
+    .btn-cta-outline:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-2px);
+    }
+    @media (min-width: 480px) {
       .cta-btn-group {
         flex-direction: row;
-        max-width: 500px;
       }
     }
 
+    /* FOOTER */
     .footer {
-      background: #0d0d0d;
-      color: rgba(255, 255, 255, 0.4);
+      background: var(--light);
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
       padding: 60px 20px;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 24px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
     .footer-logo-container {
       display: flex;
@@ -810,21 +906,22 @@
       height: 52px;
       max-width: 150px;
       object-fit: contain;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.03);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       padding: 6px 16px;
       border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
     }
     .footer-logo-fallback {
       width: 52px;
       height: 52px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--dark);
       border-radius: 10px;
-      font-family: var(--font-heading);
+      font-family: var(--font-family);
       font-size: 1.2rem;
       font-weight: 700;
       display: flex;
@@ -835,19 +932,76 @@
       font-size: 10px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(0, 0, 0, 0.4);
     }
     .footer-address {
       font-size: 0.85rem;
       line-height: 1.6;
+      color: #475569;
     }
     .copyright {
       font-size: 0.75rem;
-      opacity: 0.6;
+      opacity: 0.5;
     }
-  </style>
+  
+<style>
+.whatsapp-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #25D366;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.5);
+  z-index: 9999;
+  text-decoration: none;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.6); }
+  70% { box-shadow: 0 0 0 15px rgba(37,211,102,0); }
+  100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+}
+</style>
+
+</style>
+
+
 </head>
 <body>
+
+<!-- Expiry Banner -->
+<div id="expiry-banner" style="position:sticky;top:0;z-index:10000;background:#1a1a1a;color:white;text-align:center;padding:10px 16px;font-size:14px;">
+  ⏰ This demo expires in <span id="countdown" style="color:#FFD700;font-weight:bold;"></span> — 
+  Get your full website at <strong style="color:#FFD700;">20% off!</strong> 
+  <a href="https://webibi.tech" style="color:#25D366;text-decoration:underline;">webibi.tech</a> | 
+  <a href="tel:{{AGENCY_PHONE}}" style="color:#25D366;">Call us</a>
+</div>
+
+<script>
+const expiry = new Date({{EXPIRY_TIMESTAMP}});
+function updateCountdown() {
+  const now = new Date();
+  const diff = expiry - now;
+  if (diff <= 0) {
+    document.getElementById('expiry-banner').innerHTML = '⚠️ This demo has expired. Contact <a href="https://webibi.tech" style="color:#25D366;">webibi.tech</a> to get your website!';
+    return;
+  }
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+  const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const secs = Math.floor((diff % (1000*60)) / 1000);
+  document.getElementById('countdown').textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+
 
   <!-- 1. DEMO ANNOUNCEMENT STRIP -->
   <div class="demo-strip">
@@ -875,7 +1029,7 @@
   <!-- 3. HERO AREA -->
   <section class="hero {{LAYOUT_VARIANT}}" id="hero">
     <div class="hero-img-container">
-      <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=85&auto=format&fit=crop" alt="Restaurant Hero" class="hero-img" onerror="this.src='/assets/restaurant/hero-1.jpg'; this.onerror=null;">
+      <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&q=85&auto=format&fit=crop">
     </div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
@@ -906,16 +1060,16 @@
   <!-- 4. STATS STRIP -->
   <section class="stats-strip">
     <div class="stat-item">
-      <div class="stat-number">{{GOOGLE_RATING}}/5</div>
+      <div class="stat-number">{{GOOGLE_RATING}}★</div>
       <div class="stat-label">Google Rating</div>
     </div>
     <div class="stat-item">
       <div class="stat-number">{{REVIEW_COUNT}}+</div>
-      <div class="stat-label">Happy Guests</div>
+      <div class="stat-label">Patients Served</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number">Finest</div>
-      <div class="stat-label">in {{CITY}}</div>
+      <div class="stat-number">Certified</div>
+      <div class="stat-label">Medical Staff</div>
     </div>
   </section>
 
@@ -925,45 +1079,66 @@
       <img id="watermark-logo-img" src="{{LOGO_URL}}" alt="" class="watermark-logo" onerror="this.style.display='none';">
     </div>
     <div class="about-image-container">
-      <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=85&auto=format&fit=crop" alt="About Us" class="about-img" onerror="this.src='/assets/restaurant/section-1.jpg'; this.onerror=null;">
+      <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=85&auto=format&fit=crop">
     </div>
     <div class="about-content">
-      <h2 class="about-title">Our Story</h2>
+      <h2 class="about-title">Caring For You</h2>
       <p class="about-text">{{ABOUT_TEXT}}</p>
-      <a href="#menu" class="about-link">Explore Our Specialties →</a>
+      <a href="#specialities" class="about-link">Our Specialities & Services →</a>
     </div>
   </section>
 
-  <!-- 6. SERVICES / MENU GRID (horizontal scroll on mobile) -->
-  <section class="menu-section" id="menu">
-    <h2 class="menu-title">Chef's Highlights</h2>
-    <div class="menu-scroll-container">
+  <!-- 6. SERVICES / SPECIALITIES GRID (horizontal scroll on mobile) -->
+  <section class="services-section" id="specialities">
+    <div class="services-header">
+      <h2 class="services-title">Our Specialties</h2>
+      <span class="services-subtitle">Comprehensive care tailored to your family's needs.</span>
+    </div>
+    <div class="services-scroll">
       <!-- Card 1 -->
-      <div class="menu-card">
-        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=85&auto=format&fit=crop" alt="Signature Dish" class="menu-card-img" onerror="this.src='/assets/restaurant/gallery1-1.jpg'; this.onerror=null;">
-        <div class="menu-card-body">
-          <h3 class="menu-card-title">Chef's Special Selection</h3>
-          <p class="menu-card-desc">Indulge in our locally sourced, seasonal vegetables paired with premium house seasonings and grilled to perfection.</p>
-          <div class="menu-card-price">$24.00</div>
-        </div>
+      <div class="service-card">
+        <span class="service-name">General Checkup</span>
+        <p class="service-desc">Routine wellness checks, preventive health screenings, and comprehensive family care consultation.</p>
       </div>
       <!-- Card 2 -->
-      <div class="menu-card">
-        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800&q=85&auto=format&fit=crop" alt="Signature Main" class="menu-card-img" onerror="this.src='/assets/restaurant/gallery2-1.jpg'; this.onerror=null;">
-        <div class="menu-card-body">
-          <h3 class="menu-card-title">Artisan Roasted Platter</h3>
-          <p class="menu-card-desc">A premium cuts platter served alongside rich purée and reduction, featuring signature spices and fresh herbs.</p>
-          <div class="menu-card-price">$38.00</div>
-        </div>
+      <div class="service-card">
+        <span class="service-name">Dental Care</span>
+        <p class="service-desc">Professional teeth cleaning, diagnostic exams, fillings, and restorative cosmetic treatments.</p>
       </div>
       <!-- Card 3 -->
-      <div class="menu-card">
-        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=85&auto=format&fit=crop" alt="Premium Dessert" class="menu-card-img" onerror="this.src='/assets/restaurant/gallery3-1.jpg'; this.onerror=null;">
-        <div class="menu-card-body">
-          <h3 class="menu-card-title">Gourmet Decadence</h3>
-          <p class="menu-card-desc">End your experience with our handcrafted signature dessert, featuring rich textures and fresh berry compote.</p>
-          <div class="menu-card-price">$14.00</div>
-        </div>
+      <div class="service-card">
+        <span class="service-name">Skin Clinic</span>
+        <p class="service-desc">Advanced dermatological screening, skin issue diagnostics, and cosmetic skin care therapies.</p>
+      </div>
+      <!-- Card 4 -->
+      <div class="service-card">
+        <span class="service-name">Pediatrics</span>
+        <p class="service-desc">Compassionate infant health care, developmental checks, and childhood illness consultations.</p>
+      </div>
+      <!-- Card 5 -->
+      <div class="service-card">
+        <span class="service-name">Lab Tests</span>
+        <p class="service-desc">Precise on-site blood diagnostics, health profile panels, and diagnostic medical testing.</p>
+      </div>
+      <!-- Card 6 -->
+      <div class="service-card">
+        <span class="service-name">Physiotherapy</span>
+        <p class="service-desc">Professional physical rehabilitation, injury recovery therapies, and mobility improvement plans.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 — DOCTOR PROFILE CARD -->
+  <section class="doctor-section">
+    <div class="doctor-card">
+      <div class="doctor-image-wrap">
+        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=85&auto=format&fit=crop">
+      </div>
+      <div class="doctor-info-col">
+        <span class="doctor-badge">12+ Years Experience</span>
+        <span class="doctor-name">Dr. J. Patel, MBBS</span>
+        <span class="doctor-speciality">Chief Medical Practitioner</span>
+        <span class="doctor-rating">★ {{GOOGLE_RATING}} · Rated by {{REVIEW_COUNT}} patients</span>
       </div>
     </div>
   </section>
@@ -974,20 +1149,68 @@
       <div class="quote-icon">“</div>
       <p class="testimonial-text">{{TOP_REVIEW}}</p>
       <div class="stars-row">★★★★★</div>
-      <span class="testimonial-author">Google Reviewer</span>
+      <div class="testimonial-author-group">
+        <div class="avatar">PT</div>
+        <span class="testimonial-author">Patient Verified Google Review</span>
+      </div>
     </div>
   </section>
 
   <!-- 8. CTA SECTION & FOOTER -->
   <section class="cta-section" id="contact">
-    <h2 class="cta-title">Ready to experience the taste of {{BUSINESS_NAME}}?</h2>
+    <h2 class="cta-title">Your health is our priority.</h2>
     <div class="cta-btn-group">
-      <a href="tel:{{PHONE}}" class="btn-cta btn-cta-call">Call Us: {{PHONE}}</a>
-      <a href="https://wa.me/{{AGENCY_PHONE}}?text=Hi!%20I%20saw%20the%20demo%20for%20{{BUSINESS_NAME}}%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-whatsapp">WhatsApp Live</a>
+      <a href="tel:{{PHONE}}" class="btn-cta btn-cta-white">Book Appointment</a>
+      <a href="https://wa.me/{{AGENCY_PHONE}}?text=Hi!%20I%20saw%20the%20demo%20for%20{{BUSINESS_NAME}}%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-outline">WhatsApp Live</a>
     </div>
   </section>
 
-  <footer class="footer">
+  
+<!-- Reviews Section -->
+<section style="padding:60px 20px;background:#f9f9f9;">
+  <h2 style="text-align:center;margin-bottom:32px;font-weight:700;font-size:2rem;color:var(--dark);">⭐ What Our Customers Say</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:900px;margin:0 auto;">
+    
+    <div style="background:white;padding:24px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div style="width:40px;height:40px;border-radius:50%;background:#4f46e5;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">{{REVIEW_1_INITIAL}}</div>
+        <div>
+          <div style="font-weight:600;color:var(--dark);">{{REVIEW_1_NAME}}</div>
+          <div style="color:#FFD700;">★★★★★</div>
+        </div>
+      </div>
+      <p style="color:#555;line-height:1.6;">{{REVIEW_1_TEXT}}</p>
+      <div style="font-size:12px;color:#999;margin-top:8px;">Posted on Google</div>
+    </div>
+
+    <div style="background:white;padding:24px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div style="width:40px;height:40px;border-radius:50%;background:#10b981;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">{{REVIEW_2_INITIAL}}</div>
+        <div>
+          <div style="font-weight:600;color:var(--dark);">{{REVIEW_2_NAME}}</div>
+          <div style="color:#FFD700;">★★★★★</div>
+        </div>
+      </div>
+      <p style="color:#555;line-height:1.6;">{{REVIEW_2_TEXT}}</p>
+      <div style="font-size:12px;color:#999;margin-top:8px;">Posted on Google</div>
+    </div>
+
+    <div style="background:white;padding:24px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div style="width:40px;height:40px;border-radius:50%;background:#f59e0b;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">{{REVIEW_3_INITIAL}}</div>
+        <div>
+          <div style="font-weight:600;color:var(--dark);">{{REVIEW_3_NAME}}</div>
+          <div style="color:#FFD700;">★★★★★</div>
+        </div>
+      </div>
+      <p style="color:#555;line-height:1.6;">{{REVIEW_3_TEXT}}</p>
+      <div style="font-size:12px;color:#999;margin-top:8px;">Posted on Google</div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
     <div class="footer-logo-container">
       <img id="footer-logo-img" src="{{LOGO_URL}}" alt="{{BUSINESS_NAME}}" class="footer-logo" onerror="handleFooterLogoError(this)">
       <div id="footer-logo-fallback" class="footer-logo-fallback" style="display: none;">{{BUSINESS_INITIALS}}</div>
@@ -995,7 +1218,7 @@
     </div>
     <div class="footer-address">
       {{BUSINESS_NAME}} · {{CITY}}<br>
-      Located in the heart of {{CITY}}<br>
+      Located in {{CITY}}<br>
       Reservations: {{PHONE}}
     </div>
     <p class="copyright">© 2026 {{BUSINESS_NAME}}. Built with passion.</p>
@@ -1052,5 +1275,39 @@
       }
     });
   </script>
+
+<!-- WhatsApp Float Button -->
+<a href="https://wa.me/{{AGENCY_WHATSAPP_NUMBER}}?text=Hi!%20I%20saw%20my%20demo%20for%20{{BUSINESS_NAME_ENCODED}}%20and%20want%20the%20full%20website!" 
+   class="whatsapp-float" target="_blank">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
+    <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+  </svg>
+  <span>Get This Website</span>
+</a>
+
+
+<script>
+// Heartbeat tracker — sends ping every 30 seconds while page is open
+const slug = '{{SLUG}}';
+const businessName = '{{BUSINESS_NAME}}';
+
+async function sendHeartbeat() {
+  await fetch('/api/track/heartbeat', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ slug, businessName, timestamp: new Date().toISOString() })
+  });
+}
+
+// Send on load
+sendHeartbeat();
+
+// Send every 30 seconds while active
+setInterval(sendHeartbeat, 30000);
+
+// Send on page close
+window.addEventListener('beforeunload', sendHeartbeat);
+</script>
+
 </body>
 </html>

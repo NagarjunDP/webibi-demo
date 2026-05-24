@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import LandingScreen from "@/components/screens/LandingScreen";
 import CategoryScreen from "@/components/screens/CategoryScreen";
@@ -43,6 +43,20 @@ export default function Home() {
     },
     demoSlug: "",
   });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.get("action") === "create") {
+        setState((prev) => ({
+          ...prev,
+          step: "category",
+          userData: { phoneOrEmail: "agent", verified: true },
+        }));
+        window.history.replaceState({}, '', '/');
+      }
+    }
+  }, []);
 
   const updateState = (updates: Partial<FlowState>) => {
     setState((prev) => ({ ...prev, ...updates }));

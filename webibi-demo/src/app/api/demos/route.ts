@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server';
 import { getSessionFromRequest } from '@/lib/authSession';
 import { getFirebaseAdmin } from '@/lib/firebaseAdmin';
@@ -56,25 +57,64 @@ export async function GET(req: Request) {
     // Sort demos by generatedAt desc
     demosList.sort((a, b) => new Date(b.generatedAt).getTime() - new Date(a.generatedAt).getTime());
 
-    // Aggregate open counts by slug
-    const opensMap: Record<string, number> = {};
+    // Helper to get time safely from Timestamp, Date, or string
+    const getSafeTime = (val: any) => {
+      if (!val) return 0;
+      if (val.toDate) return val.toDate().getTime();
+      return new Date(val).getTime();
+    };
+
+    // Aggregate open analytics by slug
+    const analyticsMap: Record<string, any> = {};
     opensList.forEach((open: any) => {
-      opensMap[open.demoSlug] = (opensMap[open.demoSlug] || 0) + 1;
+      if (!analyticsMap[open.demoSlug]) {
+        analyticsMap[open.demoSlug] = {
+           viewsCount: open.viewsCount || 1,
+           totalMinutes: open.totalMinutes || 0,
+           lastActive: open.lastActive,
+           device: open.device || 'Unknown',
+           firstOpened: open.firstOpened
+        };
+      } else {
+        // Fallback if there are still multiple docs (legacy schema)
+        analyticsMap[open.demoSlug].viewsCount += (open.viewsCount || 1);
+        analyticsMap[open.demoSlug].totalMinutes += (open.totalMinutes || 0);
+        if (getSafeTime(open.lastActive) > getSafeTime(analyticsMap[open.demoSlug].lastActive)) {
+           analyticsMap[open.demoSlug].lastActive = open.lastActive;
+           analyticsMap[open.demoSlug].device = open.device;
+        }
+      }
     });
 
     // Map results with open count and expiration flag
     const results = demosList.map(demo => {
       const expiresAtMs = new Date(demo.expiresAt).getTime();
+      const analytics = analyticsMap[demo.slug] || { viewsCount: 0, totalMinutes: 0, device: 'Unknown', lastActive: null, firstOpened: null };
+      
+      const safeIsoString = (val: any) => {
+        if (!val) return null;
+        try {
+          if (val.toDate) return val.toDate().toISOString();
+          return new Date(val).toISOString();
+        } catch(e) {
+          return null;
+        }
+      };
+
       return {
         ...demo,
         expired: expiresAtMs < now,
-        opensCount: opensMap[demo.slug] || 0,
+        opensCount: analytics.viewsCount,
+        totalMinutes: analytics.totalMinutes,
+        lastActive: safeIsoString(analytics.lastActive),
+        device: analytics.device,
+        firstOpened: safeIsoString(analytics.firstOpened)
       };
     });
 
     return NextResponse.json({ success: true, demos: results });
   } catch (error: any) {
-    console.error('Error in get-demos API:', error);
+    console.error('Error in get-demos API:', error.stack || error);
     return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
   }
 }

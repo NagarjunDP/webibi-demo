@@ -47,16 +47,42 @@ export default function DetailsScreen({ state, updateState, updateBusinessData }
       const img = new Image();
       img.onload = () => {
         try {
+          // Compress the image before setting state
+          const MAX_WIDTH = 500;
+          const MAX_HEIGHT = 500;
+          let width = img.width;
+          let height = img.height;
+          
+          if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+            const ratio = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
+            width = width * ratio;
+            height = height * ratio;
+          }
+          
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          
+          // Fill background with white in case of transparent PNG to JPEG conversion
+          if (ctx) {
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, width, height);
+            ctx.drawImage(img, 0, 0, width, height);
+          }
+          
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+
           const palette = getPaletteSync(img, { colorCount: 5 });
           const hexPalette = palette ? palette.map((p: any) => p.hex()) : [];
           
           updateBusinessData({
-            logoDataUrl: dataUrl,
+            logoDataUrl: compressedDataUrl,
             extractedColors: hexPalette,
             primaryColor: hexPalette[0] || "#7c5cfc"
           });
         } catch (err) {
-          console.error("Failed to extract colors", err);
+          console.error("Failed to extract colors or compress image", err);
           updateBusinessData({ logoDataUrl: dataUrl });
         }
       };

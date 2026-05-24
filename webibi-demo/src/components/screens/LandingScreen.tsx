@@ -30,8 +30,8 @@ export default function LandingScreen({ state, updateState }: Props) {
           }),
         });
         const data = await res.json();
-        if (data.redirectUrl === '/admin') {
-          window.location.href = '/admin';
+        if (data.redirectUrl) {
+          window.location.href = data.redirectUrl;
           return;
         }
       } catch (err) {
