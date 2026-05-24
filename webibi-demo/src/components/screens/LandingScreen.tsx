@@ -84,7 +84,7 @@ export default function LandingScreen({ state, updateState }: Props) {
           <div className="space-y-4">
             <div className="w-full flex justify-center py-4 bg-surface-elevated border border-white/5 rounded-xl">
               {/* Phone.email integration button */}
-              <div className="pe_signin_button" data-client-id="axPD9TGe1NAIsxlrhxX79kdF2woWrSXF"></div>
+              <div className="pe_signin_button" data-client-id="16065028813839201797"></div>
             </div>
           </div>
         </motion.div>
