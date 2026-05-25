@@ -215,7 +215,7 @@ export default function LandingScreen({ state, updateState }: Props) {
 
       {/* Infinite Scrolling Website Showcase (Netflix & JioHotstar style) */}
       <div 
-        className="absolute inset-x-0 top-1/2 -translate-y-1/2 w-full h-[520px] z-0 overflow-hidden marquee-wrapper opacity-30 pointer-events-none -rotate-2 scale-105"
+        className="absolute inset-x-0 top-[32%] -translate-y-1/4 w-full h-[520px] z-0 overflow-hidden marquee-wrapper opacity-75 pointer-events-none -rotate-2 scale-105"
         style={{
           WebkitMaskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
           maskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)"
@@ -240,8 +240,8 @@ export default function LandingScreen({ state, updateState }: Props) {
                 </div>
                 {/* Simulated screenshot */}
                 <div className="relative w-full h-full bg-zinc-950">
-                  <img src={item.img} alt="" className="w-full h-full object-cover opacity-60" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                  <img src={item.img} alt="" className="w-full h-full object-cover opacity-90" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" />
                   <span className="absolute bottom-6 left-3 text-[9px] font-bold text-white tracking-wide">{item.name}</span>
                   <span className="absolute top-2 right-3 text-[5px] font-black text-cyan-400 uppercase tracking-widest bg-cyan-950/70 px-1.5 py-0.5 rounded border border-cyan-800/30">
                     {item.industry}
@@ -268,8 +268,8 @@ export default function LandingScreen({ state, updateState }: Props) {
                 </div>
                 {/* Simulated screenshot */}
                 <div className="relative w-full h-full bg-zinc-950">
-                  <img src={item.img} alt="" className="w-full h-full object-cover opacity-60" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                  <img src={item.img} alt="" className="w-full h-full object-cover opacity-90" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" />
                   <span className="absolute bottom-6 left-3 text-[9px] font-bold text-white tracking-wide">{item.name}</span>
                   <span className="absolute top-2 right-3 text-[5px] font-black text-cyan-400 uppercase tracking-widest bg-cyan-950/70 px-1.5 py-0.5 rounded border border-cyan-800/30">
                     {item.industry}
@@ -296,8 +296,8 @@ export default function LandingScreen({ state, updateState }: Props) {
                 </div>
                 {/* Simulated screenshot */}
                 <div className="relative w-full h-full bg-zinc-950">
-                  <img src={item.img} alt="" className="w-full h-full object-cover opacity-60" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                  <img src={item.img} alt="" className="w-full h-full object-cover opacity-90" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" />
                   <span className="absolute bottom-6 left-3 text-[9px] font-bold text-white tracking-wide">{item.name}</span>
                   <span className="absolute top-2 right-3 text-[5px] font-black text-cyan-400 uppercase tracking-widest bg-cyan-950/70 px-1.5 py-0.5 rounded border border-cyan-800/30">
                     {item.industry}
