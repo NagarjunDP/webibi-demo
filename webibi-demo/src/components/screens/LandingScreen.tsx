@@ -105,7 +105,7 @@ export default function LandingScreen({ state, updateState }: Props) {
       duration: 0.8,
       ease: "power2.out"
     });
-    
+
     gsap.from(".hero-badge", {
       y: -20,
       opacity: 0,
@@ -160,8 +160,8 @@ export default function LandingScreen({ state, updateState }: Props) {
   }, { scope: containerRef });
 
   return (
-    <div ref={containerRef} className="flex flex-col flex-1 p-6 items-center justify-start min-h-screen relative overflow-y-auto bg-slate-950 text-white selection:bg-cyan-500 selection:text-black">
-      
+    <div ref={containerRef} className="flex flex-col flex-1 p-3 items-center justify-start min-h-screen relative overflow-y-auto bg-slate-950 text-white selection:bg-cyan-500 selection:text-black">
+
       {/* Background Radial Gradient */}
       <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan-950/25 via-slate-950 to-slate-950 pointer-events-none" />
 
@@ -214,7 +214,7 @@ export default function LandingScreen({ state, updateState }: Props) {
       `}</style>
 
       {/* Infinite Scrolling Website Showcase (Netflix & JioHotstar style) */}
-      <div 
+      <div
         className="absolute inset-x-0 top-[32%] -translate-y-1/4 w-full h-[520px] z-0 overflow-hidden marquee-wrapper opacity-75 pointer-events-none -rotate-2 scale-105"
         style={{
           WebkitMaskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
@@ -222,7 +222,7 @@ export default function LandingScreen({ state, updateState }: Props) {
         }}
       >
         <div ref={marqueeRef} className="absolute inset-0 w-full h-full flex flex-col justify-center gap-5 py-4 marquee-track-container">
-          
+
           {/* Row 1 (Scrolling Left) */}
           <div className="marquee-track-left">
             {[...ROW1_ITEMS, ...ROW1_ITEMS].map((item, idx) => (
@@ -314,37 +314,39 @@ export default function LandingScreen({ state, updateState }: Props) {
       <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-transparent to-slate-950 pointer-events-none z-10" />
 
       {/* Main Content Area */}
-      <div className="w-full max-w-sm z-20 flex flex-col items-center pt-8 pb-10">
-        
+      <div className="w-full max-w-sm z-20 flex flex-col items-center pt-12 pb-6">
+
         {/* Logo Mark */}
-        <div className="logo-mark mb-8 flex items-center justify-center">
-          <img 
-            src="/assets/logoo.png" 
-            alt="Webibi Logo" 
+        <div className="logo-mark mb-6 flex items-center justify-center">
+          <img
+            src="/assets/logoo.png"
+            alt="Webibi Logo"
             className="h-16 object-contain filter drop-shadow-[0_0_15px_rgba(6,182,212,0.25)]"
           />
         </div>
 
         {/* Shiny Badge */}
-        <div className="hero-badge inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-cyan-500/20 bg-cyan-950/20 backdrop-blur-md mb-5">
+        <div className="hero-badge inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-cyan-500/20 bg-cyan-950/20 backdrop-blur-md mb-8">
           <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-          <span className="text-[10px] uppercase font-bold tracking-widest text-cyan-400">Webibi AI v2.0</span>
+          <span className="text-[10px] uppercase font-bold tracking-widest text-cyan-400">Webibi.tech</span>
         </div>
 
         {/* Title */}
-        <h1 className="hero-title font-heading text-4xl text-center mb-4 tracking-tight font-black leading-tight bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-cyan-200">
+        <h1 className="hero-title font-heading text-3xl text-center mb-5 tracking-tight font-black leading-tight bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-cyan-200">
           Launch Your Business <br />
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">Website in Seconds.</span>
         </h1>
-        
+
         {/* Description */}
-        <p className="hero-desc text-zinc-400 text-center mb-8 text-base font-medium max-w-[280px]">
+        <p className="hero-desc text-zinc-400 text-center mb-10 text-sm font-medium max-w-[280px]">
           See a stunning live website demo built from your logo &mdash; instantly.
         </p>
 
         {/* Glassmorphic Onboarding Verification Card */}
-        <div className="login-card w-full p-6 bg-slate-950/60 border border-white/10 rounded-[28px] backdrop-blur-sm shadow-[0_20px_50px_rgba(0,0,0,0.6)] relative overflow-hidden mb-10">
-          <div className="w-full flex justify-center py-4 bg-black/40 border border-white/5 rounded-2xl relative z-10">
+        <div className="login-card w-full mt-6 p-4 bg-sky-950/20 border border-sky-400/25 rounded-[24px] backdrop-blur-sm shadow-[0_20px_50px_rgba(14,165,233,0.12)] relative overflow-hidden mb-6">
+          {/* Light blue glow blob behind button */}
+          <div className="absolute inset-0 rounded-[24px] bg-gradient-to-br from-sky-500/10 via-transparent to-blue-600/5 pointer-events-none" />
+          <div className="w-full flex justify-center py-4 bg-sky-950/40 border border-sky-400/20 rounded-2xl relative z-10">
             {/* Phone.email integration button */}
             <div className="pe_signin_button" data-client-id="16065028813839201797"></div>
           </div>
@@ -354,7 +356,7 @@ export default function LandingScreen({ state, updateState }: Props) {
         <div className="w-full space-y-4">
           <h3 className="text-[10px] font-bold tracking-wider uppercase text-cyan-400/80 mb-2 text-center">How Webibi Works</h3>
           {bentoItems.map((item, idx) => (
-            <div 
+            <div
               key={idx}
               className="bento-card bg-slate-950/45 border border-white/5 rounded-2xl p-4 flex gap-4 backdrop-blur-sm transition-all duration-300 hover:border-cyan-500/20 hover:shadow-[0_0_15px_rgba(6,182,212,0.05)]"
             >
