@@ -18,10 +18,27 @@ export default function GeneratedSitePage({ params }: PageProps) {
   }
 
   return (
-    <div className="w-screen h-screen overflow-hidden m-0 p-0 fixed inset-0">
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100vw',
+      height: '100vh',
+      margin: 0,
+      padding: 0,
+      overflow: 'hidden',
+      zIndex: 999999
+    }}>
       <iframe 
         src={`/api/demos/${slug}/html`} 
-        className="w-full h-full border-0"
+        style={{
+          width: '100%',
+          height: '100%',
+          border: 'none',
+          margin: 0,
+          padding: 0,
+          display: 'block'
+        }}
         title={`${slug} Demo Website`}
       />
     </div>
