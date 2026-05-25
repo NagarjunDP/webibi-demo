@@ -39,11 +39,8 @@ export default function CategoryScreen({ state, updateState, updateBusinessData 
     <div className="flex flex-col flex-1 p-6 relative pb-32">
       {/* Top Bar */}
       <div className="flex items-center justify-between mb-8">
-        <div className="font-heading font-bold text-xl tracking-tight flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7c5cfc] to-[#c471ed] flex items-center justify-center">
-            <span className="text-white text-sm">W</span>
-          </div>
-          <span className="gradient-text">Webibi</span>
+        <div className="flex items-center gap-2">
+          <img src="/assets/logoo.png" alt="Webibi Logo" className="h-8 w-auto object-contain" />
         </div>
         <div className="w-10 h-10 rounded-full bg-surface-elevated border border-white/10 flex items-center justify-center">
           <User size={18} className="text-muted-foreground" />

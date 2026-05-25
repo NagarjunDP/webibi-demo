@@ -2,87 +2,31 @@
 
 import { useEffect, useRef } from "react";
 import { FlowState } from "@/app/page";
-import { motion } from "framer-motion";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { Sparkles, Phone, ArrowRight, ShieldCheck, Zap, Layers } from "lucide-react";
+import { Zap, Layers, ShieldCheck } from "lucide-react";
 
 interface Props {
   state: FlowState;
   updateState: (updates: Partial<FlowState>) => void;
 }
 
-function ParticlesBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+// Preview items for the infinite scroll showcase
+const ROW1_ITEMS = [
+  { name: "Luigi's Bistro", industry: "Restaurant", img: "/assets/restaurant/hero-1.jpg", url: "luigi-bistro.html" },
+  { name: "Glow & Co", industry: "Salon & Spa", img: "/assets/salon/hero-1.jpg", url: "super-salon.html" },
+  { name: "Iron Gym", industry: "Fitness", img: "/assets/gym/hero-1.jpg", url: "fittygitty.html" },
+  { name: "Apex Health", industry: "Clinic", img: "/assets/clinic/hero-1.jpg", url: "hv.html" },
+  { name: "Dream Events", industry: "Events", img: "/assets/events/hero-1.jpg", url: "vivience-events.html" },
+];
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let animationFrameId: number;
-    let particles: Array<{
-      x: number;
-      y: number;
-      size: number;
-      speedX: number;
-      speedY: number;
-      opacity: number;
-    }> = [];
-
-    const handleResize = () => {
-      canvas.width = canvas.parentElement?.clientWidth || window.innerWidth;
-      canvas.height = canvas.parentElement?.clientHeight || window.innerHeight;
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    // Initialize particles
-    const particleCount = 30;
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 1.5 + 0.5,
-        speedX: (Math.random() - 0.5) * 0.2,
-        speedY: (Math.random() - 0.5) * 0.2 - 0.15, // Float upwards
-        opacity: Math.random() * 0.4 + 0.15,
-      });
-    }
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "rgba(34, 211, 238, 0.4)"; // Cyan-400 color
-
-      particles.forEach((p) => {
-        p.x += p.speedX;
-        p.y += p.speedY;
-
-        // Reset if they float off screen
-        if (p.y < 0) p.y = canvas.height;
-        if (p.x < 0 || p.x > canvas.width) p.x = Math.random() * canvas.width;
-
-        ctx.globalAlpha = p.opacity;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    animate();
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0" />;
-}
+const ROW2_ITEMS = [
+  { name: "Prime Realty", industry: "Real Estate", img: "/assets/realestate/hero-1.jpg", url: "gk.html" },
+  { name: "Nova Academy", industry: "Education", img: "/assets/education/hero-1.jpg", url: "4-3.html" },
+  { name: "Grand Resort", industry: "Hotel", img: "/assets/hotel/hero-1.jpg", url: "r.html" },
+  { name: "Equity Legal", industry: "Law Firm", img: "/assets/law/hero-1.jpg", url: "boss-events.html" },
+  { name: "Luigi's Bistro", industry: "Restaurant", img: "/assets/restaurant/hero-1.jpg", url: "luigi-bistro.html" },
+];
 
 const bentoItems = [
   {
@@ -104,6 +48,7 @@ const bentoItems = [
 
 export default function LandingScreen({ state, updateState }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const marqueeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     (window as any).phoneEmailListener = async function (userObj: any) {
@@ -147,10 +92,10 @@ export default function LandingScreen({ state, updateState }: Props) {
   useGSAP(() => {
     // Entrance animations
     gsap.from(".logo-mark", {
-      scale: 0,
+      scale: 0.8,
       opacity: 0,
       duration: 0.8,
-      ease: "back.out(1.7)"
+      ease: "power2.out"
     });
     
     gsap.from(".hero-badge", {
@@ -193,26 +138,164 @@ export default function LandingScreen({ state, updateState }: Props) {
       delay: 0.9,
       ease: "power2.out"
     });
+
+    // Subtle floating animation of the entire 3D marquee track
+    if (marqueeRef.current) {
+      gsap.to(marqueeRef.current, {
+        y: -10,
+        x: -5,
+        duration: 6,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
+    }
   }, { scope: containerRef });
 
   return (
-    <div ref={containerRef} className="flex flex-col flex-1 p-6 items-center justify-start min-h-screen relative overflow-y-auto bg-slate-950">
-      {/* Dynamic particles in background */}
-      <ParticlesBackground />
+    <div ref={containerRef} className="flex flex-col flex-1 p-6 items-center justify-start min-h-screen relative overflow-y-auto bg-black text-white selection:bg-cyan-500 selection:text-black">
+      
+      {/* CSS marquee stylesheet */}
+      <style>{`
+        .marquee-wrapper {
+          perspective: 1200px;
+          overflow: hidden;
+        }
+        .marquee-track-container {
+          transform: rotateX(15deg) rotateY(-12deg) rotateZ(-3deg) scale(1.1);
+          transform-style: preserve-3d;
+        }
+        .marquee-track-left {
+          display: flex;
+          width: max-content;
+          gap: 20px;
+          animation: scroll-left 50s linear infinite;
+        }
+        .marquee-track-right {
+          display: flex;
+          width: max-content;
+          gap: 20px;
+          animation: scroll-right 50s linear infinite;
+        }
+        .marquee-card {
+          width: 250px;
+          height: 140px;
+          flex-shrink: 0;
+          border-radius: 16px;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          background: #09090b;
+          overflow: hidden;
+          position: relative;
+          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8);
+          transform-style: preserve-3d;
+          transition: border-color 0.3s, transform 0.3s;
+        }
+        .marquee-card:hover {
+          border-color: rgba(34, 211, 238, 0.4);
+          transform: translateZ(10px) scale(1.02);
+        }
+        @keyframes scroll-left {
+          0% { transform: translate3d(0, 0, 0); }
+          100% { transform: translate3d(-50%, 0, 0); }
+        }
+        @keyframes scroll-right {
+          0% { transform: translate3d(-50%, 0, 0); }
+          100% { transform: translate3d(0, 0, 0); }
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
 
-      {/* Decorative blurred background orbs */}
-      <div className="absolute top-1/4 -left-20 w-80 h-80 bg-cyan-950/40 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-blue-950/40 rounded-full blur-[120px] pointer-events-none" />
+      {/* Infinite Scrolling Website Showcase (Netflix & JioHotstar style) */}
+      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden marquee-wrapper opacity-45 pointer-events-none">
+        
+        {/* Subtle grid elements layout */}
+        <div ref={marqueeRef} className="absolute inset-0 w-full h-full flex flex-col justify-center gap-6 py-12 marquee-track-container">
+          
+          {/* Row 1 (Scrolling Left) */}
+          <div className="marquee-track-left">
+            {[...ROW1_ITEMS, ...ROW1_ITEMS].map((item, idx) => (
+              <div key={`row1-${idx}`} className="marquee-card">
+                {/* Browser top-bar */}
+                <div className="flex items-center gap-1.5 px-3 py-2 bg-zinc-900 border-b border-white/5">
+                  <div className="flex gap-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-500/50" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500/50" />
+                  </div>
+                  <div className="flex-1 bg-black/40 rounded h-3 flex items-center px-1.5 border border-white/5">
+                    <span className="text-[6px] text-zinc-500 truncate">{item.url}</span>
+                  </div>
+                </div>
+                {/* Simulated screenshot */}
+                <div className="relative w-full h-full bg-zinc-950">
+                  <img src={item.img} alt="" className="w-full h-full object-cover opacity-60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                  <span className="absolute bottom-8 left-3 text-[10px] font-bold text-white tracking-wide">{item.name}</span>
+                  <span className="absolute top-2.5 right-3 text-[6px] font-black text-cyan-400 uppercase tracking-widest bg-cyan-950/70 px-1.5 py-0.5 rounded border border-cyan-800/30">
+                    {item.industry}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
 
-      <div className="w-full max-w-sm z-10 flex flex-col items-center pt-8 pb-10">
+          {/* Row 2 (Scrolling Right) */}
+          <div className="marquee-track-right">
+            {[...ROW2_ITEMS, ...ROW2_ITEMS].map((item, idx) => (
+              <div key={`row2-${idx}`} className="marquee-card">
+                {/* Browser top-bar */}
+                <div className="flex items-center gap-1.5 px-3 py-2 bg-zinc-900 border-b border-white/5">
+                  <div className="flex gap-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-500/50" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-yellow-500/50" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500/50" />
+                  </div>
+                  <div className="flex-1 bg-black/40 rounded h-3 flex items-center px-1.5 border border-white/5">
+                    <span className="text-[6px] text-zinc-500 truncate">{item.url}</span>
+                  </div>
+                </div>
+                {/* Simulated screenshot */}
+                <div className="relative w-full h-full bg-zinc-950">
+                  <img src={item.img} alt="" className="w-full h-full object-cover opacity-60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                  <span className="absolute bottom-8 left-3 text-[10px] font-bold text-white tracking-wide">{item.name}</span>
+                  <span className="absolute top-2.5 right-3 text-[6px] font-black text-cyan-400 uppercase tracking-widest bg-cyan-950/70 px-1.5 py-0.5 rounded border border-cyan-800/30">
+                    {item.industry}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+
+        {/* Cinematic Fade Overlays (Netflix / JioHotstar style) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black pointer-events-none z-10" />
+        <div className="absolute inset-0 bg-black/50 pointer-events-none z-10" />
+      </div>
+
+      {/* Main Content Area */}
+      <div className="w-full max-w-sm z-20 flex flex-col items-center pt-8 pb-10">
+        
         {/* Logo Mark */}
-        <div className="logo-mark w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center mb-8 shadow-lg shadow-cyan-500/25">
-          <span className="font-heading font-black text-3xl text-white">W</span>
+        <div className="logo-mark mb-8 flex items-center justify-center">
+          <img 
+            src="/assets/logoo.png" 
+            alt="Webibi Logo" 
+            className="h-16 object-contain filter drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]"
+          />
         </div>
 
         {/* Shiny Badge */}
-        <div className="hero-badge inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-950/30 backdrop-blur-md mb-5">
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+        <div className="hero-badge inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-cyan-500/20 bg-cyan-950/20 backdrop-blur-md mb-5">
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
           <span className="text-[10px] uppercase font-bold tracking-widest text-cyan-400">Webibi AI v2.0</span>
         </div>
 
@@ -223,37 +306,32 @@ export default function LandingScreen({ state, updateState }: Props) {
         </h1>
         
         {/* Description */}
-        <p className="hero-desc text-slate-400 text-center mb-8 text-base font-medium max-w-[280px]">
+        <p className="hero-desc text-zinc-400 text-center mb-8 text-base font-medium max-w-[280px]">
           See a stunning live website demo built from your logo &mdash; instantly.
         </p>
 
-        {/* Login Card */}
-        <div className="login-card w-full p-6 bg-slate-900/60 border border-white/5 rounded-3xl backdrop-blur-xl shadow-[0_8px_32px_rgba(6,182,212,0.06)] relative overflow-hidden">
-          <div className="absolute -top-10 -right-10 w-24 h-24 bg-cyan-500/10 rounded-full blur-2xl" />
-          <h2 className="text-white text-center text-sm font-semibold mb-4 flex items-center justify-center gap-2">
-            <Sparkles className="w-4 h-4 text-cyan-400 animate-spin" style={{ animationDuration: '4s' }} />
-            Verify Phone to Get Started
-          </h2>
-          <div className="w-full flex justify-center py-5 bg-black/30 border border-white/5 rounded-2xl relative z-10">
+        {/* Simplified Login Card */}
+        <div className="login-card w-full p-6 bg-zinc-950/70 border border-zinc-800/50 rounded-[28px] backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden mb-10">
+          <div className="w-full flex justify-center py-4 bg-black/40 border border-zinc-800/60 rounded-2xl relative z-10">
             {/* Phone.email integration button */}
             <div className="pe_signin_button" data-client-id="16065028813839201797"></div>
           </div>
         </div>
 
         {/* Bento Grid */}
-        <div className="w-full space-y-4 mt-10">
+        <div className="w-full space-y-4">
           <h3 className="text-[10px] font-bold tracking-wider uppercase text-cyan-400/80 mb-2 text-center">How Webibi Works</h3>
           {bentoItems.map((item, idx) => (
             <div 
               key={idx}
-              className="bento-card bg-slate-900/40 border border-white/5 rounded-2xl p-4 flex gap-4 backdrop-blur-md transition-all duration-300 hover:border-cyan-500/30 hover:shadow-[0_0_15px_rgba(6,182,212,0.1)]"
+              className="bento-card bg-zinc-950/50 border border-zinc-900 rounded-2xl p-4 flex gap-4 backdrop-blur-md transition-all duration-300 hover:border-cyan-500/20 hover:shadow-[0_0_15px_rgba(6,182,212,0.05)]"
             >
               <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
                 {item.icon}
               </div>
               <div className="flex flex-col justify-center">
                 <h4 className="text-white font-semibold text-sm mb-0.5">{item.title}</h4>
-                <p className="text-slate-400 text-xs leading-relaxed">{item.desc}</p>
+                <p className="text-zinc-400 text-xs leading-relaxed">{item.desc}</p>
               </div>
             </div>
           ))}
