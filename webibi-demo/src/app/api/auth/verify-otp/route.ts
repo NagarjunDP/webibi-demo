@@ -77,7 +77,9 @@ export async function POST(req: Request) {
     }
 
     // Determine Role
-    const isAdmin = cleanPhone === adminPhone || cleanPhone.replace('+', '') === adminPhone.replace('+', '');
+    const normalizedCleanPhone = cleanPhone.replace(/\s+/g, '');
+    const normalizedAdminPhone = adminPhone.replace(/\s+/g, '');
+    const isAdmin = normalizedCleanPhone === normalizedAdminPhone || normalizedCleanPhone.replace('+', '') === normalizedAdminPhone.replace('+', '');
     const role = isAdmin ? 'admin' : 'agent';
     const redirectUrl = isAdmin ? '/admin' : '/dashboard';
 
