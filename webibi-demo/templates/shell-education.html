@@ -678,7 +678,7 @@
     @media (min-width: 768px) {
       .services-scroll {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 24px;
         overflow-x: visible;
         max-width: 1040px;
@@ -689,82 +689,7 @@
       }
     }
 
-    /* DOCTOR PROFILE SECTION */
-    .doctor-section {
-      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
-      background: #ffffff;
-      display: flex;
-      justify-content: center;
-    }
-    .doctor-card {
-      width: 100%;
-      max-width: 800px;
-      background: var(--light);
-      border: 1px solid rgba(0,0,0,0.06);
-      border-radius: 24px;
-      padding: clamp(24px, 5vw, 48px);
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-    }
-    .doctor-image-wrap {
-      width: 100%;
-      height: 35vh;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
-    }
-    .doctor-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .doctor-info-col {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      justify-content: center;
-    }
-    .doctor-name {
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      font-weight: 800;
-      color: var(--dark);
-      line-height: 1.1;
-    }
-    .doctor-speciality {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--brand);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .doctor-badge {
-      display: inline-flex;
-      align-self: flex-start;
-      background: var(--brand-light);
-      color: var(--brand-dark);
-      font-size: 0.8rem;
-      font-weight: 700;
-      padding: 6px 14px;
-      border-radius: 100px;
-    }
-    .doctor-rating {
-      font-size: 0.9rem;
-      color: #64748b;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    @media (min-width: 768px) {
-      .doctor-card {
-        flex-direction: row;
-      }
-      .doctor-image-wrap {
-        width: 250px;
-        height: 300px;
-        flex-shrink: 0;
-      }
-    }
+
 
     /* 7. TESTIMONIAL */
     .testimonial-section {
@@ -976,11 +901,15 @@
 <body>
 
 <!-- Expiry Banner -->
-<div id="expiry-banner" style="position:sticky;top:0;z-index:10000;background:#1a1a1a;color:white;text-align:center;padding:10px 16px;font-size:14px;">
-  ⏰ This demo expires in <span id="countdown" style="color:#FFD700;font-weight:bold;"></span> — 
-  Get your full website at <strong style="color:#FFD700;">20% off!</strong> 
-  <a href="https://webibi.tech" style="color:#25D366;text-decoration:underline;">webibi.tech</a> | 
-  <a href="tel:{{AGENCY_PHONE}}" style="color:#25D366;">Call us</a>
+<div id="expiry-banner" style="position:sticky;top:0;z-index:10000;background:#1a1a1a;color:white;text-align:center;padding:10px 16px;font-size:14px;font-family:system-ui, -apple-system, sans-serif;">
+  ⏰ Demo expires in <span id="countdown" style="color:#FFD700;font-weight:bold;"></span> 
+  — Make it permanent for just 
+  <strong style="color:#FFD700;">₹4,999 only!</strong> 
+  <a href="https://webibi.tech" target="_blank" style="color:#25D366;text-decoration:underline;">webibi.tech</a> | 
+  <a href="https://wa.me/{{AGENCY_WHATSAPP_NUMBER}}?text=Hi! I want to make my demo website permanent. Business: {{BUSINESS_NAME}}" 
+     target="_blank" style="color:#25D366;text-decoration:none;font-weight:bold;">
+    💬 WhatsApp Now
+  </a>
 </div>
 
 <script>
@@ -1054,6 +983,11 @@ setInterval(updateCountdown, 1000);
         <span class="stars">★★★★★</span>
         <span class="rating-text"><strong>{{GOOGLE_RATING}}/5</strong> · {{REVIEW_COUNT}} Reviews</span>
       </div>
+
+      <div class="cta-btn-group" style="margin-top: 24px;">
+        <a href="#specialities" class="btn-cta btn-cta-white">Explore Our Programs</a>
+        <a href="#contact" class="btn-cta btn-cta-outline">Book a Free Consultation</a>
+      </div>
     </div>
   </section>
 
@@ -1065,11 +999,11 @@ setInterval(updateCountdown, 1000);
     </div>
     <div class="stat-item">
       <div class="stat-number">{{REVIEW_COUNT}}+</div>
-      <div class="stat-label">Patients Served</div>
+      <div class="stat-label">Students Enrolled</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number">Certified</div>
-      <div class="stat-label">Medical Staff</div>
+      <div class="stat-number">Expert</div>
+      <div class="stat-label">Educators</div>
     </div>
   </section>
 
@@ -1079,66 +1013,41 @@ setInterval(updateCountdown, 1000);
       <img id="watermark-logo-img" src="{{LOGO_URL}}" alt="" class="watermark-logo" onerror="this.style.display='none';">
     </div>
     <div class="about-image-container">
-      <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=85&auto=format&fit=crop">
+      <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=85&auto=format&fit=crop">
     </div>
     <div class="about-content">
-      <h2 class="about-title">Caring For You</h2>
+      <h2 class="about-title">Empowering Minds</h2>
       <p class="about-text">{{ABOUT_TEXT}}</p>
-      <a href="#specialities" class="about-link">Our Specialities & Services →</a>
+      <a href="#specialities" class="about-link">Explore Our Programs →</a>
     </div>
   </section>
 
   <!-- 6. SERVICES / SPECIALITIES GRID (horizontal scroll on mobile) -->
   <section class="services-section" id="specialities">
     <div class="services-header">
-      <h2 class="services-title">Our Specialties</h2>
-      <span class="services-subtitle">Comprehensive care tailored to your family's needs.</span>
+      <h2 class="services-title">Our Programs & Courses</h2>
+      <span class="services-subtitle">Empowering students for a brighter future.</span>
     </div>
     <div class="services-scroll">
       <!-- Card 1 -->
       <div class="service-card">
-        <span class="service-name">General Checkup</span>
-        <p class="service-desc">Routine wellness checks, preventive health screenings, and comprehensive family care consultation.</p>
+        <span class="service-name">📚 Academic Excellence</span>
+        <p class="service-desc">Comprehensive curriculum designed for competitive exams and holistic development.</p>
       </div>
       <!-- Card 2 -->
       <div class="service-card">
-        <span class="service-name">Dental Care</span>
-        <p class="service-desc">Professional teeth cleaning, diagnostic exams, fillings, and restorative cosmetic treatments.</p>
+        <span class="service-name">🎯 Skill Development</span>
+        <p class="service-desc">Practical training in communication, leadership and critical thinking skills.</p>
       </div>
       <!-- Card 3 -->
       <div class="service-card">
-        <span class="service-name">Skin Clinic</span>
-        <p class="service-desc">Advanced dermatological screening, skin issue diagnostics, and cosmetic skin care therapies.</p>
+        <span class="service-name">💻 Digital Learning</span>
+        <p class="service-desc">Modern e-learning tools and smart classroom technology for better outcomes.</p>
       </div>
       <!-- Card 4 -->
       <div class="service-card">
-        <span class="service-name">Pediatrics</span>
-        <p class="service-desc">Compassionate infant health care, developmental checks, and childhood illness consultations.</p>
-      </div>
-      <!-- Card 5 -->
-      <div class="service-card">
-        <span class="service-name">Lab Tests</span>
-        <p class="service-desc">Precise on-site blood diagnostics, health profile panels, and diagnostic medical testing.</p>
-      </div>
-      <!-- Card 6 -->
-      <div class="service-card">
-        <span class="service-name">Physiotherapy</span>
-        <p class="service-desc">Professional physical rehabilitation, injury recovery therapies, and mobility improvement plans.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 5 — DOCTOR PROFILE CARD -->
-  <section class="doctor-section">
-    <div class="doctor-card">
-      <div class="doctor-image-wrap">
-        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=85&auto=format&fit=crop">
-      </div>
-      <div class="doctor-info-col">
-        <span class="doctor-badge">12+ Years Experience</span>
-        <span class="doctor-name">Dr. J. Patel, MBBS</span>
-        <span class="doctor-speciality">Chief Medical Practitioner</span>
-        <span class="doctor-rating">★ {{GOOGLE_RATING}} · Rated by {{REVIEW_COUNT}} patients</span>
+        <span class="service-name">🏆 Career Guidance</span>
+        <p class="service-desc">Expert mentorship and career counseling to help students achieve their goals.</p>
       </div>
     </div>
   </section>
@@ -1150,18 +1059,18 @@ setInterval(updateCountdown, 1000);
       <p class="testimonial-text">{{TOP_REVIEW}}</p>
       <div class="stars-row">★★★★★</div>
       <div class="testimonial-author-group">
-        <div class="avatar">PT</div>
-        <span class="testimonial-author">Patient Verified Google Review</span>
+        <div class="avatar">ST</div>
+        <span class="testimonial-author">STUDENT VERIFIED GOOGLE REVIEW</span>
       </div>
     </div>
   </section>
 
   <!-- 8. CTA SECTION & FOOTER -->
   <section class="cta-section" id="contact">
-    <h2 class="cta-title">Your health is our priority.</h2>
+    <h2 class="cta-title">Your Child's Future Starts Here</h2>
     <div class="cta-btn-group">
-      <a href="tel:{{PHONE}}" class="btn-cta btn-cta-white">Book Appointment</a>
-      <a href="https://wa.me/{{AGENCY_PHONE}}?text=Hi!%20I%20saw%20the%20demo%20for%20{{BUSINESS_NAME}}%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-outline">WhatsApp Live</a>
+      <a href="tel:{{PHONE}}" class="btn-cta btn-cta-white">Enquire Now</a>
+      <a href="https://wa.me/{{AGENCY_PHONE}}?text=Hi!%20I%20saw%20the%20demo%20for%20{{BUSINESS_NAME}}%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-outline">WhatsApp Us</a>
     </div>
   </section>
 
@@ -1219,10 +1128,51 @@ setInterval(updateCountdown, 1000);
     <div class="footer-address">
       {{BUSINESS_NAME}} · {{CITY}}<br>
       Located in {{CITY}}<br>
-      Reservations: {{PHONE}}
+      Inquiries: {{PHONE}}
     </div>
-    <p class="copyright">© 2026 {{BUSINESS_NAME}}. Built with passion.</p>
+    <p class="copyright">© 2026 {{BUSINESS_NAME}}. Shaping Tomorrow's Leaders Today.</p>
   </footer>
+
+  <!-- Find Us Section -->
+  <section style="padding:60px 20px;background:#f8f8f8;">
+    <div style="max-width:900px;margin:0 auto;font-family:system-ui, -apple-system, sans-serif;">
+      <h2 style="text-align:center;margin-bottom:8px;font-size:28px;font-weight:700;color:#0f172a;">
+        📍 Find Us
+      </h2>
+      <p style="text-align:center;color:#666;margin-bottom:24px;">
+        Visit us at {{CITY}} — we'd love to see you
+      </p>
+      <div style="border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+        <iframe
+          src="https://maps.google.com/maps?q={{BUSINESS_NAME_ENCODED}},{{CITY_ENCODED}},India&output=embed&z=15"
+          width="100%"
+          height="320"
+          frameborder="0"
+          style="border:0;display:block;"
+          allowfullscreen=""
+          loading="lazy">
+        </iframe>
+      </div>
+      <div style="text-align:center;margin-top:16px;">
+        <a href="https://maps.google.com/maps?q={{BUSINESS_NAME_ENCODED}},{{CITY_ENCODED}},India"
+           target="_blank"
+           style="display:inline-block;background:#4285F4;color:white;padding:12px 24px;border-radius:50px;text-decoration:none;font-weight:600;">
+          🗺️ Open in Google Maps
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Webibi Credit Footer -->
+  <div style="background:#0a0a0a;padding:16px;text-align:center;font-size:13px;color:#666;font-family:system-ui, -apple-system, sans-serif;">
+    Built with ❤️ by 
+    <a href="https://webibi.tech" target="_blank" 
+       style="color:#8b5cf6;text-decoration:none;font-weight:600;">
+      webibi.tech
+    </a> 
+    — Get your full website from <strong style="color:#ffffff;">₹4,999 only</strong>. 
+    No monthly fees. Ever.
+  </div>
 
   <script>
     // Fallback logo helper functions

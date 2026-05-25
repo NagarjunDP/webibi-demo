@@ -665,7 +665,7 @@
     @media (min-width: 768px) {
       .menu-scroll-container {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 30px;
         overflow-x: visible;
         max-width: 1000px;
@@ -842,6 +842,37 @@
 </head>
 <body>
 
+<!-- Expiry Banner -->
+<div id="expiry-banner" style="position:sticky;top:0;z-index:10000;background:#1a1a1a;color:white;text-align:center;padding:10px 16px;font-size:14px;font-family:system-ui, -apple-system, sans-serif;">
+  ⏰ Demo expires in <span id="countdown" style="color:#FFD700;font-weight:bold;"></span> 
+  — Make it permanent for just 
+  <strong style="color:#FFD700;">₹4,999 only!</strong> 
+  <a href="https://webibi.tech" target="_blank" style="color:#25D366;text-decoration:underline;">webibi.tech</a> | 
+  <a href="https://wa.me/{{AGENCY_WHATSAPP_NUMBER}}?text=Hi! I want to make my demo website permanent. Business: {{BUSINESS_NAME}}" 
+     target="_blank" style="color:#25D366;text-decoration:none;font-weight:bold;">
+    💬 WhatsApp Now
+  </a>
+</div>
+
+<script>
+const expiry = new Date({{EXPIRY_TIMESTAMP}});
+function updateCountdown() {
+  const now = new Date();
+  const diff = expiry - now;
+  if (diff <= 0) {
+    document.getElementById('expiry-banner').innerHTML = '⚠️ This demo has expired. Contact <a href="https://webibi.tech" style="color:#25D366;">webibi.tech</a> to get your website!';
+    return;
+  }
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+  const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const secs = Math.floor((diff % (1000*60)) / 1000);
+  document.getElementById('countdown').textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+
   <!-- 1. DEMO ANNOUNCEMENT STRIP -->
   <div class="demo-strip">
     <div class="demo-strip-left">
@@ -929,30 +960,34 @@
 
   <!-- 6. SERVICES / MENU GRID (horizontal scroll on mobile) -->
   <section class="menu-section" id="services">
-    <h2 class="menu-title">Our Services</h2>
+    <h2 class="menu-title">Our Beauty Services</h2>
     <div class="menu-scroll-container">
       <!-- Card 1 -->
       <div class="menu-card">
         <div class="menu-card-body">
-          <h3 class="menu-card-title">Signature Haircut</h3>
-          <p class="menu-card-desc">Personalized cut, wash, and luxury blow dry customized for your hair type and style preferences.</p>
-          <div class="menu-card-price">From $75</div>
+          <h3 class="menu-card-title">✂️ Hair Styling</h3>
+          <p class="menu-card-desc">Expert cuts, colouring, and treatments by trained stylists using premium products.</p>
         </div>
       </div>
       <!-- Card 2 -->
       <div class="menu-card">
         <div class="menu-card-body">
-          <h3 class="menu-card-title">Full Balayage & Color</h3>
-          <p class="menu-card-desc">Custom hand-painted highlights designed to grow out seamlessly while giving a sun-kissed dimensional glow.</p>
-          <div class="menu-card-price">From $180</div>
+          <h3 class="menu-card-title">💅 Nail Art & Care</h3>
+          <p class="menu-card-desc">Creative nail designs and professional manicure and pedicure treatments.</p>
         </div>
       </div>
       <!-- Card 3 -->
       <div class="menu-card">
         <div class="menu-card-body">
-          <h3 class="menu-card-title">Keratin Smoothing</h3>
-          <p class="menu-card-desc">Restore shine, eliminate frizz, and drastically cut down daily styling times for smooth, healthy hair.</p>
-          <div class="menu-card-price">From $250</div>
+          <h3 class="menu-card-title">🧖 Spa & Relaxation</h3>
+          <p class="menu-card-desc">Rejuvenating facials, body massages and skin treatments for total wellness.</p>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="menu-card">
+        <div class="menu-card-body">
+          <h3 class="menu-card-title">💄 Bridal Packages</h3>
+          <p class="menu-card-desc">Complete bridal makeover packages for your most special day.</p>
         </div>
       </div>
     </div>
@@ -964,16 +999,16 @@
       <div class="quote-icon">“</div>
       <p class="testimonial-text">{{TOP_REVIEW}}</p>
       <div class="stars-row">★★★★★</div>
-      <span class="testimonial-author">Verified Salon Client</span>
+      <span class="testimonial-author">Client Verified Google Review</span>
     </div>
   </section>
 
   <!-- 8. CTA SECTION & FOOTER -->
   <section class="cta-section" id="contact">
-    <h2 class="cta-title">Ready to elevate your beauty with {{BUSINESS_NAME}}?</h2>
+    <h2 class="cta-title">Look Good. Feel Amazing.</h2>
     <div class="cta-btn-group">
-      <a href="tel:{{PHONE}}" class="btn-cta btn-cta-call">Call Us: {{PHONE}}</a>
-      <a href="https://wa.me/{{AGENCY_PHONE}}?text=Hi!%20I%20saw%20the%20logo%20glow%20and%20the%20salon%20demo%20for%20{{BUSINESS_NAME}}%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-whatsapp">WhatsApp Live</a>
+      <a href="tel:{{PHONE}}" class="btn-cta btn-cta-call">Book a Session</a>
+      <a href="https://wa.me/{{AGENCY_PHONE}}?text=Hi!%20I%20saw%20the%20logo%20glow%20and%20the%20salon%20demo%20for%20{{BUSINESS_NAME}}%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-whatsapp">WhatsApp Us</a>
     </div>
   </section>
 
@@ -986,10 +1021,51 @@
     <div class="footer-address">
       {{BUSINESS_NAME}} · {{CITY}}<br>
       Located in {{CITY}}<br>
-      Appointments: {{PHONE}}
+      Bookings: {{PHONE}}
     </div>
     <p class="copyright">© 2026 {{BUSINESS_NAME}}. Indulge in excellence.</p>
   </footer>
+
+  <!-- Find Us Section -->
+  <section style="padding:60px 20px;background:#f8f8f8;">
+    <div style="max-width:900px;margin:0 auto;font-family:system-ui, -apple-system, sans-serif;">
+      <h2 style="text-align:center;margin-bottom:8px;font-size:28px;font-weight:700;color:#0f172a;">
+        📍 Find Us
+      </h2>
+      <p style="text-align:center;color:#666;margin-bottom:24px;">
+        Visit us at {{CITY}} — we'd love to see you
+      </p>
+      <div style="border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+        <iframe
+          src="https://maps.google.com/maps?q={{BUSINESS_NAME_ENCODED}},{{CITY_ENCODED}},India&output=embed&z=15"
+          width="100%"
+          height="320"
+          frameborder="0"
+          style="border:0;display:block;"
+          allowfullscreen=""
+          loading="lazy">
+        </iframe>
+      </div>
+      <div style="text-align:center;margin-top:16px;">
+        <a href="https://maps.google.com/maps?q={{BUSINESS_NAME_ENCODED}},{{CITY_ENCODED}},India"
+           target="_blank"
+           style="display:inline-block;background:#4285F4;color:white;padding:12px 24px;border-radius:50px;text-decoration:none;font-weight:600;">
+          🗺️ Open in Google Maps
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Webibi Credit Footer -->
+  <div style="background:#0a0a0a;padding:16px;text-align:center;font-size:13px;color:#666;font-family:system-ui, -apple-system, sans-serif;">
+    Built with ❤️ by 
+    <a href="https://webibi.tech" target="_blank" 
+       style="color:#8b5cf6;text-decoration:none;font-weight:600;">
+      webibi.tech
+    </a> 
+    — Get your full website from <strong style="color:#ffffff;">₹4,999 only</strong>. 
+    No monthly fees. Ever.
+  </div>
 
   <script>
     // Fallback logo helper functions

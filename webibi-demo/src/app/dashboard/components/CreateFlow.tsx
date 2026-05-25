@@ -28,6 +28,7 @@ export default function CreateFlow({ onSuccess }: Props) {
   const [industry, setIndustry] = useState("");
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
+  const [tagline, setTagline] = useState("");
   const [phone, setPhone] = useState("");
   const [color, setColor] = useState(COLORS[0]);
   const [logo, setLogo] = useState<string | null>(null);
@@ -105,7 +106,7 @@ export default function CreateFlow({ onSuccess }: Props) {
 
     try {
       const token = localStorage.getItem("webibi_admin_token") || "";
-      const payload = { industry, name, city, phone, color, logoDataUrl: logo || undefined };
+      const payload = { industry, name, city, tagline, phone, color, logoDataUrl: logo || undefined };
 
       const res = await fetch("/api/generate", {
         method: "POST",
@@ -255,7 +256,7 @@ export default function CreateFlow({ onSuccess }: Props) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full h-12 px-4 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-              placeholder="e.g. Luigi's Bistro"
+              placeholder="e.g. Sri Ganesh Academy"
             />
           </div>
           <div>
@@ -265,8 +266,21 @@ export default function CreateFlow({ onSuccess }: Props) {
               value={city}
               onChange={(e) => setCity(e.target.value)}
               className="w-full h-12 px-4 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-              placeholder="e.g. Bengaluru"
+              placeholder="e.g. Hassan, Bengaluru, Mumbai"
             />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Tagline (Optional)</label>
+            <input
+              type="text"
+              value={tagline}
+              onChange={(e) => setTagline(e.target.value)}
+              className="w-full h-12 px-4 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+              placeholder="e.g. Shaping Tomorrow's Leaders Today"
+            />
+            <p style={{fontSize:'12px', color:'#666', marginTop:'4px'}}>
+              A short catchy line about your business (optional — AI will generate one if left empty)
+            </p>
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1.5">Phone Number (Optional)</label>
@@ -275,7 +289,7 @@ export default function CreateFlow({ onSuccess }: Props) {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className="w-full h-12 px-4 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-              placeholder="e.g. 9876543210"
+              placeholder="e.g. +91 98765 43210"
             />
           </div>
 

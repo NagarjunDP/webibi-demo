@@ -704,7 +704,7 @@
     @media (min-width: 768px) {
       .schedule-scroll {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 24px;
         overflow-x: visible;
         max-width: 1000px;
@@ -939,6 +939,37 @@
 </head>
 <body>
 
+<!-- Expiry Banner -->
+<div id="expiry-banner" style="position:sticky;top:0;z-index:10000;background:#1a1a1a;color:white;text-align:center;padding:10px 16px;font-size:14px;font-family:system-ui, -apple-system, sans-serif;">
+  ⏰ Demo expires in <span id="countdown" style="color:#FFD700;font-weight:bold;"></span> 
+  — Make it permanent for just 
+  <strong style="color:#FFD700;">₹4,999 only!</strong> 
+  <a href="https://webibi.tech" target="_blank" style="color:#25D366;text-decoration:underline;">webibi.tech</a> | 
+  <a href="https://wa.me/{{AGENCY_WHATSAPP_NUMBER}}?text=Hi! I want to make my demo website permanent. Business: {{BUSINESS_NAME}}" 
+     target="_blank" style="color:#25D366;text-decoration:none;font-weight:bold;">
+    💬 WhatsApp Now
+  </a>
+</div>
+
+<script>
+const expiry = new Date({{EXPIRY_TIMESTAMP}});
+function updateCountdown() {
+  const now = new Date();
+  const diff = expiry - now;
+  if (diff <= 0) {
+    document.getElementById('expiry-banner').innerHTML = '⚠️ This demo has expired. Contact <a href="https://webibi.tech" style="color:#25D366;">webibi.tech</a> to get your website!';
+    return;
+  }
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+  const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const secs = Math.floor((diff % (1000*60)) / 1000);
+  document.getElementById('countdown').textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+
   <!-- 1. DEMO ANNOUNCEMENT STRIP -->
   <div class="demo-strip">
     <div class="demo-strip-left">
@@ -1026,37 +1057,39 @@
 
   <!-- 6. SERVICES / SCHEDULE GRID (horizontal scroll on mobile) -->
   <section class="schedule-section" id="schedule">
-    <h2 class="schedule-title">This Week's Classes</h2>
+    <h2 class="schedule-title">Our Training Programs</h2>
     <div class="schedule-scroll">
       <!-- Card 1 -->
       <div class="class-card">
-        <span class="class-day">Mon / Wed</span>
-        <span class="class-name">HIIT Power</span>
+        <span class="class-name">💪 Strength Training</span>
         <div class="class-details">
-          <span class="class-time">07:00 AM - 08:00 AM</span>
-          <span class="class-trainer">Trainer: Alex M.</span>
+          <span class="class-trainer" style="margin-top:8px;line-height:1.5;opacity:0.8;">Professional weight training programs for all fitness levels with expert coaches.</span>
         </div>
-        <a href="tel:{{PHONE}}" class="class-link">Book Spot →</a>
+        <a href="tel:{{PHONE}}" class="class-link">Join Class →</a>
       </div>
       <!-- Card 2 -->
       <div class="class-card">
-        <span class="class-day">Tue / Thu</span>
-        <span class="class-name">Boxing Core</span>
+        <span class="class-name">🏃 Cardio & HIIT</span>
         <div class="class-details">
-          <span class="class-time">06:30 PM - 07:30 PM</span>
-          <span class="class-trainer">Trainer: Sarah J.</span>
+          <span class="class-trainer" style="margin-top:8px;line-height:1.5;opacity:0.8;">High intensity interval training and cardio sessions for maximum fat burn.</span>
         </div>
-        <a href="tel:{{PHONE}}" class="class-link">Book Spot →</a>
+        <a href="tel:{{PHONE}}" class="class-link">Join Class →</a>
       </div>
       <!-- Card 3 -->
       <div class="class-card">
-        <span class="class-day">Saturday</span>
-        <span class="class-name">Strength Lab</span>
+        <span class="class-name">🧘 Yoga & Flexibility</span>
         <div class="class-details">
-          <span class="class-time">09:00 AM - 10:30 AM</span>
-          <span class="class-trainer">Trainer: Marcus D.</span>
+          <span class="class-trainer" style="margin-top:8px;line-height:1.5;opacity:0.8;">Morning yoga and stretching classes for mind and body wellness.</span>
         </div>
-        <a href="tel:{{PHONE}}" class="class-link">Book Spot →</a>
+        <a href="tel:{{PHONE}}" class="class-link">Join Class →</a>
+      </div>
+      <!-- Card 4 -->
+      <div class="class-card">
+        <span class="class-name">🥗 Nutrition Coaching</span>
+        <div class="class-details">
+          <span class="class-trainer" style="margin-top:8px;line-height:1.5;opacity:0.8;">Personalised diet plans and nutrition guidance to complement your training.</span>
+        </div>
+        <a href="tel:{{PHONE}}" class="class-link">Join Class →</a>
       </div>
     </div>
   </section>
@@ -1088,16 +1121,16 @@
       <div class="quote-icon">“</div>
       <p class="testimonial-text">{{TOP_REVIEW}}</p>
       <div class="stars-row">★★★★★</div>
-      <span class="testimonial-author">Google Reviewer</span>
+      <span class="testimonial-author">Member Verified Google Review</span>
     </div>
   </section>
 
   <!-- 8. CTA SECTION & FOOTER -->
   <section class="cta-section" id="contact">
-    <h2 class="cta-title">YOUR FIRST CLASS IS FREE</h2>
+    <h2 class="cta-title">Start Your Transformation Today</h2>
     <div class="cta-btn-group">
-      <a href="tel:{{PHONE}}" class="btn-cta btn-cta-black">Join Gym Now</a>
-      <a href="https://wa.me/{{AGENCY_PHONE}}?text=Hi!%20I%20saw%20the%20demo%20for%20{{BUSINESS_NAME}}%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-outline">WhatsApp Live</a>
+      <a href="tel:{{PHONE}}" class="btn-cta btn-cta-black">Start Free Trial</a>
+      <a href="https://wa.me/{{AGENCY_PHONE}}?text=Hi!%20I%20saw%20the%20demo%20for%20{{BUSINESS_NAME}}%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-outline">WhatsApp Us</a>
     </div>
   </section>
 
@@ -1114,6 +1147,47 @@
     </div>
     <p class="copyright">© 2026 {{BUSINESS_NAME}}. Built with passion.</p>
   </footer>
+
+  <!-- Find Us Section -->
+  <section style="padding:60px 20px;background:#f8f8f8;">
+    <div style="max-width:900px;margin:0 auto;font-family:system-ui, -apple-system, sans-serif;">
+      <h2 style="text-align:center;margin-bottom:8px;font-size:28px;font-weight:700;color:#0f172a;">
+        📍 Find Us
+      </h2>
+      <p style="text-align:center;color:#666;margin-bottom:24px;">
+        Visit us at {{CITY}} — we'd love to see you
+      </p>
+      <div style="border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+        <iframe
+          src="https://maps.google.com/maps?q={{BUSINESS_NAME_ENCODED}},{{CITY_ENCODED}},India&output=embed&z=15"
+          width="100%"
+          height="320"
+          frameborder="0"
+          style="border:0;display:block;"
+          allowfullscreen=""
+          loading="lazy">
+        </iframe>
+      </div>
+      <div style="text-align:center;margin-top:16px;">
+        <a href="https://maps.google.com/maps?q={{BUSINESS_NAME_ENCODED}},{{CITY_ENCODED}},India"
+           target="_blank"
+           style="display:inline-block;background:#4285F4;color:white;padding:12px 24px;border-radius:50px;text-decoration:none;font-weight:600;">
+          🗺️ Open in Google Maps
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Webibi Credit Footer -->
+  <div style="background:#0a0a0a;padding:16px;text-align:center;font-size:13px;color:#666;font-family:system-ui, -apple-system, sans-serif;">
+    Built with ❤️ by 
+    <a href="https://webibi.tech" target="_blank" 
+       style="color:#8b5cf6;text-decoration:none;font-weight:600;">
+      webibi.tech
+    </a> 
+    — Get your full website from <strong style="color:#ffffff;">₹4,999 only</strong>. 
+    No monthly fees. Ever.
+  </div>
 
   <script>
     // Fallback logo helper functions

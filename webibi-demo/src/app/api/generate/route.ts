@@ -50,11 +50,27 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Business name and city are required" }, { status: 400 });
     }
 
+    // Format business name — proper title case with spaces preserved
+    const formattedBusinessName = name
+      .trim()
+      .split(' ')
+      .filter((word: string) => word.length > 0)
+      .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+
+    // Format city name same way
+    const formattedCity = city
+      .trim()
+      .split(' ')
+      .filter((word: string) => word.length > 0)
+      .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+
     const indKey = (industry || '').toLowerCase().trim();
     const activeIndustry = NICHES.includes(indKey) ? indKey : 'clinic';
 
     // 2. Generate Unique Slug (Conflict Prevention)
-    const baseSlug = name.toLowerCase()
+    const baseSlug = formattedBusinessName.toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, ""); // trim hyphens
     
@@ -126,16 +142,16 @@ export async function POST(req: Request) {
     const colorTertiary = (extractedColors && extractedColors[2]) || colorSecondary;
 
     // 5. Mock Google Places ratings (as requested: remove Places API completely)
-    const rating = "4.8";
-    const reviewCount = (Math.floor(Math.random() * 220) + 80).toString();
-    const topReview = `Absolutely love this place. Best in ${city} hands down. The staff is incredible and the quality is unmatched.`;
+    let rating = "4.8";
+    let reviewCount = (Math.floor(Math.random() * 220) + 80).toString();
+    const topReview = `Absolutely love this place. Best in ${formattedCity} hands down. The staff is incredible and the quality is unmatched.`;
 
     // 6. Fallback copywriting
     const fallbackCopy = {
-      tagline: tagline || `The best choice in ${city}`,
-      hero_headline: `Redefining Excellence in ${city}`,
+      tagline: tagline || `The best choice in ${formattedCity}`,
+      hero_headline: `Redefining Excellence in ${formattedCity}`,
       hero_sub: `Experience unmatched quality and dedication crafted specifically for you.`,
-      about_text: `We are deeply rooted in ${city}, bringing years of passion and expertise to our community. Our commitment to your satisfaction drives everything we do.`,
+      about_text: `We are deeply rooted in ${formattedCity}, bringing years of passion and expertise to our community. Our commitment to your satisfaction drives everything we do.`,
       cta: `Call Now`,
       reviews: [
         { name: "Rahul Sharma", review: "Absolutely wonderful experience. Highly recommended!" },
@@ -149,26 +165,30 @@ export async function POST(req: Request) {
     // 7. Gemini AI Copywriting
     const geminiKey = process.env.GEMINI_API_KEY;
     if (geminiKey && geminiKey !== 'dummy') {
-      const prompt = `You are a professional local business copywriter. Reply ONLY with a clean JSON object, no markdown block syntax, no explanation, no headers.
-      
-Business Name: ${name}
-Industry/Niche: ${industry || 'local business'}
-City: ${city}
-Google Rating: ${rating}/5 (${reviewCount} reviews)
+      const prompt = `
+You are generating website copy for a ${activeIndustry} business called "${formattedBusinessName}" located in ${formattedCity}, India.
 
-Return exactly this JSON structure:
+STRICT RULES:
+- ALL copy must be 100% relevant to the ${activeIndustry} industry ONLY
+- Never use medical/health language unless industry is "clinic"
+- Never use food/dining language unless industry is "restaurant"  
+- Generate copy that a ${activeIndustry} business owner in India would be proud of
+- Use warm, professional, locally relevant tone for Indian market
+
+Generate the following in strict JSON format only, no markdown:
 {
-  "tagline": "5-7 word punchy tagline",
-  "hero_headline": "8-12 word hero headline",
-  "hero_sub": "one sentence benefit statement, max 18 words",
-  "about_text": "two sentences about the business, warm and local, max 35 words",
-  "cta": "3-word call to action button text",
-  "reviews": [
-    { "name": "Indian Name 1", "review": "1-2 sentence realistic review" },
-    { "name": "Indian Name 2", "review": "1-2 sentence realistic review" },
-    { "name": "Indian Name 3", "review": "1-2 sentence realistic review" }
-  ]
-}`;
+  "tagline": "short punchy tagline for a ${activeIndustry} in ${formattedCity}",
+  "heroHeadline": "compelling hero headline for a ${activeIndustry} business",
+  "heroSubline": "supporting subline that builds trust for a ${activeIndustry}",
+  "aboutText": "2 sentence about us paragraph for a ${activeIndustry} in ${formattedCity}",
+  "ctaText": "action-oriented CTA button text for a ${activeIndustry}",
+  "review1": { "name": "Indian first name", "text": "realistic 1-2 sentence ${activeIndustry} review mentioning ${formattedCity}" },
+  "review2": { "name": "Indian first name", "text": "realistic 1-2 sentence ${activeIndustry} review" },
+  "review3": { "name": "Indian first name", "text": "realistic 1-2 sentence ${activeIndustry} review" },
+  "rating": "a number between 4.6 and 4.9",
+  "reviewCount": "a number between 120 and 350"
+}
+`;
 
       try {
         const geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`, {
@@ -188,13 +208,19 @@ Return exactly this JSON structure:
             text = text.replace(/^```[a-zA-Z0-9]*\n/, '').replace(/\n```$/, '').trim();
           }
           const aiJson = JSON.parse(text);
+          if (aiJson.rating) rating = aiJson.rating.toString();
+          if (aiJson.reviewCount) reviewCount = aiJson.reviewCount.toString();
           copy = {
-            tagline: aiJson.tagline || fallbackCopy.tagline,
-            hero_headline: aiJson.hero_headline || fallbackCopy.hero_headline,
-            hero_sub: aiJson.hero_sub || fallbackCopy.hero_sub,
-            about_text: aiJson.about_text || fallbackCopy.about_text,
-            cta: aiJson.cta || fallbackCopy.cta,
-            reviews: (aiJson.reviews && aiJson.reviews.length === 3) ? aiJson.reviews : fallbackCopy.reviews
+            tagline: tagline || aiJson.tagline || `The best choice in ${formattedCity}`,
+            hero_headline: aiJson.heroHeadline || aiJson.hero_headline || fallbackCopy.hero_headline,
+            hero_sub: aiJson.heroSubline || aiJson.hero_sub || fallbackCopy.hero_sub,
+            about_text: aiJson.aboutText || aiJson.about_text || fallbackCopy.about_text,
+            cta: aiJson.ctaText || aiJson.cta || fallbackCopy.cta,
+            reviews: [
+              { name: aiJson.review1?.name || aiJson.reviews?.[0]?.name || fallbackCopy.reviews[0].name, review: aiJson.review1?.text || aiJson.reviews?.[0]?.review || fallbackCopy.reviews[0].review },
+              { name: aiJson.review2?.name || aiJson.reviews?.[1]?.name || fallbackCopy.reviews[1].name, review: aiJson.review2?.text || aiJson.reviews?.[1]?.review || fallbackCopy.reviews[1].review },
+              { name: aiJson.review3?.name || aiJson.reviews?.[2]?.name || fallbackCopy.reviews[2].name, review: aiJson.review3?.text || aiJson.reviews?.[2]?.review || fallbackCopy.reviews[2].review }
+            ]
           };
         } else {
           console.warn("Gemini API returned error:", geminiRes.status);
@@ -219,7 +245,7 @@ Return exactly this JSON structure:
 
     const variants = ['variant-a', 'variant-b', 'variant-c', 'variant-d', 'variant-e'];
     const layoutVariant = variants[Math.floor(Math.random() * variants.length)];
-    const businessInitials = name.trim().slice(0, 2).toUpperCase() || 'WB';
+    const businessInitials = formattedBusinessName.trim().slice(0, 2).toUpperCase() || 'WB';
 
     const badgeMap: Record<string, string> = {
       restaurant: '🍽 Restaurant',
@@ -227,6 +253,10 @@ Return exactly this JSON structure:
       gym: '💪 Gym & Fitness',
       clinic: '🩺 Medical Clinic',
       events: '🎉 Event Venue',
+      law: '⚖️ Law Firm',
+      realestate: '🏢 Real Estate',
+      education: '📚 Education',
+      hotel: '🏨 Hotel'
     };
     const industryBadge = badgeMap[activeIndustry] || '💼 Business';
     const agencyPhone = process.env.AGENCY_PHONE || '+919876543210';
@@ -240,12 +270,14 @@ Return exactly this JSON structure:
     const generatedAt = new Date();
     const expiresAt = new Date(generatedAt.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days later
     const expiryTimestamp = expiresAt.getTime().toString();
-    const businessNameEncoded = encodeURIComponent(name);
+    const businessNameEncoded = encodeURIComponent(formattedBusinessName);
+    const cityEncoded = encodeURIComponent(formattedCity);
 
     // 10. Inject Variables & Tokens
     let htmlOutput = templateHtml
-      .replaceAll('{{BUSINESS_NAME}}', name)
+      .replaceAll('{{BUSINESS_NAME}}', formattedBusinessName)
       .replaceAll('{{BUSINESS_NAME_ENCODED}}', businessNameEncoded)
+      .replaceAll('{{CITY_ENCODED}}', cityEncoded)
       .replaceAll('{{SLUG}}', slug)
       .replaceAll('{{EXPIRY_TIMESTAMP}}', expiryTimestamp)
       .replaceAll('{{AGENCY_PHONE}}', agencyPhone)
@@ -266,7 +298,7 @@ Return exactly this JSON structure:
       .replaceAll('{{CTA_TEXT}}', copy.cta)
       .replaceAll('{{FOOTER_TAGLINE}}', copy.tagline)
       .replaceAll('{{PHONE}}', phone || '')
-      .replaceAll('{{CITY}}', city)
+      .replaceAll('{{CITY}}', formattedCity)
       .replaceAll('{{LOGO_URL}}', logoEscaped)
       .replaceAll('{{COLOR_PRIMARY}}', colorPrimary)
       .replaceAll('{{COLOR_SECONDARY}}', colorSecondary)
@@ -356,9 +388,9 @@ Return exactly this JSON structure:
 
     const demoDoc = {
       slug,
-      businessName: name,
+      businessName: formattedBusinessName,
       industry: activeIndustry,
-      city,
+      city: formattedCity,
       phone: phone || '',
       agentPhone: session.phoneNumber,
       primaryColor: colorPrimary,

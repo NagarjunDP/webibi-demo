@@ -673,10 +673,15 @@
       color: var(--brand);
       font-weight: 700;
     }
+    .card-desc {
+      color: #666;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
     @media (min-width: 768px) {
       .cards-scroll-wrap {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 24px;
         overflow-x: visible;
         max-width: 1000px;
@@ -921,6 +926,37 @@
 </head>
 <body>
 
+<!-- Expiry Banner -->
+<div id="expiry-banner" style="position:sticky;top:0;z-index:10000;background:#1a1a1a;color:white;text-align:center;padding:10px 16px;font-size:14px;font-family:system-ui, -apple-system, sans-serif;">
+  ⏰ Demo expires in <span id="countdown" style="color:#FFD700;font-weight:bold;"></span> 
+  — Make it permanent for just 
+  <strong style="color:#FFD700;">₹4,999 only!</strong> 
+  <a href="https://webibi.tech" target="_blank" style="color:#25D366;text-decoration:underline;">webibi.tech</a> | 
+  <a href="https://wa.me/{{AGENCY_WHATSAPP_NUMBER}}?text=Hi! I want to make my demo website permanent. Business: {{BUSINESS_NAME}}" 
+     target="_blank" style="color:#25D366;text-decoration:none;font-weight:bold;">
+    💬 WhatsApp Now
+  </a>
+</div>
+
+<script>
+const expiry = new Date({{EXPIRY_TIMESTAMP}});
+function updateCountdown() {
+  const now = new Date();
+  const diff = expiry - now;
+  if (diff <= 0) {
+    document.getElementById('expiry-banner').innerHTML = '⚠️ This demo has expired. Contact <a href="https://webibi.tech" style="color:#25D366;">webibi.tech</a> to get your website!';
+    return;
+  }
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+  const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const secs = Math.floor((diff % (1000*60)) / 1000);
+  document.getElementById('countdown').textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+
   <!-- 1. DEMO ANNOUNCEMENT STRIP -->
   <div class="demo-strip">
     <div class="demo-strip-left">
@@ -1008,54 +1044,38 @@
 
   <!-- 6. SERVICES / TYPES GRID (horizontal scroll on mobile) -->
   <section class="events-types-section" id="specialities">
-    <h2 class="events-types-title">What We Plan</h2>
+    <h2 class="events-types-title">Our Event Services</h2>
     <div class="cards-scroll-wrap">
       <!-- Card 1 -->
       <div class="event-type-card">
         <span class="card-icon">💍</span>
         <div class="card-info">
-          <span class="card-name">Weddings</span>
-          <span class="card-price">Premium Planning</span>
+          <span class="card-name">Wedding Planning</span>
+          <p class="card-desc">End-to-end wedding management from venue to décor to catering coordination.</p>
         </div>
       </div>
       <!-- Card 2 -->
       <div class="event-type-card">
-        <span class="card-icon">💼</span>
+        <span class="card-icon">🎂</span>
         <div class="card-info">
-          <span class="card-name">Corporate Events</span>
-          <span class="card-price">Flawless Execution</span>
+          <span class="card-name">Birthday Celebrations</span>
+          <p class="card-desc">Themed birthday parties for all ages with complete decoration and entertainment.</p>
         </div>
       </div>
       <!-- Card 3 -->
       <div class="event-type-card">
-        <span class="card-icon">🎂</span>
+        <span class="card-icon">🏢</span>
         <div class="card-info">
-          <span class="card-name">Birthdays & Parties</span>
-          <span class="card-price">Lively & Festive</span>
+          <span class="card-name">Corporate Events</span>
+          <p class="card-desc">Professional corporate event planning, conferences and team building activities.</p>
         </div>
       </div>
       <!-- Card 4 -->
       <div class="event-type-card">
-        <span class="card-icon">✨</span>
+        <span class="card-icon">🎊</span>
         <div class="card-info">
-          <span class="card-name">Anniversaries</span>
-          <span class="card-price">Elegant Decors</span>
-        </div>
-      </div>
-      <!-- Card 5 -->
-      <div class="event-type-card">
-        <span class="card-icon">🍼</span>
-        <div class="card-info">
-          <span class="card-name">Baby Showers</span>
-          <span class="card-price">Joyful Celebrations</span>
-        </div>
-      </div>
-      <!-- Card 6 -->
-      <div class="event-type-card">
-        <span class="card-icon">🎪</span>
-        <div class="card-info">
-          <span class="card-name">Social Gala</span>
-          <span class="card-price">Custom Themes</span>
+          <span class="card-name">Custom Celebrations</span>
+          <p class="card-desc">Anniversary parties, engagements and milestone events tailored to your vision.</p>
         </div>
       </div>
     </div>
@@ -1085,17 +1105,17 @@
       <div class="stars-row">★★★★★</div>
       <div class="testimonial-author-group">
         <div class="avatar">EV</div>
-        <span class="testimonial-author">Verified Client Review</span>
+        <span class="testimonial-author">CLIENT VERIFIED GOOGLE REVIEW</span>
       </div>
     </div>
   </section>
 
   <!-- 8. CTA SECTION & FOOTER -->
   <section class="cta-section" id="contact">
-    <h2 class="cta-title">Let's Plan Your Perfect Event</h2>
+    <h2 class="cta-title">Creating Memories That Last Forever</h2>
     <div class="cta-btn-group">
-      <a href="tel:{{PHONE}}" class="btn-cta btn-cta-white">Request Consultation</a>
-      <a href="https://wa.me/{{AGENCY_PHONE}}?text=Hi!%20I%20saw%20the%20demo%20for%20{{BUSINESS_NAME}}%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-outline">WhatsApp Live</a>
+      <a href="tel:{{PHONE}}" class="btn-cta btn-cta-white">Plan My Event</a>
+      <a href="https://wa.me/{{AGENCY_PHONE}}?text=Hi!%20I%20saw%20the%20demo%20for%20{{BUSINESS_NAME}}%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-outline">WhatsApp Us</a>
     </div>
   </section>
 
@@ -1112,6 +1132,47 @@
     </div>
     <p class="copyright">© 2026 {{BUSINESS_NAME}}. Built with passion.</p>
   </footer>
+
+  <!-- Find Us Section -->
+  <section style="padding:60px 20px;background:#f8f8f8;">
+    <div style="max-width:900px;margin:0 auto;font-family:system-ui, -apple-system, sans-serif;">
+      <h2 style="text-align:center;margin-bottom:8px;font-size:28px;font-weight:700;color:#0f172a;">
+        📍 Find Us
+      </h2>
+      <p style="text-align:center;color:#666;margin-bottom:24px;">
+        Visit us at {{CITY}} — we'd love to see you
+      </p>
+      <div style="border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+        <iframe
+          src="https://maps.google.com/maps?q={{BUSINESS_NAME_ENCODED}},{{CITY_ENCODED}},India&output=embed&z=15"
+          width="100%"
+          height="320"
+          frameborder="0"
+          style="border:0;display:block;"
+          allowfullscreen=""
+          loading="lazy">
+        </iframe>
+      </div>
+      <div style="text-align:center;margin-top:16px;">
+        <a href="https://maps.google.com/maps?q={{BUSINESS_NAME_ENCODED}},{{CITY_ENCODED}},India"
+           target="_blank"
+           style="display:inline-block;background:#4285F4;color:white;padding:12px 24px;border-radius:50px;text-decoration:none;font-weight:600;">
+          🗺️ Open in Google Maps
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Webibi Credit Footer -->
+  <div style="background:#0a0a0a;padding:16px;text-align:center;font-size:13px;color:#666;font-family:system-ui, -apple-system, sans-serif;">
+    Built with ❤️ by 
+    <a href="https://webibi.tech" target="_blank" 
+       style="color:#8b5cf6;text-decoration:none;font-weight:600;">
+      webibi.tech
+    </a> 
+    — Get your full website from <strong style="color:#ffffff;">₹4,999 only</strong>. 
+    No monthly fees. Ever.
+  </div>
 
   <script>
     // Fallback logo helper functions

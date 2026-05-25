@@ -672,7 +672,7 @@
     @media (min-width: 768px) {
       .menu-scroll-container {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 30px;
         overflow-x: visible;
         max-width: 1000px;
@@ -849,6 +849,37 @@
 </head>
 <body>
 
+<!-- Expiry Banner -->
+<div id="expiry-banner" style="position:sticky;top:0;z-index:10000;background:#1a1a1a;color:white;text-align:center;padding:10px 16px;font-size:14px;font-family:system-ui, -apple-system, sans-serif;">
+  ⏰ Demo expires in <span id="countdown" style="color:#FFD700;font-weight:bold;"></span> 
+  — Make it permanent for just 
+  <strong style="color:#FFD700;">₹4,999 only!</strong> 
+  <a href="https://webibi.tech" target="_blank" style="color:#25D366;text-decoration:underline;">webibi.tech</a> | 
+  <a href="https://wa.me/{{AGENCY_WHATSAPP_NUMBER}}?text=Hi! I want to make my demo website permanent. Business: {{BUSINESS_NAME}}" 
+     target="_blank" style="color:#25D366;text-decoration:none;font-weight:bold;">
+    💬 WhatsApp Now
+  </a>
+</div>
+
+<script>
+const expiry = new Date({{EXPIRY_TIMESTAMP}});
+function updateCountdown() {
+  const now = new Date();
+  const diff = expiry - now;
+  if (diff <= 0) {
+    document.getElementById('expiry-banner').innerHTML = '⚠️ This demo has expired. Contact <a href="https://webibi.tech" style="color:#25D366;">webibi.tech</a> to get your website!';
+    return;
+  }
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+  const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const secs = Math.floor((diff % (1000*60)) / 1000);
+  document.getElementById('countdown').textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+
   <!-- 1. DEMO ANNOUNCEMENT STRIP -->
   <div class="demo-strip">
     <div class="demo-strip-left">
@@ -936,33 +967,38 @@
 
   <!-- 6. SERVICES / MENU GRID (horizontal scroll on mobile) -->
   <section class="menu-section" id="menu">
-    <h2 class="menu-title">Chef's Highlights</h2>
+    <h2 class="menu-title">Our Menu Highlights</h2>
     <div class="menu-scroll-container">
       <!-- Card 1 -->
       <div class="menu-card">
-        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=85&auto=format&fit=crop" alt="Signature Dish" class="menu-card-img" onerror="this.src='/assets/restaurant/gallery1-1.jpg'; this.onerror=null;">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=85&auto=format&fit=crop" alt="Dine In" class="menu-card-img" onerror="this.src='/assets/restaurant/gallery1-1.jpg'; this.onerror=null;">
         <div class="menu-card-body">
-          <h3 class="menu-card-title">Chef's Special Selection</h3>
-          <p class="menu-card-desc">Indulge in our locally sourced, seasonal vegetables paired with premium house seasonings and grilled to perfection.</p>
-          <div class="menu-card-price">$24.00</div>
+          <h3 class="menu-card-title">🍽️ Dine In Experience</h3>
+          <p class="menu-card-desc">Enjoy a warm ambience with freshly prepared dishes made from local ingredients.</p>
         </div>
       </div>
       <!-- Card 2 -->
       <div class="menu-card">
-        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800&q=85&auto=format&fit=crop" alt="Signature Main" class="menu-card-img" onerror="this.src='/assets/restaurant/gallery2-1.jpg'; this.onerror=null;">
+        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800&q=85&auto=format&fit=crop" alt="Takeaway" class="menu-card-img" onerror="this.src='/assets/restaurant/gallery2-1.jpg'; this.onerror=null;">
         <div class="menu-card-body">
-          <h3 class="menu-card-title">Artisan Roasted Platter</h3>
-          <p class="menu-card-desc">A premium cuts platter served alongside rich purée and reduction, featuring signature spices and fresh herbs.</p>
-          <div class="menu-card-price">$38.00</div>
+          <h3 class="menu-card-title">🥡 Takeaway & Delivery</h3>
+          <p class="menu-card-desc">Quick and easy ordering for home delivery or takeaway at your convenience.</p>
         </div>
       </div>
       <!-- Card 3 -->
       <div class="menu-card">
-        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=85&auto=format&fit=crop" alt="Premium Dessert" class="menu-card-img" onerror="this.src='/assets/restaurant/gallery3-1.jpg'; this.onerror=null;">
+        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=85&auto=format&fit=crop" alt="Special Occasions" class="menu-card-img" onerror="this.src='/assets/restaurant/gallery3-1.jpg'; this.onerror=null;">
         <div class="menu-card-body">
-          <h3 class="menu-card-title">Gourmet Decadence</h3>
-          <p class="menu-card-desc">End your experience with our handcrafted signature dessert, featuring rich textures and fresh berry compote.</p>
-          <div class="menu-card-price">$14.00</div>
+          <h3 class="menu-card-title">🎂 Special Occasions</h3>
+          <p class="menu-card-desc">Private dining and catering packages for birthdays, anniversaries and events.</p>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="menu-card">
+        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=85&auto=format&fit=crop" alt="All Day Dining" class="menu-card-img" onerror="this.src='/assets/restaurant/section-1.jpg'; this.onerror=null;">
+        <div class="menu-card-body">
+          <h3 class="menu-card-title">☕ All Day Dining</h3>
+          <p class="menu-card-desc">Breakfast through dinner — fresh meals served all day for every craving.</p>
         </div>
       </div>
     </div>
@@ -974,16 +1010,16 @@
       <div class="quote-icon">“</div>
       <p class="testimonial-text">{{TOP_REVIEW}}</p>
       <div class="stars-row">★★★★★</div>
-      <span class="testimonial-author">Google Reviewer</span>
+      <span class="testimonial-author">Diner Verified Google Review</span>
     </div>
   </section>
 
   <!-- 8. CTA SECTION & FOOTER -->
   <section class="cta-section" id="contact">
-    <h2 class="cta-title">Ready to experience the taste of {{BUSINESS_NAME}}?</h2>
+    <h2 class="cta-title">Taste the Difference Today</h2>
     <div class="cta-btn-group">
-      <a href="tel:{{PHONE}}" class="btn-cta btn-cta-call">Call Us: {{PHONE}}</a>
-      <a href="https://wa.me/{{AGENCY_PHONE}}?text=Hi!%20I%20saw%20the%20demo%20for%20{{BUSINESS_NAME}}%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-whatsapp">WhatsApp Live</a>
+      <a href="tel:{{PHONE}}" class="btn-cta btn-cta-call">Reserve a Table</a>
+      <a href="https://wa.me/{{AGENCY_PHONE}}?text=Hi!%20I%20saw%20the%20demo%20for%20{{BUSINESS_NAME}}%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-whatsapp">Order on WhatsApp</a>
     </div>
   </section>
 
@@ -1000,6 +1036,47 @@
     </div>
     <p class="copyright">© 2026 {{BUSINESS_NAME}}. Built with passion.</p>
   </footer>
+
+  <!-- Find Us Section -->
+  <section style="padding:60px 20px;background:#f8f8f8;">
+    <div style="max-width:900px;margin:0 auto;font-family:system-ui, -apple-system, sans-serif;">
+      <h2 style="text-align:center;margin-bottom:8px;font-size:28px;font-weight:700;color:#0f172a;">
+        📍 Find Us
+      </h2>
+      <p style="text-align:center;color:#666;margin-bottom:24px;">
+        Visit us at {{CITY}} — we'd love to see you
+      </p>
+      <div style="border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+        <iframe
+          src="https://maps.google.com/maps?q={{BUSINESS_NAME_ENCODED}},{{CITY_ENCODED}},India&output=embed&z=15"
+          width="100%"
+          height="320"
+          frameborder="0"
+          style="border:0;display:block;"
+          allowfullscreen=""
+          loading="lazy">
+        </iframe>
+      </div>
+      <div style="text-align:center;margin-top:16px;">
+        <a href="https://maps.google.com/maps?q={{BUSINESS_NAME_ENCODED}},{{CITY_ENCODED}},India"
+           target="_blank"
+           style="display:inline-block;background:#4285F4;color:white;padding:12px 24px;border-radius:50px;text-decoration:none;font-weight:600;">
+          🗺️ Open in Google Maps
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Webibi Credit Footer -->
+  <div style="background:#0a0a0a;padding:16px;text-align:center;font-size:13px;color:#666;font-family:system-ui, -apple-system, sans-serif;">
+    Built with ❤️ by 
+    <a href="https://webibi.tech" target="_blank" 
+       style="color:#8b5cf6;text-decoration:none;font-weight:600;">
+      webibi.tech
+    </a> 
+    — Get your full website from <strong style="color:#ffffff;">₹4,999 only</strong>. 
+    No monthly fees. Ever.
+  </div>
 
   <script>
     // Fallback logo helper functions
