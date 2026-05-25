@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta property="og:title" content="4 — Free Demo Website" />
+<meta property="og:description" content="4 — See your free demo website. Valid for 7 days only." />
+<meta property="og:image" content="https://demo.webibi.tech/api/og/4" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://demo.webibi.tech/demos/4" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://demo.webibi.tech/api/og/4" />
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4 | 4</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --brand: #6c4126;
+      --brand-dark: #0b121d;
+      --brand-light: #6c4126;
+      --dark: #0f172a;
+      --light: #f8fafc;
+      --warm: #f1f5f9;
+      --font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: #ffffff;
+      color: var(--dark);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--brand);
+      border-radius: 4px;
+    }
+
+    /* 1. DEMO ANNOUNCEMENT STRIP */
+    .demo-strip {
+      position: relative;
+      width: 100%;
+      height: 44px;
+      background: #0f0f0f;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+    .demo-strip-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .pulsing-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #22c55e;
+      animation: pulse-green 2s ease-in-out infinite;
+    }
+    @keyframes pulse-green {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+    .demo-strip-right {
+      color: var(--brand);
+      font-weight: 600;
+      font-size: 11px;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+      cursor: pointer;
+    }
+    .demo-strip-right:hover {
+      opacity: 0.8;
+    }
+    @media (max-width: 480px) {
+      .demo-strip {
+        justify-content: center;
+        gap: 12px;
+        padding: 0 10px;
+      }
+    }
+
+    /* 2. FIXED NAV */
+    .navbar {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+      z-index: 9990;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
+    .nav-logo-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .logo-wrapper {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-logo {
+      height: 44px;
+      width: 44px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.08);
+      object-fit: cover;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.12));
+    }
+    .logo-fallback {
+      width: 44px;
+      height: 44px;
+      background: var(--brand);
+      color: #ffffff;
+      font-family: var(--font-family);
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .nav-name {
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--dark);
+      letter-spacing: -0.3px;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+      padding: 0 20px;
+      background: var(--brand);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .nav-btn:hover {
+      background: var(--brand-dark);
+      transform: translateY(-1px);
+    }
+
+    /* 3. HERO & LAYOUT SYSTEM */
+    .hero {
+      position: relative;
+      margin-top: -70px;
+      height: 100dvh;
+      width: 100%;
+      display: flex;
+      z-index: 1;
+      overflow: hidden;
+      box-sizing: border-box;
+      background-color: #000;
+    }
+    .hero-img-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding: clamp(24px, 5vw, 60px);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Hero Logo Treatment */
+    .hero-logo-card-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      width: fit-content;
+    }
+    .hero-logo-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 14px;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0 0 20px #6c412640);
+    }
+    .hero-logo-img-container {
+      position: relative;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-logo {
+      height: 80px;
+      border-radius: 10px;
+      object-fit: contain;
+    }
+    .hero-logo-fallback {
+      width: 80px;
+      height: 80px;
+      background: var(--brand);
+      color: #ffffff;
+      font-family: var(--font-family);
+      font-size: 2.2rem;
+      font-weight: 700;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+    }
+    .hero-industry-badge {
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--brand);
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .hero-logo-tagline {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--brand);
+      text-align: center;
+    }
+
+    .hero-title {
+      font-weight: 800;
+      font-size: clamp(2.2rem, 8vw, 4.5rem);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .hero-headline {
+      font-size: clamp(1.3rem, 4vw, 2.2rem);
+      font-weight: 600;
+      margin-bottom: 16px;
+      opacity: 0.95;
+      color: var(--brand);
+    }
+    .hero-subline {
+      font-size: 1.05rem;
+      font-weight: 300;
+      max-width: 600px;
+      line-height: 1.6;
+      opacity: 0.85;
+      margin-bottom: 16px;
+    }
+
+    .hero-rating-badge {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 8px 16px;
+      border-radius: 100px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: #fff;
+      width: fit-content;
+      margin-top: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    .hero-rating-badge .stars {
+      color: #fbbf24;
+    }
+
+    /* Layout Variant A — Dark cinematic */
+    .hero.variant-a {
+      justify-content: center;
+      align-items: flex-end;
+    }
+    .hero.variant-a .hero-overlay {
+      background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
+    }
+    .hero.variant-a .hero-content {
+      text-align: center;
+      align-items: center;
+      padding-bottom: 8%;
+      color: #fff;
+    }
+    .hero.variant-a .hero-logo-card-wrapper {
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Layout Variant B — Left fade */
+    .hero.variant-b {
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .hero.variant-b .hero-overlay {
+      background: linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.1) 100%);
+    }
+    .hero.variant-b .hero-content {
+      text-align: left;
+      align-items: flex-start;
+      max-width: 600px;
+      color: #fff;
+    }
+    .hero.variant-b .hero-logo-card-wrapper {
+      align-items: flex-start;
+    }
+
+    /* Layout Variant C — Brand color wash */
+    .hero.variant-c {
+      justify-content: center;
+      align-items: center;
+    }
+    .hero.variant-c .hero-overlay {
+      background: linear-gradient(135deg, var(--brand) 0%, rgba(0,0,0,0.7) 100%);
+      opacity: 0.6;
+    }
+    .hero.variant-c .hero-content {
+      text-align: center;
+      align-items: center;
+      color: #fff;
+    }
+    .hero.variant-c .hero-logo-card-wrapper {
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Layout Variant D — Minimal top overlay */
+    .hero.variant-d {
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .hero.variant-d .hero-overlay {
+      background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.0) 60%);
+    }
+    .hero.variant-d .hero-content {
+      text-align: center;
+      align-items: center;
+      padding-top: clamp(100px, 15vh, 180px);
+      color: #fff;
+    }
+    .hero.variant-d .hero-logo-card-wrapper {
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Layout Variant E — Split (no overlay) */
+    .hero.variant-e {
+      display: flex;
+      flex-direction: row;
+      background: var(--light);
+      height: auto;
+      min-height: 100dvh;
+    }
+    .hero.variant-e .hero-img-container {
+      position: relative;
+      width: 50%;
+      height: 100dvh;
+      order: 2;
+    }
+    .hero.variant-e .hero-overlay {
+      display: none;
+    }
+    .hero.variant-e .hero-content {
+      position: relative;
+      width: 50%;
+      padding: 60px;
+      order: 1;
+      justify-content: center;
+      align-items: flex-start;
+      text-align: left;
+      color: var(--dark);
+      background: var(--light);
+    }
+    .hero.variant-e .hero-logo-card-wrapper {
+      align-items: flex-start;
+    }
+    .hero.variant-e .hero-logo-card {
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+      filter: drop-shadow(0 0 20px #6c412620);
+    }
+    .hero.variant-e .hero-title {
+      color: var(--dark);
+    }
+    .hero.variant-e .hero-headline {
+      color: var(--brand-dark);
+    }
+    .hero.variant-e .hero-subline {
+      color: #475569;
+    }
+    .hero.variant-e .hero-rating-badge {
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      color: var(--dark);
+    }
+
+    @media (max-width: 767px) {
+      .hero.variant-e {
+        flex-direction: column;
+      }
+      .hero.variant-e .hero-img-container {
+        width: 100%;
+        height: 45vh;
+        order: 1;
+      }
+      .hero.variant-e .hero-content {
+        width: 100%;
+        order: 2;
+        padding: 40px 20px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .hero-logo-img-container { height: 100px; }
+      .hero-logo { height: 100px; }
+      .hero-logo-fallback { width: 100px; height: 100px; font-size: 2.8rem; }
+    }
+
+    /* Typing animation letter keyframes */
+    @keyframes typeLetter {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 4. STATS STRIP */
+    .stats-strip {
+      background: var(--dark);
+      color: #fff;
+      padding: 60px 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      text-align: center;
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-number {
+      font-weight: 700;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      color: var(--brand);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.7;
+    }
+
+    /* 5. ABOUT SECTION WITH WATERMARK */
+    .about-section {
+      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
+      position: relative;
+      overflow: hidden;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .watermark-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(4);
+      opacity: 0.08;
+      width: 120px;
+      height: 120px;
+      pointer-events: none;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .watermark-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .about-image-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+    }
+    .about-img {
+      width: 100%;
+      max-width: 450px;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    }
+    .about-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: center;
+      z-index: 1;
+    }
+    .about-title {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .about-text {
+      color: #475569;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+    .about-link {
+      display: inline-flex;
+      align-items: center;
+      color: var(--brand);
+      text-decoration: none;
+      font-weight: 600;
+      gap: 6px;
+      transition: gap 0.2s ease;
+    }
+    .about-link:hover {
+      gap: 10px;
+    }
+    @media (min-width: 768px) {
+      .about-section {
+        flex-direction: row;
+        align-items: center;
+        gap: 60px;
+      }
+      .about-image-container, .about-content {
+        flex: 1;
+      }
+    }
+
+    /* 6. SERVICES / SPECIALITIES (horizontal scroll on mobile) */
+    .services-section {
+      background: var(--light);
+      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
+    }
+    .services-header {
+      max-width: 700px;
+      margin: 0 auto 40px auto;
+      text-align: center;
+    }
+    .services-title {
+      font-size: clamp(2.2rem, 6vw, 3.2rem);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .services-subtitle {
+      font-size: 1.05rem;
+      color: #64748b;
+    }
+    .services-scroll {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 20px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .services-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .service-card {
+      flex: 0 0 280px;
+      scroll-snap-align: start;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 16px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+      transition: all 0.3s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      border-color: var(--brand);
+    }
+    .service-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .service-desc {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.6;
+    }
+    @media (min-width: 768px) {
+      .services-scroll {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 24px;
+        overflow-x: visible;
+        max-width: 1040px;
+        margin: 0 auto;
+      }
+      .service-card {
+        flex: unset;
+      }
+    }
+
+
+
+    /* 7. TESTIMONIAL */
+    .testimonial-section {
+      background: var(--dark);
+      color: #ffffff;
+      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
+      position: relative;
+    }
+    .testimonial-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      border-left: 4px solid var(--brand);
+      padding-left: clamp(20px, 5vw, 40px);
+    }
+    .quote-icon {
+      font-family: var(--font-family);
+      font-size: 7rem;
+      color: var(--brand);
+      line-height: 1;
+      height: 40px;
+      margin-top: -20px;
+      opacity: 0.8;
+    }
+    .testimonial-text {
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      line-height: 1.6;
+      font-style: italic;
+    }
+    .stars-row {
+      color: #fbbf24;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+    }
+    .testimonial-author-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+    .testimonial-author {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.7;
+    }
+
+    /* 8. CTA SECTION */
+    .cta-section {
+      background: var(--brand);
+      color: #ffffff;
+      padding: clamp(60px, 8vw, 100px) clamp(16px, 5vw, 40px);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
+    .cta-title {
+      font-weight: 800;
+      font-size: clamp(2rem, 8vw, 3.8rem);
+      line-height: 1.1;
+      color: #ffffff;
+    }
+    .cta-btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 480px;
+    }
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+      width: 100%;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    }
+    .btn-cta-white {
+      background: #ffffff;
+      color: var(--dark);
+    }
+    .btn-cta-white:hover {
+      background: #f1f5f9;
+      transform: translateY(-2px);
+    }
+    .btn-cta-outline {
+      border: 2px solid #ffffff;
+      color: #ffffff;
+      background: transparent;
+    }
+    .btn-cta-outline:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-2px);
+    }
+    @media (min-width: 480px) {
+      .cta-btn-group {
+        flex-direction: row;
+      }
+    }
+
+    /* FOOTER */
+    .footer {
+      background: var(--light);
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 60px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    .footer-logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer-logo {
+      height: 52px;
+      max-width: 150px;
+      object-fit: contain;
+      background: rgba(0, 0, 0, 0.03);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 6px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+    }
+    .footer-logo-fallback {
+      width: 52px;
+      height: 52px;
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--dark);
+      border-radius: 10px;
+      font-family: var(--font-family);
+      font-size: 1.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .powered-by {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.4);
+    }
+    .footer-address {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #475569;
+    }
+    .copyright {
+      font-size: 0.75rem;
+      opacity: 0.5;
+    }
+  
+<style>
+.whatsapp-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #25D366;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.5);
+  z-index: 9999;
+  text-decoration: none;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.6); }
+  70% { box-shadow: 0 0 0 15px rgba(37,211,102,0); }
+  100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+}
+</style>
+
+</style>
+
+
+</head>
+<body>
+
+<!-- Expiry Banner -->
+<div id="expiry-banner" style="position:relative;z-index:10000;background:#1a1a1a;color:white;text-align:center;padding:10px 16px;font-size:14px;font-family:system-ui, -apple-system, sans-serif;">
+  ⏰ Demo expires in <span id="countdown" style="color:#FFD700;font-weight:bold;"></span> 
+  — Make it permanent for just 
+  <span style="text-decoration:line-through;color:#aaa;margin-right:5px;">₹9,999</span><strong style="color:#FFD700;">₹4,999 only!</strong> 
+  <a href="https://webibi.tech" target="_blank" style="color:#25D366;text-decoration:underline;">webibi.tech</a> | 
+  <a href="https://wa.me/9739436319?text=Hi! I want to make my demo website permanent. Business: 4" 
+     target="_blank" style="color:#25D366;text-decoration:none;font-weight:bold;">
+    💬 WhatsApp Now
+  </a>
+</div>
+
+<script>
+const expiry = new Date(1780329879028);
+function updateCountdown() {
+  const now = new Date();
+  const diff = expiry - now;
+  if (diff <= 0) {
+    document.getElementById('expiry-banner').innerHTML = '⚠️ This demo has expired. Contact <a href="https://webibi.tech" style="color:#25D366;">webibi.tech</a> to get your website!';
+    return;
+  }
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+  const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const secs = Math.floor((diff % (1000*60)) / 1000);
+  document.getElementById('countdown').textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+
+
+  <!-- 1. DEMO ANNOUNCEMENT STRIP -->
+  <div class="demo-strip">
+    <div class="demo-strip-left">
+      <span class="pulsing-dot"></span>
+      <span>LIVE PREVIEW · 4</span>
+    </div>
+    <a href="https://wa.me/+919739436319?text=Hi!%20I%20saw%20the%20demo%20for%204%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="demo-strip-right">
+      🚀 Get This Website Live →
+    </a>
+  </div>
+
+  <!-- 2. FIXED NAV -->
+  <nav class="navbar">
+    <a href="#" class="nav-logo-group">
+      <div class="logo-wrapper">
+        <img id="nav-logo-img" src="/logos/4.jpeg" alt="4" class="nav-logo" onerror="handleLogoError(this)">
+        <div id="nav-logo-fallback" class="logo-fallback" style="display: none;">4</div>
+      </div>
+      <span class="nav-name">4</span>
+    </a>
+    <a href="#contact" class="nav-btn">Discover Our Programs</a>
+  </nav>
+
+  <!-- 3. HERO AREA -->
+  <section class="hero variant-a" id="hero">
+    <div class="hero-img-container">
+      <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&q=85&auto=format&fit=crop" alt="Education Hero" class="hero-img" onerror="this.src='/assets/education/hero-1.jpg'; this.onerror=null;">
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <!-- Logo billboard card -->
+      <div class="hero-logo-card-wrapper">
+        <div class="hero-logo-card">
+          <div class="hero-logo-img-container">
+            <img id="hero-logo-img" src="/logos/4.jpeg" alt="4" class="hero-logo" onerror="handleHeroLogoError(this)">
+            <div id="hero-logo-fallback" class="hero-logo-fallback" style="display: none;">4</div>
+          </div>
+          <div class="hero-industry-badge">📚 Education</div>
+        </div>
+        <span class="hero-logo-tagline">4</span>
+      </div>
+
+      <h1 class="hero-title"><span class="business-name-animate">4</span></h1>
+      <h2 class="hero-headline">Ignite Your Potential: Premier Education in 4, India.</h2>
+      <p class="hero-subline">Experience personalized guidance and innovative teaching methods designed for academic excellence and holistic development.</p>
+
+      <!-- Google Rating badge inside Hero -->
+      <div class="hero-rating-badge">
+        <span class="stars">★★★★★</span>
+        <span class="rating-text"><strong>4.7/5</strong> · 215 Reviews</span>
+      </div>
+
+      <div class="cta-btn-group" style="margin-top: 24px;">
+        <a href="#specialities" class="btn-cta btn-cta-white">Explore Our Programs</a>
+        <a href="#contact" class="btn-cta btn-cta-outline">Book a Free Consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. STATS STRIP -->
+  <section class="stats-strip">
+    <div class="stat-item">
+      <div class="stat-number">4.7★</div>
+      <div class="stat-label">Google Rating</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">215+</div>
+      <div class="stat-label">Students Enrolled</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">Expert</div>
+      <div class="stat-label">Educators</div>
+    </div>
+  </section>
+
+  <!-- 5. ABOUT SECTION WITH WATERMARK -->
+  <section class="about-section" id="about">
+    <div class="watermark-container">
+      <img id="watermark-logo-img" src="/logos/4.jpeg" alt="" class="watermark-logo" onerror="this.style.display='none';">
+    </div>
+    <div class="about-image-container">
+      <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=85&auto=format&fit=crop" alt="About Education" class="about-img" onerror="this.src='/assets/education/section-1.jpg'; this.onerror=null;">
+    </div>
+    <div class="about-content">
+      <h2 class="about-title">Empowering Minds</h2>
+      <p class="about-text">At 4, we are dedicated to cultivating a nurturing and stimulating learning environment where every student can thrive. Located in 4, India, our institution empowers young minds with knowledge, skills, and values for a successful tomorrow.</p>
+      <a href="#specialities" class="about-link">Explore Our Programs →</a>
+    </div>
+  </section>
+
+  <!-- 6. SERVICES / SPECIALITIES GRID (horizontal scroll on mobile) -->
+  <section class="services-section" id="specialities">
+    <div class="services-header">
+      <h2 class="services-title">Our Programs & Courses</h2>
+      <span class="services-subtitle">Empowering students for a brighter future.</span>
+    </div>
+    <div class="services-scroll">
+      <!-- Card 1 -->
+      <div class="service-card">
+        <span class="service-name">📚 Academic Excellence</span>
+        <p class="service-desc">Comprehensive curriculum designed for competitive exams and holistic development.</p>
+      </div>
+      <!-- Card 2 -->
+      <div class="service-card">
+        <span class="service-name">🎯 Skill Development</span>
+        <p class="service-desc">Practical training in communication, leadership and critical thinking skills.</p>
+      </div>
+      <!-- Card 3 -->
+      <div class="service-card">
+        <span class="service-name">💻 Digital Learning</span>
+        <p class="service-desc">Modern e-learning tools and smart classroom technology for better outcomes.</p>
+      </div>
+      <!-- Card 4 -->
+      <div class="service-card">
+        <span class="service-name">🏆 Career Guidance</span>
+        <p class="service-desc">Expert mentorship and career counseling to help students achieve their goals.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. TESTIMONIAL SECTION -->
+  <section class="testimonial-section">
+    <div class="testimonial-container">
+      <div class="quote-icon">“</div>
+      <p class="testimonial-text">Absolutely love this place. Best in 4 hands down. The staff is incredible and the quality is unmatched.</p>
+      <div class="stars-row">★★★★★</div>
+      <div class="testimonial-author-group">
+        <div class="avatar">ST</div>
+        <span class="testimonial-author">STUDENT VERIFIED GOOGLE REVIEW</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. CTA SECTION & FOOTER -->
+  <section class="cta-section" id="contact">
+    <h2 class="cta-title">Your Child's Future Starts Here</h2>
+    <div class="cta-btn-group">
+      <a href="tel:4" class="btn-cta btn-cta-white">Enquire Now</a>
+      <a href="https://wa.me/+919739436319?text=Hi!%20I%20saw%20the%20demo%20for%204%20and%20I'm%20interested%20in%20getting%20a%20real%20website." target="_blank" class="btn-cta btn-cta-outline">WhatsApp Us</a>
+    </div>
+  </section>
+
+  
+<!-- Reviews Section -->
+<section style="padding:60px 20px;background:#f9f9f9;">
+  <h2 style="text-align:center;margin-bottom:32px;font-weight:700;font-size:2rem;color:var(--dark);">⭐ What Our Customers Say</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:900px;margin:0 auto;">
+    
+    <div style="background:white;padding:24px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div style="width:40px;height:40px;border-radius:50%;background:#4f46e5;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">P</div>
+        <div>
+          <div style="font-weight:600;color:var(--dark);">Priya</div>
+          <div style="color:#FFD700;">★★★★★</div>
+        </div>
+      </div>
+      <p style="color:#555;line-height:1.6;">My child has truly blossomed at 4. The educators here in 4 are incredibly supportive, fostering a genuine love for learning.</p>
+      <div style="font-size:12px;color:#999;margin-top:8px;">Posted on Google</div>
+    </div>
+
+    <div style="background:white;padding:24px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div style="width:40px;height:40px;border-radius:50%;background:#10b981;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">R</div>
+        <div>
+          <div style="font-weight:600;color:var(--dark);">Rahul</div>
+          <div style="color:#FFD700;">★★★★★</div>
+        </div>
+      </div>
+      <p style="color:#555;line-height:1.6;">The personalized attention and comprehensive curriculum at 4 have made a significant difference in my academic journey. Highly recommend!</p>
+      <div style="font-size:12px;color:#999;margin-top:8px;">Posted on Google</div>
+    </div>
+
+    <div style="background:white;padding:24px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div style="width:40px;height:40px;border-radius:50%;background:#f59e0b;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;">A</div>
+        <div>
+          <div style="font-weight:600;color:var(--dark);">Anjali</div>
+          <div style="color:#FFD700;">★★★★★</div>
+        </div>
+      </div>
+      <p style="color:#555;line-height:1.6;">Choosing 4 was the best decision for my career path. The guidance and resources provided have been instrumental in my success.</p>
+      <div style="font-size:12px;color:#999;margin-top:8px;">Posted on Google</div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-logo-container">
+      <img id="footer-logo-img" src="/logos/4.jpeg" alt="4" class="footer-logo" onerror="handleFooterLogoError(this)">
+      <div id="footer-logo-fallback" class="footer-logo-fallback" style="display: none;">4</div>
+      <span class="powered-by">Powered by Webibi</span>
+    </div>
+    <div class="footer-address">
+      4 · 4<br>
+      Located in 4<br>
+      Inquiries: 4
+    </div>
+    <p class="copyright">© 2026 4. Shaping Tomorrow's Leaders Today.</p>
+  </footer>
+
+  <!-- Find Us Section -->
+  <section style="padding:60px 20px;background:#f8f8f8;">
+    <div style="max-width:900px;margin:0 auto;font-family:system-ui, -apple-system, sans-serif;">
+      <h2 style="text-align:center;margin-bottom:8px;font-size:28px;font-weight:700;color:#0f172a;">
+        📍 Find Us
+      </h2>
+      <p style="text-align:center;color:#666;margin-bottom:24px;">
+        Visit us at 4 — we'd love to see you
+      </p>
+      <div style="border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+        <iframe
+          src="https://maps.google.com/maps?q=4,4,India&output=embed&z=15"
+          width="100%"
+          height="320"
+          frameborder="0"
+          style="border:0;display:block;"
+          allowfullscreen=""
+          loading="lazy">
+        </iframe>
+      </div>
+      <div style="text-align:center;margin-top:16px;">
+        <a href="https://maps.google.com/maps?q=4,4,India"
+           target="_blank"
+           style="display:inline-block;background:#4285F4;color:white;padding:12px 24px;border-radius:50px;text-decoration:none;font-weight:600;">
+          🗺️ Open in Google Maps
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Webibi Credit Footer -->
+  <div style="background:#0a0a0a;padding:16px;text-align:center;font-size:13px;color:#666;font-family:system-ui, -apple-system, sans-serif;">
+    Built with ❤️ by 
+    <a href="https://webibi.tech" target="_blank" 
+       style="color:#8b5cf6;text-decoration:none;font-weight:600;">
+      webibi.tech
+    </a> 
+    — Get your full website from <span style="text-decoration:line-through;color:#aaa;margin-right:5px;">₹9,999</span><strong style="color:#ffffff;">₹4,999 only</strong>. 
+    No monthly fees. Ever.
+  </div>
+
+  <script>
+    // Fallback logo helper functions
+    function handleLogoError(img) {
+      img.style.display = 'none';
+      const fallback = img.nextElementSibling;
+      if (fallback) fallback.style.display = 'flex';
+    }
+    function handleHeroLogoError(img) {
+      img.style.display = 'none';
+      const fallback = img.nextElementSibling;
+      if (fallback) fallback.style.display = 'flex';
+    }
+    function handleFooterLogoError(img) {
+      img.style.display = 'none';
+      const fallback = img.nextElementSibling;
+      if (fallback) fallback.style.display = 'flex';
+    }
+
+    // Auto-detect missing logos on DOMContentLoaded
+    document.addEventListener("DOMContentLoaded", () => {
+      const navImg = document.getElementById("nav-logo-img");
+      if (navImg && (!navImg.getAttribute("src") || navImg.getAttribute("src").trim() === "")) {
+        handleLogoError(navImg);
+      }
+      const heroImg = document.getElementById("hero-logo-img");
+      if (heroImg && (!heroImg.getAttribute("src") || heroImg.getAttribute("src").trim() === "")) {
+        handleHeroLogoError(heroImg);
+      }
+      const footerImg = document.getElementById("footer-logo-img");
+      if (footerImg && (!footerImg.getAttribute("src") || footerImg.getAttribute("src").trim() === "")) {
+        handleFooterLogoError(footerImg);
+      }
+
+      // Typing animation for business name
+      const typeEl = document.querySelector(".business-name-animate");
+      if (typeEl) {
+        const nameText = typeEl.textContent;
+        typeEl.innerHTML = "";
+        typeEl.style.display = "inline-block";
+        for (let i = 0; i < nameText.length; i++) {
+          const s = document.createElement("span");
+          s.textContent = nameText[i];
+          s.style.opacity = "0";
+          s.style.display = "inline-block";
+          s.style.animation = "typeLetter 0.05s forwards";
+          s.style.animationDelay = `${(i * 0.8) / nameText.length}s`;
+          typeEl.appendChild(s);
+        }
+      }
+    });
+  </script>
+
+<!-- WhatsApp Float Button -->
+<a href="https://wa.me/9739436319?text=Hi!%20I%20saw%20my%20demo%20for%204%20and%20want%20the%20full%20website!" 
+   class="whatsapp-float" target="_blank">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
+    <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+  </svg>
+  <span>Get This Website</span>
+</a>
+
+
+<script>
+// Heartbeat tracker — sends ping every 30 seconds while page is open
+const slug = '4';
+const businessName = '4';
+
+async function sendHeartbeat() {
+  await fetch('/api/track/heartbeat', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ slug, businessName, timestamp: new Date().toISOString() })
+  });
+}
+
+// Send on load
+sendHeartbeat();
+
+// Send every 30 seconds while active
+setInterval(sendHeartbeat, 30000);
+
+// Send on page close
+window.addEventListener('beforeunload', sendHeartbeat);
+</script>
+
+
+  <!-- Tracking and Expiration System -->
+  <script>
+    (async function() {
+      const slug = "4";
+      const mainAppUrl = "http://localhost:3000";
+      try {
+        // 1. Check expiration status
+        const statusRes = await fetch(mainAppUrl + "/api/demos/" + slug + "/status");
+        const statusData = await statusRes.json();
+        
+        if (statusData.expired) {
+          document.body.innerHTML = `
+            <div style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background-color: #0b0b0f; color: #ffffff; text-align: center; padding: 24px;">
+              <div style="width: 64px; height: 64px; border-radius: 20px; background: linear-gradient(135deg, #ff416c, #ff4b2b); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 8px 24px rgba(255, 75, 43, 0.2);">
+                <span style="font-size: 32px; font-weight: bold;">⚠️</span>
+              </div>
+              <h1 style="font-size: 28px; font-weight: 800; margin: 0 0 12px 0; tracking: -0.025em;">This demo has expired</h1>
+              <p style="color: #8f929d; font-size: 16px; margin: 0; max-width: 320px; line-height: 1.5;">Demo pages are active for 7 days only. Contact your representative to reactivate.</p>
+            </div>
+          `;
+          return;
+        }
+
+        // 2. Track open event
+        const detectDevice = () => {
+          const ua = navigator.userAgent;
+          if (/Mobi|Android|iPhone/i.test(ua)) return 'Mobile';
+          if (/Tablet|iPad/i.test(ua)) return 'Tablet';
+          return 'Desktop';
+        };
+
+        await fetch(mainAppUrl + "/api/demos/" + slug + "/opens", {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            device: detectDevice()
+          })
+        });
+      } catch (e) {
+        console.error("Tracking error:", e);
+      }
+    })();
+  </script>
+</body>
+</html>

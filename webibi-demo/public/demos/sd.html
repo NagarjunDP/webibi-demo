@@ -54,9 +54,7 @@
 
     /* 1. DEMO ANNOUNCEMENT STRIP */
     .demo-strip {
-      position: sticky;
-      top: 0;
-      left: 0;
+      position: relative;
       width: 100%;
       height: 44px;
       background: #0f0f0f;
@@ -109,8 +107,8 @@
 
     /* 2. FIXED NAV */
     .navbar {
-      position: fixed;
-      top: 44px;
+      position: sticky;
+      top: 0;
       left: 0;
       right: 0;
       height: 70px;
@@ -190,6 +188,7 @@
     /* 3. HERO & LAYOUT SYSTEM */
     .hero {
       position: relative;
+      margin-top: -70px;
       height: 100dvh;
       width: 100%;
       display: flex;
@@ -976,7 +975,7 @@
 <body>
 
 <!-- Expiry Banner -->
-<div id="expiry-banner" style="position:sticky;top:0;z-index:10000;background:#1a1a1a;color:white;text-align:center;padding:10px 16px;font-size:14px;">
+<div id="expiry-banner" style="position:relative;z-index:10000;background:#1a1a1a;color:white;text-align:center;padding:10px 16px;font-size:14px;">
   ⏰ This demo expires in <span id="countdown" style="color:#FFD700;font-weight:bold;"></span> — 
   Get your full website at <strong style="color:#FFD700;">20% off!</strong> 
   <a href="https://webibi.tech" style="color:#25D366;text-decoration:underline;">webibi.tech</a> | 

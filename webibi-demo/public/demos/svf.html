@@ -43,9 +43,7 @@
 
     /* 1. DEMO ANNOUNCEMENT STRIP */
     .demo-strip {
-      position: sticky;
-      top: 0;
-      left: 0;
+      position: relative;
       width: 100%;
       height: 44px;
       background: #0f0f0f;
@@ -98,8 +96,8 @@
 
     /* 2. FIXED NAV */
     .navbar {
-      position: fixed;
-      top: 44px;
+      position: sticky;
+      top: 0;
       left: 0;
       right: 0;
       height: 70px;
@@ -179,6 +177,7 @@
     /* 3. HERO & LAYOUT SYSTEM */
     .hero {
       position: relative;
+      margin-top: -70px;
       height: 100dvh;
       width: 100%;
       display: flex;

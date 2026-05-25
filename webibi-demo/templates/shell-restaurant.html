@@ -30,9 +30,7 @@
 
     /* 1. DEMO ANNOUNCEMENT STRIP */
     .demo-strip {
-      position: sticky;
-      top: 0;
-      left: 0;
+      position: relative;
       width: 100%;
       height: 44px;
       background: #0f0f0f;
@@ -85,8 +83,8 @@
 
     /* 2. FIXED NAV */
     .navbar {
-      position: fixed;
-      top: 44px;
+      position: sticky;
+      top: 0;
       left: 0;
       right: 0;
       height: 70px;
@@ -167,6 +165,7 @@
     /* 3. HERO & LAYOUT SYSTEM */
     .hero {
       position: relative;
+      margin-top: -70px;
       height: 100dvh;
       width: 100%;
       display: flex;
@@ -850,10 +849,10 @@
 <body>
 
 <!-- Expiry Banner -->
-<div id="expiry-banner" style="position:sticky;top:0;z-index:10000;background:#1a1a1a;color:white;text-align:center;padding:10px 16px;font-size:14px;font-family:system-ui, -apple-system, sans-serif;">
+<div id="expiry-banner" style="position:relative;z-index:10000;background:#1a1a1a;color:white;text-align:center;padding:10px 16px;font-size:14px;font-family:system-ui, -apple-system, sans-serif;">
   ⏰ Demo expires in <span id="countdown" style="color:#FFD700;font-weight:bold;"></span> 
   — Make it permanent for just 
-  <strong style="color:#FFD700;">₹4,999 only!</strong> 
+  <span style="text-decoration:line-through;color:#aaa;margin-right:5px;">₹9,999</span><strong style="color:#FFD700;">₹4,999 only!</strong> 
   <a href="https://webibi.tech" target="_blank" style="color:#25D366;text-decoration:underline;">webibi.tech</a> | 
   <a href="https://wa.me/{{AGENCY_WHATSAPP_NUMBER}}?text=Hi! I want to make my demo website permanent. Business: {{BUSINESS_NAME}}" 
      target="_blank" style="color:#25D366;text-decoration:none;font-weight:bold;">
@@ -1074,7 +1073,7 @@ setInterval(updateCountdown, 1000);
        style="color:#8b5cf6;text-decoration:none;font-weight:600;">
       webibi.tech
     </a> 
-    — Get your full website from <strong style="color:#ffffff;">₹4,999 only</strong>. 
+    — Get your full website from <span style="text-decoration:line-through;color:#aaa;margin-right:5px;">₹9,999</span><strong style="color:#ffffff;">₹4,999 only</strong>. 
     No monthly fees. Ever.
   </div>
 
