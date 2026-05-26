@@ -2,6 +2,9 @@ import { notFound, redirect } from "next/navigation";
 import { Metadata } from 'next';
 import { getFirebaseAdmin } from "@/lib/firebaseAdmin";
 
+export const dynamic = 'force-dynamic';
+
+
 interface PageProps {
   params: {
     slug: string;

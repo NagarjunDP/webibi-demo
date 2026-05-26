@@ -3,6 +3,9 @@ import { getFirebaseAdmin } from '@/lib/firebaseAdmin';
 import fs from 'fs';
 import path from 'path';
 
+export const dynamic = 'force-dynamic';
+
+
 interface Props {
   params: {
     slug: string;

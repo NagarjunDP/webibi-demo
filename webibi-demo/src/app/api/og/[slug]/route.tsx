@@ -1,6 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ImageResponse } from 'next/og';
 import { getFirebaseAdmin } from "@/lib/firebaseAdmin";
+
+export const dynamic = 'force-dynamic';
+
 
 export async function GET(
   request: Request,
