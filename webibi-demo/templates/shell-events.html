@@ -32,29 +32,9 @@
     }
 
     :root {
-      --brand: {
-          {
-          COLOR_PRIMARY
-        }
-      }
-
-      ;
-
-      --brand-dark: {
-          {
-          COLOR_TERTIARY
-        }
-      }
-
-      ;
-
-      --brand-light: {
-          {
-          COLOR_SECONDARY
-        }
-      }
-
-      ;
+      --brand: {{COLOR_PRIMARY}};
+      --brand-dark: {{COLOR_TERTIARY}};
+      --brand-light: {{COLOR_SECONDARY}};
       --ink: #0d0b08;
       --ink-soft: #3d3830;
       --paper: #faf8f4;
@@ -1510,7 +1490,7 @@
     window.addEventListener('beforeunload', sendHeartbeat);
 
     // Expiry countdown
-    const expiry = new Date({{ EXPIRY_TIMESTAMP }});
+    const expiry = new Date('{{ EXPIRY_TIMESTAMP }}');
     function updateCountdown() {
       const diff = expiry - new Date();
       if (diff <= 0) {
