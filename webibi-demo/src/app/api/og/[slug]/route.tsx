@@ -56,99 +56,111 @@ export async function GET(
             display: 'flex',
             height: '100%',
             width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'column',
             backgroundColor: primaryColor,
-            backgroundImage: 'linear-gradient(to bottom right, rgba(0,0,0,0.4), rgba(0,0,0,0.8))',
+            backgroundImage: 'linear-gradient(to bottom right, rgba(0,0,0,0.6), rgba(0,0,0,0.95))',
             color: 'white',
-            textAlign: 'center',
-            padding: '40px',
-            position: 'relative'
+            flexDirection: 'row',
+            alignItems: 'stretch',
           }}
         >
-          {logoUrl ? (
-            <div
-              style={{
+          {/* Left Column */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            padding: '60px',
+            width: '50%',
+            height: '100%',
+          }}>
+            <div style={{
+               fontSize: 72,
+               fontWeight: 900,
+               letterSpacing: '-0.02em',
+               marginBottom: 24,
+               lineHeight: 1.1,
+               textShadow: '0 4px 20px rgba(0,0,0,0.5)'
+            }}>
+              {businessName}
+            </div>
+            <div style={{
+               fontSize: 32,
+               color: 'rgba(255,255,255,0.85)',
+               lineHeight: 1.4,
+               fontWeight: 500
+            }}>
+              {tagline}
+            </div>
+            
+            <div style={{ display: 'flex', marginTop: 'auto' }}>
+              <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'white',
-                padding: '20px',
-                borderRadius: '24px',
-                marginBottom: '40px',
-                boxShadow: '0 10px 40px rgba(0,0,0,0.5)'
-              }}
-            >
-              {/* Using native img tag for vercel/og */}
-              <img src={logoUrl} width="160" height="160" style={{ objectFit: 'contain' }} alt="Logo" />
+                backgroundColor: 'rgba(0,0,0,0.3)',
+                padding: '16px 24px',
+                borderRadius: '100px',
+                border: '1px solid rgba(255,255,255,0.1)'
+              }}>
+                <span style={{ fontSize: 24, fontWeight: 600, color: '#38bdf8' }}>✨ Live Demo by webibi.tech</span>
+              </div>
             </div>
-          ) : (
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'white',
-                padding: '20px',
-                borderRadius: '24px',
-                marginBottom: '40px',
-                boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
-                width: 160,
-                height: 160,
-                fontSize: 64,
-                color: primaryColor,
-                fontWeight: 'bold'
-              }}
-            >
-              {businessName.charAt(0).toUpperCase()}
-            </div>
-          )}
-          
-          <div
-            style={{
-              fontSize: 32,
-              fontStyle: 'normal',
-              fontWeight: 800,
-              letterSpacing: '-0.02em',
-              marginBottom: 16,
-              textShadow: '0 4px 10px rgba(0,0,0,0.5)'
-            }}
-          >
-            {businessName}
           </div>
-          
-          <div
-            style={{
-              fontSize: 18,
-              fontStyle: 'normal',
-              fontWeight: 400,
-              color: 'rgba(255, 255, 255, 0.85)',
-              textShadow: '0 2px 5px rgba(0,0,0,0.5)',
-            }}
-          >
-            {tagline}
-          </div>
-          
-          <div
-            style={{
+
+          {/* Right Column */}
+          <div style={{
+            display: 'flex',
+            width: '50%',
+            height: '100%',
+            backgroundColor: '#f8fafc',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '60px',
+            position: 'relative',
+            overflow: 'hidden',
+            boxShadow: '-20px 0 60px rgba(0,0,0,0.6)'
+          }}>
+            {/* Decorative background elements so it never looks empty */}
+            <div style={{
               position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '60px',
-              backgroundColor: 'rgba(0,0,0,0.4)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: 16,
-              fontWeight: 500,
-              color: 'rgba(255,255,255,0.9)',
-              letterSpacing: '0.05em',
-              borderTop: '1px solid rgba(255,255,255,0.1)'
-            }}
-          >
-            ✨ Free Demo by webibi.tech
+              width: '600px',
+              height: '600px',
+              borderRadius: '300px',
+              backgroundColor: primaryColor,
+              opacity: 0.1,
+              top: '-150px',
+              right: '-150px',
+            }} />
+            
+            <div style={{
+              position: 'absolute',
+              width: '400px',
+              height: '400px',
+              borderRadius: '200px',
+              backgroundColor: primaryColor,
+              opacity: 0.15,
+              bottom: '-100px',
+              left: '-100px',
+            }} />
+
+            {logoUrl ? (
+               <img src={logoUrl} style={{ width: '100%', height: '100%', objectFit: 'contain', zIndex: 10 }} alt="Logo" />
+            ) : (
+               <div style={{ 
+                 display: 'flex',
+                 alignItems: 'center',
+                 justifyContent: 'center',
+                 width: '280px', 
+                 height: '280px', 
+                 backgroundColor: 'white',
+                 borderRadius: '60px',
+                 boxShadow: '0 20px 50px rgba(0,0,0,0.1)',
+                 fontSize: 140, 
+                 color: primaryColor, 
+                 fontWeight: 900,
+                 zIndex: 10
+               }}>
+                 {businessName.charAt(0).toUpperCase()}
+               </div>
+            )}
           </div>
         </div>
       ),
