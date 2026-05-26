@@ -21,8 +21,30 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "demo.webibi.tech | Your Website in 60 seconds",
-  description: "AI-powered website demo generator for Webibi.",
+  title: 'Webibi — Your Business Website in 20 Seconds',
+  description: 'Upload your logo. AI builds a stunning demo website instantly. Free. No tech skills needed.',
+  openGraph: {
+    title: 'Webibi — Your Business Website in 20 Seconds',
+    description: 'Upload your logo. AI builds your website in 20 seconds. Free demo for every business.',
+    url: 'https://demo.webibi.tech',
+    siteName: 'Webibi',
+    images: [
+      {
+        url: 'https://demo.webibi.tech/og-default.png',
+        width: 1200,
+        height: 630,
+        alt: 'Webibi — Your Business Website in 20 Seconds',
+      }
+    ],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Webibi — Your Business Website in 20 Seconds',
+    description: 'Upload your logo. AI builds your website in 20 seconds.',
+    images: ['https://demo.webibi.tech/og-default.png'],
+  },
 };
 
 export default function RootLayout({
@@ -40,7 +62,7 @@ export default function RootLayout({
           jetbrainsMono.variable
         )}
       >
-        <main className="max-w-[480px] mx-auto min-h-screen relative overflow-x-hidden border-x border-white/5 bg-[#0a0a0f] shadow-2xl">
+        <main className="max-w-[480px] mx-auto min-h-screen relative overflow-x-hidden bg-[#080808]">
           {children}
         </main>
       </body>

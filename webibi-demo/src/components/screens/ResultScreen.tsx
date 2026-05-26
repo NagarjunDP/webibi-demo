@@ -96,7 +96,8 @@ export default function ResultScreen({ state, updateState }: Props) {
   }, []);
 
   const displayUrl = `demo.webibi.tech/${demoSlug}`;
-  const actualUrl = `http://${demoHost}/${demoSlug}`;
+  const protocol = demoHost.includes("localhost") ? "http" : "https";
+  const actualUrl = `${protocol}://${demoHost}/${demoSlug}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(actualUrl);
@@ -218,6 +219,7 @@ export default function ResultScreen({ state, updateState }: Props) {
         style={{ perspective: "1000px" }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
+        onClick={() => window.open(actualUrl, '_blank')}
       >
         <div 
           ref={mockupRef}

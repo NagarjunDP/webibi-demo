@@ -272,6 +272,9 @@ Generate the following in strict JSON format only, no markdown:
     const expiryTimestamp = expiresAt.getTime().toString();
     const businessNameEncoded = encodeURIComponent(formattedBusinessName);
     const cityEncoded = encodeURIComponent(formattedCity);
+    const host = req.headers.get("host") || "localhost:3000";
+    const protocol = host.includes("localhost") ? "http" : "https";
+    const mainAppUrl = `${protocol}://${host}`;
 
     // 10. Inject Variables & Tokens
     let htmlOutput = templateHtml
@@ -279,6 +282,7 @@ Generate the following in strict JSON format only, no markdown:
       .replaceAll('{{BUSINESS_NAME_ENCODED}}', businessNameEncoded)
       .replaceAll('{{CITY_ENCODED}}', cityEncoded)
       .replaceAll('{{SLUG}}', slug)
+      .replaceAll('{{MAIN_APP_URL}}', mainAppUrl)
       .replaceAll('{{EXPIRY_TIMESTAMP}}', expiryTimestamp)
       .replaceAll('{{AGENCY_PHONE}}', agencyPhone)
       .replaceAll('{{AGENCY_WHATSAPP_NUMBER}}', agencyWhatsapp)
@@ -319,9 +323,6 @@ Generate the following in strict JSON format only, no markdown:
       .replaceAll('{{INDUSTRY}}', activeIndustry);
 
     // 11. Inject Expiration & Tracking Script into HTML Page
-    const host = req.headers.get("host") || "localhost:3000";
-    const protocol = host.includes("localhost") ? "http" : "https";
-    const mainAppUrl = `${protocol}://${host}`;
 
     const trackingScript = `
   <!-- Tracking and Expiration System -->
